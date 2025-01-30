@@ -1,3 +1,5 @@
+package Customers;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -14,7 +16,7 @@ public class CustomerController {
     Scanner scanner;
 
     /**
-     * Konstruktor för CustomerController
+     * Konstruktor för Customers.CustomerController
      * Initierar service och scanner
      */
     public CustomerController() {
