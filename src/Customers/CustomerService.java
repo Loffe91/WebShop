@@ -1,7 +1,13 @@
 package Customers;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
 
 /**
  * Service-klass för kundhantering
@@ -43,10 +49,13 @@ public class CustomerService {
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
             System.out.println("ID: " + customer.getCustomerId());
-            System.out.println("Namn: " + customer.getFirstName() + " " + customer.getLastName());
+            System.out.println("Namn: " + customer.getName());
             System.out.println("Email: " + customer.getEmail());
             System.out.println("-----------------");
         }
+    }
+    public void addCustomer() throws SQLException {
+        customerRepository.addCustomer();
     }
 
     /**

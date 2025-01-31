@@ -8,8 +8,7 @@ public class Customer {
 
     // Privata fält för att uppnå inkapsling
     private int customerId;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
 
     /**
@@ -17,10 +16,9 @@ public class Customer {
      * Tar emot all nödvändig information för en kund
      *
      */
-    public Customer(int customerId, String firstName, String lastName, String email) {
+    public Customer(int customerId, String name, String email) {
         this.customerId = customerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
     }
 
@@ -29,20 +27,12 @@ public class Customer {
         return customerId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String firstName) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -61,8 +51,7 @@ public class Customer {
     public String toString() {
         return "Customers.Customer{" +
                 "id=" + customerId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", Name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

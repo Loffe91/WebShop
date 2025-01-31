@@ -35,6 +35,7 @@ public class CustomerController {
                 // Skriv ut menyalternativ direkt i run-metoden för tydlighet
                 System.out.println("\n=== Kundhantering ===");
                 System.out.println("1. Visa alla kunder");
+                System.out.println("2. Lägg till kund");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -47,6 +48,12 @@ public class CustomerController {
                         // Anropa service-lagret för att visa alla kunder
                         customerService.showAllUsers();
                         break;
+                    case 2:
+                        //System.out.println("Ange namn: ");
+                        //String name = scanner.next();
+                        //System.out.println("Ange mailadress: ");
+                        //String email = scanner.next();
+                        customerService.addCustomer();
                     case 0:
                         System.out.println("Avslutar kundhantering...");
                         return;

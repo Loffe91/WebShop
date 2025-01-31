@@ -36,8 +36,7 @@ public class CustomerRepository {
                 // Skapa ett nytt Customers.Customer-objekt från varje databasrad
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
-                        rs.getString("first_name"),   // Hämta förnamn
-                        rs.getString("last_name"),    // Hämta efternamn
+                        rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
                         rs.getString("email")         // Hämta email
                 );
                 customers.add(customer);
@@ -45,7 +44,16 @@ public class CustomerRepository {
         }
         return customers;
     }
-    
+
+    public void addCustomer() throws SQLException {
+
+        String sql = "INSERT INTO customers(name, email, phone, address, password) VALUES('joel', 'ohman', '123', 'jj', 'abc')";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.executeUpdate();
+        }
+    }
     /**
      * Här kan fler metoder läggas till som t.ex:
      * - addCustomer
