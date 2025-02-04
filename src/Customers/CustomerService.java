@@ -54,8 +54,13 @@ public class CustomerService {
             System.out.println("-----------------");
         }
     }
-    public void addCustomer() throws SQLException {
-        customerRepository.addCustomer();
+
+    /** Metod som anropas i CustomerController-loopen
+     * Tar input av användaren och skickar vidare till customerRepository-metoden
+     * Som i sin tur skapar kunden
+     */
+    public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
+        customerRepository.addCustomer(name, email, phone, address, password);
     }
 
     /**
