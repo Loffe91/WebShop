@@ -36,8 +36,7 @@ public class CustomerRepository {
                 // Skapa ett nytt Customers.Customer-objekt från varje databasrad
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
-                        rs.getString("first_name"),   // Hämta förnamn
-                        rs.getString("last_name"),    // Hämta efternamn
+                        rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
                         rs.getString("email")         // Hämta email
                 );
                 customers.add(customer);
@@ -45,7 +44,19 @@ public class CustomerRepository {
         }
         return customers;
     }
-    
+    // Metod för att lägga till kunder. Kund-ID skapas automatiskt av databasen, resterande info tas in av användaren
+    public void addCustomer(String name, String email, String phone ,String address, String password) throws SQLException {
+        String sql = "INSERT INTO customers(name, email, phone, address, password) VALUES(?, ?, ?, ?, ?)"; // Frågetecknen är placeholders för värdena som tas in av användaren
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name); // Sätter värdet av name till det första frågetecknet
+            pstmt.setString(2, email); // Sätter värdet av email till det andra frågetecknet, osv, osv.
+            pstmt.setString(3, phone);
+            pstmt.setString(4, address);
+            pstmt.setString(5, password);
+            pstmt.executeUpdate();
+        }
+    }
     /**
      * Här kan fler metoder läggas till som t.ex:
      * - addCustomer

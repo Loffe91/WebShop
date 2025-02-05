@@ -35,19 +35,29 @@ public class CustomerController {
                 // Skriv ut menyalternativ direkt i run-metoden för tydlighet
                 System.out.println("\n=== Kundhantering ===");
                 System.out.println("1. Visa alla kunder");
+                System.out.println("2. Lägg till kund");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
-                int select = scanner.nextInt();
+                String select = scanner.nextLine();
 
                 // Hantera användarens val
                 switch (select) {
-                    case 1:
+                    case "1":
                         // Anropa service-lagret för att visa alla kunder
                         customerService.showAllUsers();
                         break;
-                    case 0:
+                    case "2":
+                        System.out.println("Ange namn: "); String name = scanner.nextLine();
+                        System.out.println("Ange mailadress: "); String email = scanner.nextLine();
+                        System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine();
+                        System.out.println("Ange hemadress: "); String address = scanner.nextLine();
+                        System.out.println("Ange lösenord: "); String password = scanner.nextLine();
+
+                        customerService.addCustomer(name, email, phone, address, password);
+                        break;
+                    case "0":
                         System.out.println("Avslutar kundhantering...");
                         return;
                     default:
