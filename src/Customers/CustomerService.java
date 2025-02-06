@@ -62,6 +62,16 @@ public class CustomerService {
     public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
         customerRepository.addCustomer(name, email, phone, address, password);
     }
+    /** Metod som anropas i CustomerController-loopen
+     * Tar input av användaren och skickar vidare till customerRepository-metoden
+     * Som i sin tur returnerar kunden
+     */
+    public Customer getCustomerByEmail(String email) throws SQLException{
+        return customerRepository.getCustomerByEmail(email);
+    }
+    public Customer getCustomerById(int id) throws SQLException{
+        return customerRepository.getCustomerById(id);
+    }
 
     /**
      * Här kan man lägga till fler metoder som t.ex:
