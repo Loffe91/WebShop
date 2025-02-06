@@ -57,6 +57,50 @@ public class CustomerRepository {
             pstmt.executeUpdate();
         }
     }
+    public Customer getCustomerByEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE email = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            // Kontrollera om det finns data att hämta
+           if (rs.next()){
+               return new Customer(
+                       rs.getInt("customer_id"),
+                       rs.getString("name"),
+                       rs.getString("email")
+               );
+           }
+           else {
+               System.out.println("Ingen kund hittades");
+               return null;
+           }
+        }
+    }
+    public Customer getCustomerById(int id) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE customer_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            // Kontrollera om det finns data att hämta
+            if (rs.next()){
+                return new Customer(
+                        rs.getInt("customer_id"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+            }
+            else {
+                System.out.println("Ingen kund hittades");
+                return null;
+            }
+        }
+    }
     /**
      * Här kan fler metoder läggas till som t.ex:
      * - addCustomer
