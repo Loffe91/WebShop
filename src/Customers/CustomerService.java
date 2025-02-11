@@ -72,7 +72,20 @@ public class CustomerService {
     public Customer getCustomerById(int id) throws SQLException{
         return customerRepository.getCustomerById(id);
     }
+    // Metod som anropas i CustomerController
+    public void deleteCustomer(int customerId) throws SQLException {
+        // Kontrollera om kunden finns innan borttagning
+        Customer customer = customerRepository.getCustomerById(customerId);
+        if (customer == null) {
+            System.out.println("Ingen kund hittades med ID: " + customerId);
+            return;
+        }
 
+        // Ta bort kunden
+        customerRepository.deleteCustomer(customerId);
+        System.out.println("Kunden med ID " + customerId + " har raderats.");
+    }
+}
     /**
      * Här kan man lägga till fler metoder som t.ex:
      * - getCustomerById
@@ -81,4 +94,3 @@ public class CustomerService {
      * - deleteCustomer
      * - findCustomerByEmail
      */
-}
