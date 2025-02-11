@@ -73,8 +73,6 @@ public class CustomerController {
                             System.out.println("ID: "+ customerByEmail.getCustomerId());
                             System.out.println("Namn: "+ customerByEmail.getName());
                             System.out.println("Email: "+ customerByEmail.getEmail());
-                        } else {
-                            System.out.println("Hittade ingen matchande kund. ");
                         }
                         break;
                     case "4": // Hämta kund baserat på ID
@@ -86,8 +84,6 @@ public class CustomerController {
                             System.out.println("ID: "+customerById.getCustomerId()); // Skriv ut info
                             System.out.println("Namn: "+customerById.getName());
                             System.out.println("Email: "+customerById.getEmail());
-                        } else { // Om ingen kund hittats
-                            System.out.println("Hittade ingen matchande kund. ");
                         }
                         break;
 

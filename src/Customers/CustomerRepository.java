@@ -80,7 +80,7 @@ public class CustomerRepository {
                );
            }
            else {
-               System.out.println("Ingen kund hittades");
+               System.out.println("Ingen kund hittades med den mailadressen");
                return null;
            }
         }
@@ -102,7 +102,7 @@ public class CustomerRepository {
                 );
             }
             else {
-                System.out.println("Ingen kund hittades");
+                System.out.println("Ingen kund hittades med det ID:t");
                 return null;
             }
         }
