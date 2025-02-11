@@ -1,7 +1,13 @@
 package Customers;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
 
 /**
  * Service-klass för kundhantering
@@ -43,10 +49,28 @@ public class CustomerService {
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
             System.out.println("ID: " + customer.getCustomerId());
-            System.out.println("Namn: " + customer.getFirstName() + " " + customer.getLastName());
+            System.out.println("Namn: " + customer.getName());
             System.out.println("Email: " + customer.getEmail());
             System.out.println("-----------------");
         }
+    }
+
+    /** Metod som anropas i CustomerController-loopen
+     * Tar input av användaren och skickar vidare till customerRepository-metoden
+     * Som i sin tur skapar kunden
+     */
+    public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
+        customerRepository.addCustomer(name, email, phone, address, password);
+    }
+    /** Metod som anropas i CustomerController-loopen
+     * Tar input av användaren och skickar vidare till customerRepository-metoden
+     * Som i sin tur returnerar kunden
+     */
+    public Customer getCustomerByEmail(String email) throws SQLException{
+        return customerRepository.getCustomerByEmail(email);
+    }
+    public Customer getCustomerById(int id) throws SQLException{
+        return customerRepository.getCustomerById(id);
     }
 
     /**
