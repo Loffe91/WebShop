@@ -60,7 +60,12 @@ public class CustomerService {
      * Som i sin tur skapar kunden
      */
     public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
-        customerRepository.addCustomer(name, email, phone, address, password);
+        try {
+            customerRepository.addCustomer(name, email, phone, address, password);
+            System.out.println("Kunden har registrerats. ");
+        } catch (SQLException e){
+            System.out.println("Fel: " + e.getMessage());
+        }
     }
     /** Metod som anropas i CustomerController-loopen
      * Tar input av användaren och skickar vidare till customerRepository-metoden
