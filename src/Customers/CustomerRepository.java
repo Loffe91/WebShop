@@ -107,6 +107,24 @@ public class CustomerRepository {
             }
         }
     }
+    // Tar bort en kund från databasen baserat på kund-ID.
+
+    public void deleteCustomer(int customerId) throws SQLException {
+        String sql = "DELETE FROM customers WHERE customer_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, customerId);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                System.out.println("Ingen kund med det angivna ID:t hittades.");
+            } else {
+                System.out.println("Kunden med ID " + customerId + " har tagits bort.");
+            }
+        }
+    }
+
     /**
      * Här kan fler metoder läggas till som t.ex:
      * - addCustomer

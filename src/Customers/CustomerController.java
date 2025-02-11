@@ -38,6 +38,7 @@ public class CustomerController {
                 System.out.println("2. Lägg till kund");
                 System.out.println("3. Hämta kund baserat på email");
                 System.out.println("4. Hämta kund baserat på ID");
+                System.out.println("5. Ta bort en kund baserat på ID");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -89,6 +90,18 @@ public class CustomerController {
                             System.out.println("Hittade ingen matchande kund. ");
                         }
                         break;
+
+                    case "5":
+                        System.out.println("Ange ID på kunden du vill ta bort: ");
+                        try {
+                            int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
+                            customerService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
+                        } catch (NumberFormatException e) {
+                            System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
+                        }
+                        break;
+
+
                     case "0":
                         System.out.println("Avslutar kundhantering...");
                         return;
