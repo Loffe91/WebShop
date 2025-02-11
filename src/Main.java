@@ -10,6 +10,6 @@ public class Main {
         customerController.run();
 
         ProductController productController = new ProductController();
-        productController.run();
+        //productController.run();
     }
 }

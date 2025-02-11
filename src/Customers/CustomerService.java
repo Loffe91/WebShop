@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-
 /**
  * Service-klass för kundhantering
  * Innehåller affärslogik mellan controller och repository
@@ -60,11 +58,11 @@ public class CustomerService {
      * Som i sin tur skapar kunden
      */
     public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
-        try {
+        try { // Kollar så att kunden kan skapas, t.ex ingen dublett av email
             customerRepository.addCustomer(name, email, phone, address, password);
-            System.out.println("Kunden har registrerats. ");
+            System.out.println("Kunden har registrerats. "); // Om inga fel hittas skapas kunden
         } catch (SQLException e){
-            System.out.println("Fel: " + e.getMessage());
+            System.out.println("Fel: " + e.getMessage()); // Felmeddelande ifall kund ej kan skapas
         }
     }
     /** Metod som anropas i CustomerController-loopen

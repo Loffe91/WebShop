@@ -77,16 +77,16 @@ public class CustomerController {
                             System.out.println("Hittade ingen matchande kund. ");
                         }
                         break;
-                    case "4":
+                    case "4": // Hämta kund baserat på ID
                         System.out.println("Ange ID: ");
-                        String idString = scanner.nextLine();
+                        String idString = scanner.nextLine(); // Hämta id och konvertera till en stril
                         int id = Integer.parseInt(idString);
-                        Customer customerById = customerService.getCustomerById(id);
-                        if(customerById != null){
-                            System.out.println("ID: "+customerById.getCustomerId());
+                        Customer customerById = customerService.getCustomerById(id); // Spara customerById till Customer
+                        if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
+                            System.out.println("ID: "+customerById.getCustomerId()); // Skriv ut info
                             System.out.println("Namn: "+customerById.getName());
                             System.out.println("Email: "+customerById.getEmail());
-                        } else {
+                        } else { // Om ingen kund hittats
                             System.out.println("Hittade ingen matchande kund. ");
                         }
                         break;
@@ -100,7 +100,6 @@ public class CustomerController {
                             System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
                         }
                         break;
-
 
                     case "0":
                         System.out.println("Avslutar kundhantering...");
