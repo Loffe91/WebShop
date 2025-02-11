@@ -57,7 +57,12 @@ public class CustomerController {
                         System.out.println("Ange hemadress: "); String address = scanner.nextLine();
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine();
 
-                        customerService.addCustomer(name, email, phone, address, password);
+                        try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
+                            customerService.addCustomer(name, email, phone, address, password);
+                            break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
+                        } catch (Exception e){
+                            System.out.println(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
+                        }
                         break;
                     case "3": // Hämta kund baserat på mail
                         System.out.println("Ange mail: ");
