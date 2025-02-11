@@ -55,6 +55,12 @@ public class CustomerRepository {
             pstmt.setString(4, address);
             pstmt.setString(5, password);
             pstmt.executeUpdate();
+        } catch (SQLException e){
+            if(e.getMessage().contains("UNIQUE constraint failed")){ // Kollar så mailadressen ej används
+                throw new SQLException("Denna email är redan registrerad. Välj en annan");
+            } else {
+                throw e;
+            }
         }
     }
     public Customer getCustomerByEmail(String email) throws SQLException {
