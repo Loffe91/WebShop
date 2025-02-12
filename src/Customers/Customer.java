@@ -1,31 +1,29 @@
 package Customers;
 
+import User.User;
+
 /**
  * Klass som representerar en kund i webbshopen
  * Används för att hantera kunddata mellan databasen och applikationen
  */
-public class Customer {
+public class Customer extends User {
 
     // Privata fält för att uppnå inkapsling
-    private int customerId;
+
     private String name;
-    private String email;
 
     /**
      * Konstruktor för att skapa en ny Customers.Customer
      * Tar emot all nödvändig information för en kund
      *
      */
-    public Customer(int customerId, String name, String email) {
-        this.customerId = customerId;
+    public Customer(int customerId, String name, String email, String password) {
+        super(email, password, "customer"); // Customer som roll för att skilja från Admin
+        this.userId = customerId; // Ärver userId från User-klassen men ändrar variabelnamn till customerId för customers
         this.name = name;
-        this.email = email;
     }
 
     // Getters och setters för alla fält
-    public int getCustomerId() {
-        return customerId;
-    }
 
     public String getName() {
         return name;
@@ -35,13 +33,6 @@ public class Customer {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     /**
      * toString-metod för att få en läsbar representation av kunden
@@ -50,7 +41,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customers.Customer{" +
-                "id=" + customerId +
+                "id=" + userId +
                 ", Name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';

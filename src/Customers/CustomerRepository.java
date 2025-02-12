@@ -37,7 +37,8 @@ public class CustomerRepository {
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
                         rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
-                        rs.getString("email")         // Hämta email
+                        rs.getString("email"),
+                        rs.getString("password")// Hämta email
                 );
                 customers.add(customer);
             }
@@ -76,7 +77,8 @@ public class CustomerRepository {
                return new Customer(
                        rs.getInt("customer_id"),
                        rs.getString("name"),
-                       rs.getString("email")
+                       rs.getString("email"),
+                       rs.getString("password")
                );
            }
            else {
@@ -98,7 +100,8 @@ public class CustomerRepository {
                 return new Customer(
                         rs.getInt("customer_id"),
                         rs.getString("name"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("password")
                 );
             }
             else {
@@ -124,6 +127,38 @@ public class CustomerRepository {
             }
         }
     }
+    // Metod för att kontrollera inloggning. Kollar ifall email & password matchar någon customer i databasen
+    public Customer loginChecker(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE email = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()){ // Om en kund med matchande mail hittas
+                String savedPassword = rs.getString("password");
+
+                if(!savedPassword.equals(password)){ // Om lösenord ej matchar
+                    System.out.println("Felaktigt lösenord. ");
+                    return null;
+                }
+
+                return new Customer( // Om matchande email & lösen hittas
+                        rs.getInt("customer_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+            } else {
+                System.out.println("Felaktig mailadress");
+                return null;
+            }
+            }
+
+        }
+
 
     /**
      * Här kan fler metoder läggas till som t.ex:

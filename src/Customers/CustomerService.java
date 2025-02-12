@@ -1,5 +1,7 @@
 package Customers;
 
+import Admin.Admin;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -46,7 +48,7 @@ public class CustomerService {
         // Skriv ut alla kunder med tydlig formatering
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
-            System.out.println("ID: " + customer.getCustomerId());
+            System.out.println("ID: " + customer.getUserId());
             System.out.println("Namn: " + customer.getName());
             System.out.println("Email: " + customer.getEmail());
             System.out.println("-----------------");
