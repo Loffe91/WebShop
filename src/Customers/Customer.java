@@ -19,7 +19,7 @@ public class Customer extends User {
      */
     public Customer(int userId, String name, String email, String password) {
         super(email, password);
-        this.userId = userId;
+        setUserId(userId);
         this.name = name;
     }
 
@@ -41,9 +41,9 @@ public class Customer extends User {
     @Override
     public String toString() {
         return "Customers.Customer{" +
-                "id=" + userId +
+                "id=" + getUserId() +
                 ", Name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", email='" + getEmail() + '\'' +
                 '}';
     }
 }
