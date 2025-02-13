@@ -1,57 +1,38 @@
 package Customers;
 
+import User.User;
+
 /**
  * Klass som representerar en kund i webbshopen
  * Används för att hantera kunddata mellan databasen och applikationen
  */
-public class Customer {
+public class Customer extends User {
 
     // Privata fält för att uppnå inkapsling
-    private int customerId;
-    private String firstName;
-    private String lastName;
-    private String email;
+
+    private String name;
 
     /**
      * Konstruktor för att skapa en ny Customers.Customer
      * Tar emot all nödvändig information för en kund
      *
      */
-    public Customer(int customerId, String firstName, String lastName, String email) {
-        this.customerId = customerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public Customer(int userId, String name, String email, String password) {
+        super(email, password);
+        setUserId(userId);
+        this.name = name;
     }
 
     // Getters och setters för alla fält
-    public int getCustomerId() {
-        return customerId;
+
+    public String getName() {
+        return name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     /**
      * toString-metod för att få en läsbar representation av kunden
@@ -60,10 +41,9 @@ public class Customer {
     @Override
     public String toString() {
         return "Customers.Customer{" +
-                "id=" + customerId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
+                "id=" + getUserId() +
+                ", Name='" + name + '\'' +
+                ", email='" + getEmail() + '\'' +
                 '}';
     }
 }

@@ -1,30 +1,81 @@
 package Products;
 
+/**
+ * Klass som representerar en produkt i webbshopen
+ * Används för att hantera produktdata mellan databasen och applikationen
+ */
 public class Product {
 
-    public int productID;
-    public String productName;
-    public String productDescription;
-    public int productPrice;
-    public int productQuantity;
+    private int productId;
+    private String name;
+    private String description;
+    private double price;
+    private int stockQuantity;
 
-    public Product(int productID, String manufacturerID, String productName, String productDescription, int productPrice) {
-        this.productID = productID;
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.productPrice = productPrice;
-        this.productQuantity = 0; //ska denna vara 0 eller ska den hämtas från db eller det kanske den gör senare?
+    /**
+     * Konstruktor för att skapa en ny Products.Product
+     * Tar emot all nödvändig information för en produkt
+     */
+    public Product(int productId, String name, String description, double price, int stockQuantity) {
+        this.productId = productId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
     }
 
-    //Skriver ut all produktinfo på ett läsbart sätt
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    /**
+     * toString-metod för att få en läsbar representation av produkten
+     * Användbar vid utskrift eller debugging
+     */
     @Override
     public String toString() {
-        return "Products.Product {" +
-                "id=" + productID +
-                ", name='" + productName + '\'' +
-                ", description='" + productDescription + '\'' +
-                ", price='" + productPrice + '\'' +
-                ", quantity=" + productQuantity + '\'' +
+        return "Products.Product{" +
+                "id=" + productId +
+                ", Name='" + name + '\'' +
+                ", Description='" + description + '\'' +
+                ", Price='" + price + '\'' +
+                ", Stock='" + stockQuantity + '\'' +
                 '}';
     }
 }
