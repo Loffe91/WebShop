@@ -1,13 +1,13 @@
 package Customers;
 
+import Admin.Admin;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-
 
 /**
  * Service-klass för kundhantering
@@ -48,7 +48,7 @@ public class CustomerService {
         // Skriv ut alla kunder med tydlig formatering
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
-            System.out.println("ID: " + customer.getCustomerId());
+            System.out.println("ID: " + customer.getUserId());
             System.out.println("Namn: " + customer.getName());
             System.out.println("Email: " + customer.getEmail());
             System.out.println("-----------------");
@@ -60,11 +60,11 @@ public class CustomerService {
      * Som i sin tur skapar kunden
      */
     public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
-        try {
+        try { // Kollar så att kunden kan skapas, t.ex ingen dublett av email
             customerRepository.addCustomer(name, email, phone, address, password);
-            System.out.println("Kunden har registrerats. ");
+            System.out.println("Kunden har registrerats. "); // Om inga fel hittas skapas kunden
         } catch (SQLException e){
-            System.out.println("Fel: " + e.getMessage());
+            System.out.println("Fel: " + e.getMessage()); // Felmeddelande ifall kund ej kan skapas
         }
     }
     /** Metod som anropas i CustomerController-loopen
