@@ -3,10 +3,8 @@ import User.User;
 
 public class Admin extends User{
 
-    private String name;
-    private String email;
     public Admin(){
-        super("admin@webshop.com", "123", "admin"); //
+        super("admin@webshop.com", "123"); //
         this.userId = 0;
     }
     @Override

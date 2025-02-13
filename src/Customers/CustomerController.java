@@ -1,5 +1,6 @@
 package Customers;
 
+import Admin.Admin;
 import Admin.AdminController;
 import User.UserService;
 
@@ -153,11 +154,11 @@ public class CustomerController {
         User loggedIn = userService.login(email, password); // Sparar en user till LoggedIn
 
         if (loggedIn != null) { // Om en matchande user hittas
-            if (loggedIn.getRole().equals("admin")) {
+            if (loggedIn instanceof Admin) { // Om usern är admin
                 System.out.println("Inloggad med adminrättigheter");
                 new AdminController(); // Har för tillfället ingen adminmeny, men lägg till t.ex .run efter denna rad
                                        // när en sådan meny är skapad
-            } else {
+            } else { // om usern är customer
                 System.out.println("Välkommen, "+ ((Customers.Customer) loggedIn).getName());
             }
         }else {

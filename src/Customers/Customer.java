@@ -17,9 +17,9 @@ public class Customer extends User {
      * Tar emot all nödvändig information för en kund
      *
      */
-    public Customer(int customerId, String name, String email, String password) {
-        super(email, password, "customer"); // Customer som roll för att skilja från Admin
-        this.userId = customerId; // Ärver userId från User-klassen men ändrar variabelnamn till customerId för customers
+    public Customer(int userId, String name, String email, String password) {
+        super(email, password);
+        this.userId = userId;
         this.name = name;
     }
 
@@ -29,7 +29,7 @@ public class Customer extends User {
         return name;
     }
 
-    public void setName(String firstName) {
+    public void setName(String name) {
         this.name = name;
     }
 
