@@ -90,6 +90,15 @@ public class CustomerService {
         customerRepository.deleteCustomer(customerId);
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
+    /**
+     * Uppdaterar en kunds information
+     * @param customer Det uppdaterade Customer-objektet.
+     * @return true om uppdateringen lyckas, annars false.
+     */
+    public boolean updateCustomer(Customer customer) {
+        return customerRepository.updateCustomer(customer);
+    }
+
 }
     /**
      * Här kan man lägga till fler metoder som t.ex:
