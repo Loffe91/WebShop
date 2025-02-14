@@ -173,19 +173,19 @@ public class CustomerController {
     }
     // Meny för att uppdatera kund
     public void updateCustomerMenu() {
-        System.out.println("Ange ID på kunden du vill uppdatera: ");
-        int userId = Integer.parseInt(scanner.nextLine());
+        System.out.println("Ange e-postadressen på kunden du vill uppdatera: ");
+        String email = scanner.nextLine();
 
         System.out.println("Ange nytt namn: ");
         String name = scanner.nextLine();
 
         System.out.println("Ange ny e-post: ");
-        String email = scanner.nextLine();
+        String newEmail = scanner.nextLine();
 
         System.out.println("Ange nytt lösenord: ");
         String password = scanner.nextLine();
 
-        Customer updatedCustomer = new Customer(userId, name, email, password);
+        Customer updatedCustomer = new Customer(email, name, newEmail, password);
         boolean success = customerService.updateCustomer(updatedCustomer);
 
         if (success) {

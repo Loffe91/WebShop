@@ -3,19 +3,18 @@ package Customers;
 import User.User;
 
 /**
- * Klass som representerar en kund i webbshopen
- * Används för att hantera kunddata mellan databasen och applikationen
+ * Klass som representerar en kund i webbshopen.
+ * Används för att hantera kunddata mellan databasen och applikationen.
  */
 public class Customer extends User {
 
     // Privata fält för att uppnå inkapsling
-
     private String name;
+    private String newEmail; // Lägg till detta fält för ny e-postadress
 
     /**
-     * Konstruktor för att skapa en ny Customers.Customer
-     * Tar emot all nödvändig information för en kund
-     *
+     * Konstruktor för att skapa en ny Customer.
+     * Tar emot all nödvändig information för en kund.
      */
     public Customer(int userId, String name, String email, String password) {
         super(email, password);
@@ -23,8 +22,14 @@ public class Customer extends User {
         this.name = name;
     }
 
-    // Getters och setters för alla fält
+    // Alternativ konstruktor som använder e-post istället för ID för uppdatering
+    public Customer(String email, String name, String newEmail, String password) {
+        super(email, password);
+        this.name = name;
+        this.newEmail = newEmail;  // Tilldela den nya e-posten
+    }
 
+    // Getters och setters för alla fält
     public String getName() {
         return name;
     }
@@ -33,16 +38,23 @@ public class Customer extends User {
         this.name = name;
     }
 
+    public String getNewEmail() {
+        return newEmail;
+    }
+
+    public void setNewEmail(String newEmail) {
+        this.newEmail = newEmail;
+    }
 
     /**
-     * toString-metod för att få en läsbar representation av kunden
-     * Användbar vid utskrift eller debugging
+     * toString-metod för att få en läsbar representation av kunden.
+     * Användbar vid utskrift eller debugging.
      */
     @Override
     public String toString() {
-        return "Customers.Customer{" +
+        return "Customer{" +
                 "id=" + getUserId() +
-                ", Name='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", email='" + getEmail() + '\'' +
                 '}';
     }
