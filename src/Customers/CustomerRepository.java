@@ -37,7 +37,8 @@ public class CustomerRepository {
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
                         rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
-                        rs.getString("email")         // Hämta email
+                        rs.getString("email"),
+                        rs.getString("password")// Hämta email
                 );
                 customers.add(customer);
             }
@@ -55,6 +56,12 @@ public class CustomerRepository {
             pstmt.setString(4, address);
             pstmt.setString(5, password);
             pstmt.executeUpdate();
+        } catch (SQLException e){
+            if(e.getMessage().contains("UNIQUE constraint failed")){ // Kollar så mailadressen ej används
+                throw new SQLException("Denna email är redan registrerad. Välj en annan");
+            } else {
+                throw e;
+            }
         }
     }
     public Customer getCustomerByEmail(String email) throws SQLException {
@@ -70,11 +77,12 @@ public class CustomerRepository {
                return new Customer(
                        rs.getInt("customer_id"),
                        rs.getString("name"),
-                       rs.getString("email")
+                       rs.getString("email"),
+                       rs.getString("password")
                );
            }
            else {
-               System.out.println("Ingen kund hittades");
+               System.out.println("Ingen kund hittades med den mailadressen");
                return null;
            }
         }
@@ -92,15 +100,66 @@ public class CustomerRepository {
                 return new Customer(
                         rs.getInt("customer_id"),
                         rs.getString("name"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("password")
                 );
             }
             else {
-                System.out.println("Ingen kund hittades");
+                System.out.println("Ingen kund hittades med det ID:t");
                 return null;
             }
         }
     }
+    // Tar bort en kund från databasen baserat på kund-ID.
+
+    public void deleteCustomer(int customerId) throws SQLException {
+        String sql = "DELETE FROM customers WHERE customer_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, customerId);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                System.out.println("Ingen kund med det angivna ID:t hittades.");
+            } else {
+                System.out.println("Kunden med ID " + customerId + " har tagits bort.");
+            }
+        }
+    }
+    // Metod för att kontrollera inloggning. Kollar ifall email & password matchar någon customer i databasen
+    public Customer loginChecker(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE email = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()){ // Om en kund med matchande mail hittas
+                String savedPassword = rs.getString("password");
+
+                if(!savedPassword.equals(password)){ // Om lösenord ej matchar
+                    System.out.println("Felaktigt lösenord. ");
+                    return null;
+                }
+
+                return new Customer( // Om matchande email & lösen hittas
+                        rs.getInt("customer_id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                );
+            } else {
+                System.out.println("Felaktig mailadress");
+                return null;
+            }
+            }
+
+        }
+
+
     /**
      * Här kan fler metoder läggas till som t.ex:
      * - addCustomer
