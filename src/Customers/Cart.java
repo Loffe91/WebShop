@@ -1,9 +1,13 @@
 package Customers;
+import Orders.Order;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Cart {
-    private Map<String, Integer> products; // Produktnamn → Antal
+    //Skapar en map med index "Produktnamn" → värdet "Antal"
+    private Map<String, Integer> products;
 
         public Cart() {
         this.products = new HashMap<>();
@@ -43,4 +47,8 @@ public class Cart {
                 System.out.println(entry.getKey() + " x" + entry.getValue());
             }
         }
+        // skapa metod skicka cart till checkout?
+    public static Order placeOrder(int customerId, List<String> products, double totalPrice) {
+     return new Order(customerId, products, totalPrice);
+    }
     }
