@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        CustomerController customerController = new CustomerController();
-        customerController.run();
+        /*CustomerController customerController = new CustomerController();
+        customerController.run();*/
 
         ProductController productController = new ProductController();
         productController.run();
