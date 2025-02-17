@@ -46,6 +46,7 @@ public class CustomerController {
                 System.out.println("2. Visa kunder");
                 System.out.println("3. Lägg till kund");
                 System.out.println("4. Ta bort en kund baserat på ID");
+                System.out.println("5. Uppdatera kund");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -83,6 +84,10 @@ public class CustomerController {
                         } catch (NumberFormatException e) {
                             System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
                         }
+                        break;
+
+                    case "5":
+                        updateCustomerMenu(); // Anropar den nya metoden
                         break;
 
                     case "0":
@@ -163,6 +168,30 @@ public class CustomerController {
             }
         }else {
             System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
+        }
+
+    }
+    // Meny för att uppdatera kund
+    public void updateCustomerMenu() {
+        System.out.println("Ange e-postadressen på kunden du vill uppdatera: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Ange nytt namn: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Ange ny e-post: ");
+        String newEmail = scanner.nextLine();
+
+        System.out.println("Ange nytt lösenord: ");
+        String password = scanner.nextLine();
+
+        Customer updatedCustomer = new Customer(email, name, newEmail, password);
+        boolean success = customerService.updateCustomer(updatedCustomer);
+
+        if (success) {
+            System.out.println("Kunden uppdaterades framgångsrikt!");
+        } else {
+            System.out.println("Misslyckades med att uppdatera kunden.");
         }
     }
 
