@@ -132,15 +132,15 @@ public class CustomerRepository {
         String sql = "SELECT * FROM customers WHERE email = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()){ // Om en kund med matchande mail hittas
+            if (rs.next()) { // Om en kund med matchande mail hittas
                 String savedPassword = rs.getString("password");
 
-                if(!savedPassword.equals(password)){ // Om lösenord ej matchar
+                if (!savedPassword.equals(password)) { // Om lösenord ej matchar
                     System.out.println("Felaktigt lösenord. ");
                     return null;
                 }
@@ -155,9 +155,29 @@ public class CustomerRepository {
                 System.out.println("Felaktig mailadress");
                 return null;
             }
-            }
-
         }
+    }
+        /**
+    * Uppdaterar en kund i databasen.
+    * @param customer Det uppdaterade Customer-objektet.
+    * @return true om uppdateringen lyckas, annars false.
+    */
+        public boolean updateCustomer(Customer customer) {
+            String sql = "UPDATE customers SET name = ?, email = ?, password = ? WHERE email = ?";
+            try (Connection conn = DriverManager.getConnection(URL);
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, customer.getName());
+                pstmt.setString(2, customer.getNewEmail());
+                pstmt.setString(3, customer.getPassword());
+                pstmt.setString(4, customer.getEmail());
+                return pstmt.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+}
 
 
     /**
@@ -175,4 +195,3 @@ public class CustomerRepository {
      * 4. Hantera resultatet
      * 5. Låt try-with-resources stänga alla resurser
      */
-}
