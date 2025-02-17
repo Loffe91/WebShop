@@ -57,4 +57,44 @@ public class ProductService {
         }
     }
 
+    public void selectProduct() throws SQLException {
+        // Hämta alla produkter från repository-lagret
+        ArrayList<Product> products = productRepository.getAllProducts();
+
+        // Kontrollera om vi har några produkter att visa
+        if (products.isEmpty()) {
+            System.out.println("Inga produkter hittades.");
+            return;
+        }
+
+        // Skriv ut alla produkter med tydlig formatering
+        System.out.println("\n=== Produktlista ===");
+        for (Product product : products) {
+            System.out.println("ID: " + product.getProductId());
+            System.out.println("Namn: " + product.getName());
+            System.out.println("Beskrivning: " + product.getDescription());
+            System.out.println("Pris: " + product.getPrice());
+            System.out.println("Antal i lager: " + product.getStockQuantity());
+            System.out.println("-----------------");
+        }
+    }
+
+    public void selectCategories(String category) throws SQLException {
+        ArrayList<Product> products = productRepository.selectCategories(category);
+        if (products.isEmpty()) {
+            System.out.println("Inga produkter hittades.");
+            return;
+        }
+
+        System.out.println("\n=== Produktlista " + category + " ===");
+        for (Product product : products) {
+            System.out.println("ID: " + product.getProductId());
+            System.out.println("Namn: " + product.getName());
+            System.out.println("Beskrivning: " + product.getDescription());
+            System.out.println("Pris: " + product.getPrice());
+            System.out.println("Antal i lager: " + product.getStockQuantity());
+            System.out.println("-----------------");
+        }
+    }
+
 }

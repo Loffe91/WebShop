@@ -41,4 +41,76 @@ public class ProductRepository {
         }
         return products;
     }
+
+    // För att hämta alla kategorier från databasen -----------------------------------------------------------------------
+    public ArrayList<Categories> getAllCategories() throws SQLException {
+        ArrayList<Categories> categories = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM categories")) {
+
+            while (rs.next()) {
+                Categories category = new Categories(
+                        rs.getInt("category_id"),
+                        rs.getString("name")
+                );
+                categories.add(category);
+            }
+        }
+        return categories;
+
+    }
+
+    // Ska detta vara för kunden i slutändan eller för admin? -----------------------------------------------------------------------
+    public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE category='" + category + "'")) {
+
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt("product_id"),     // Hämta ID från product_id kolumnen
+                        rs.getString("name"),   // Hämta namn
+                        rs.getString("description"),  // Hämta description
+                        rs.getDouble("price"), // Hämta pris
+                        rs.getInt("stock_quantity") // Hämta lagerstatus
+                );
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
+    // SELECT CATEGORIES
+    public ArrayList<Product> selectCategories(String category) throws SQLException {
+        String sql =
+                "SELECT p.product_id, p.name, p.description, p.price, p.stock_quantity " +
+                "FROM products p " +
+                "JOIN products_categories pc ON p.product_id = pc.product_id " +
+                "JOIN categories c ON pc.category_id = c.category_id " +
+                "WHERE c.name = ?";
+
+        ArrayList<Product> products = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             pstmt.setString(1, category);
+             ResultSet rs = pstmt.executeQuery();
+
+             while (rs.next()) {
+                 Product product = new Product(
+                         rs.getInt("product_id"),
+                         rs.getString("name"),
+                         rs.getString("description"),
+                         rs.getDouble("price"),
+                         rs.getInt("stock_quantity")
+                );
+                 products.add(product);
+             }
+         }
+        return products;
+    }
 }
