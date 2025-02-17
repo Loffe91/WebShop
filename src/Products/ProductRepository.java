@@ -6,14 +6,14 @@ import java.util.ArrayList;
 public class ProductRepository {
 
     /**
-     * URL till SQLite-databasen
-     * Denna används i varje metod för att ansluta till databasen
+     * URL till SQLite-databasen.
+     * Denna används i varje metod för att ansluta till databasen.
      */
     private static final String URL = "jdbc:sqlite:webshop.db";
 
     /**
-     * Hämtar alla produkter från databasen
-     * Skapar en ny anslutning, hämtar data och stänger anslutning automatiskt
+     * Hämtar alla produkter från databasen.
+     * Skapar en ny anslutning, hämtar data och stänger anslutning automatiskt.
      *
      * @return ArrayList med alla produkter
      * @throws SQLException vid problem med databasanrop
@@ -42,7 +42,7 @@ public class ProductRepository {
         return products;
     }
 
-    // För att hämta alla kategorier från databasen -----------------------------------------------------------------------
+    // Onödig metod?
     public ArrayList<Categories> getAllCategories() throws SQLException {
         ArrayList<Categories> categories = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class ProductRepository {
 
     }
 
-    // Ska detta vara för kunden i slutändan eller för admin? -----------------------------------------------------------------------
+    // Onödig metod?
     public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
         ArrayList<Product> products = new ArrayList<>();
 
@@ -84,7 +84,13 @@ public class ProductRepository {
         return products;
     }
 
-    // SELECT CATEGORIES
+    /**
+     * Hämtar alla produkter från databasen beroende på kategori.
+     * Skapar en ny anslutning, hämtar data och stänger anslutning automatiskt.
+     *
+     * @return ArrayList med alla produkter i en kategori
+     * @throws SQLException vid problem med databasanrop
+     */
     public ArrayList<Product> selectCategories(String category) throws SQLException {
         String sql =
                 "SELECT p.product_id, p.name, p.description, p.price, p.stock_quantity " +

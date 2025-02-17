@@ -57,6 +57,9 @@ public class ProductService {
         }
     }
 
+    /**
+     * Metod för att välja en produkt?
+     */
     public void selectProduct() throws SQLException {
         // Hämta alla produkter från repository-lagret
         ArrayList<Product> products = productRepository.getAllProducts();
@@ -79,6 +82,9 @@ public class ProductService {
         }
     }
 
+    /**
+     * Metod för att printa ut all produkter i en vald kategori.
+     */
     public void selectCategories(String category) throws SQLException {
         ArrayList<Product> products = productRepository.selectCategories(category);
         if (products.isEmpty()) {
