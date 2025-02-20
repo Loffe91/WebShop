@@ -24,42 +24,72 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
+    /**
+     * Metod för att returnera produkt id.
+     */
     public int getProductId() {
         return productId;
     }
 
+    /**
+     * Metod för att sätta ett produkt id.
+     */
     public void setProductId(int productId) {
         this.productId = productId;
     }
 
+    /**
+     * Metod för att returnera produkt namn.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Metod för att sätta produkt namn.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Metod för att returnera produkt beskrivning.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Metod för att sätta produkt beskrivning.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Metod för att returnera produkt pris.
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * Metod för att sätta produkt pris.
+     */
     public void setPrice(double price) {
         this.price = price;
     }
 
+    /**
+     * Metod för att returnera produkt lagerstatus.
+     */
     public int getStockQuantity() {
         return stockQuantity;
     }
 
+    /**
+     * Metod för att sätta produkt lagerstatus.
+     */
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
     }

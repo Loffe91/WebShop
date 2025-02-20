@@ -1,6 +1,7 @@
 package Products;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductController {
@@ -30,19 +31,23 @@ public class ProductController {
                 // Skriv ut menyalternativ direkt i run-metoden för tydlighet
                 System.out.println("\n=== Produkthantering ===");
                 System.out.println("1. Visa alla produkter");
+                System.out.println("2. Visa kategorier");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
-                int select = scanner.nextInt();
+                String select = scanner.nextLine();
 
                 // Hantera användarens val
                 switch (select) {
-                    case 1:
+                    case "1":
                         // Anropa service-lagret för att visa alla produkter
                         productService.showAllProducts();
                         break;
-                    case 0:
+                    case "2":
+                        selectCategory();
+                        break;
+                    case "0":
                         System.out.println("Avslutar produkthantering...");
                         return;
                     default:
@@ -56,6 +61,73 @@ public class ProductController {
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
+        }
+    }
+
+    public void selectCategory() throws SQLException {
+        System.out.println("\n=== Kategorilista ===");
+        System.out.println("1. Smartphones");
+        System.out.println("2. Laptops");
+        System.out.println("3. TV & Audio");
+        System.out.println("4. Tablets");
+        System.out.println("5. Gaming");
+        System.out.println("6. Accessories");
+        System.out.println("7. Cameras");
+        System.out.println("8. Smart Home");
+        System.out.println("9. Wearables");
+        System.out.println("10. Storage");
+        System.out.println("0. Avsluta");
+
+        String categoryChoice = scanner.nextLine();
+
+        switch (categoryChoice) {
+            case "1":
+                //Smartphones
+                productService.selectCategories("Smartphones");
+                break;
+            case "2":
+                //Laptops
+                productService.selectCategories("Laptops");
+                break;
+            case "3":
+                //TV & Audio
+                productService.selectCategories("TV & Audio");
+                break;
+            case "4":
+                //Tablets
+                productService.selectCategories("Tablets");
+                break;
+            case "5":
+                //Gaming
+                productService.selectCategories("Gaming");
+                break;
+            case "6":
+                //Accessories
+                productService.selectCategories("Accessories");
+                break;
+            case "7":
+                //Cameras
+                productService.selectCategories("Cameras");
+                break;
+            case "8":
+                //Smart Home
+                productService.selectCategories("Smart Home");
+                break;
+            case "9":
+                //Wearables
+                productService.selectCategories("Wearables");
+                break;
+            case "10":
+                //Storage
+                productService.selectCategories("Storage");
+                break;
+            case "0":
+                //Exit
+                System.out.println("Avslutar produkthantering...");
+                return;
+            default:
+                System.out.println("It got fucked");
+                break;
         }
     }
 }
