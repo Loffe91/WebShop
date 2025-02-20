@@ -42,48 +42,6 @@ public class ProductRepository {
         return products;
     }
 
-    // Onödig metod?
-    public ArrayList<Categories> getAllCategories() throws SQLException {
-        ArrayList<Categories> categories = new ArrayList<>();
-
-        try (Connection conn = DriverManager.getConnection(URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM categories")) {
-
-            while (rs.next()) {
-                Categories category = new Categories(
-                        rs.getInt("category_id"),
-                        rs.getString("name")
-                );
-                categories.add(category);
-            }
-        }
-        return categories;
-
-    }
-
-    // Onödig metod?
-    public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
-        ArrayList<Product> products = new ArrayList<>();
-
-        try (Connection conn = DriverManager.getConnection(URL);
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE category='" + category + "'")) {
-
-            while (rs.next()) {
-                Product product = new Product(
-                        rs.getInt("product_id"),     // Hämta ID från product_id kolumnen
-                        rs.getString("name"),   // Hämta namn
-                        rs.getString("description"),  // Hämta description
-                        rs.getDouble("price"), // Hämta pris
-                        rs.getInt("stock_quantity") // Hämta lagerstatus
-                );
-                products.add(product);
-            }
-        }
-        return products;
-    }
-
     /**
      * Hämtar alla produkter från databasen beroende på kategori.
      * Skapar en ny anslutning, hämtar data och stänger anslutning automatiskt.
@@ -119,4 +77,48 @@ public class ProductRepository {
          }
         return products;
     }
+
+
+
+    /*// Onödig metod?
+    public ArrayList<Categories> getAllCategories() throws SQLException {
+        ArrayList<Categories> categories = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM categories")) {
+
+            while (rs.next()) {
+                Categories category = new Categories(
+                        rs.getInt("category_id"),
+                        rs.getString("name")
+                );
+                categories.add(category);
+            }
+        }
+        return categories;
+
+    }
+
+    // Onödig metod?
+    public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE category='" + category + "'")) {
+
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt("product_id"),     // Hämta ID från product_id kolumnen
+                        rs.getString("name"),   // Hämta namn
+                        rs.getString("description"),  // Hämta description
+                        rs.getDouble("price"), // Hämta pris
+                        rs.getInt("stock_quantity") // Hämta lagerstatus
+                );
+                products.add(product);
+            }
+        }
+        return products;
+    }*/
 }
