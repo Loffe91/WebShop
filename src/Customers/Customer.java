@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public class Customer extends User {
 
+    // Privata fält för att uppnå inkapsling
+
     private String name;
     private Cart cart;
 
