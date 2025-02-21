@@ -165,13 +165,14 @@ public class CustomerRepository {
     * @return true om uppdateringen lyckas, annars false.
     */
         public boolean updateCustomer(Customer customer) {
-            String sql = "UPDATE customers SET name = ?, email = ?, password = ? WHERE email = ?";
+            String sql = "UPDATE customers SET name = ?, email = ?, password = ? WHERE customer_id = ?";
             try (Connection conn = DriverManager.getConnection(URL);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
                 pstmt.setString(1, customer.getName());
-                pstmt.setString(2, customer.getNewEmail());
+                pstmt.setString(2, customer.getEmail());
                 pstmt.setString(3, customer.getPassword());
-                pstmt.setString(4, customer.getEmail());
+                pstmt.setInt(4, customer.getUserId());
                 return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {
                 e.printStackTrace();

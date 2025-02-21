@@ -19,7 +19,7 @@ public class ProductRepository {
      * @throws SQLException vid problem med databasanrop
      */
     public ArrayList<Product> getAllProducts() throws SQLException {
-        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<Product> products = new ArrayList<>(); // ArrayList som håller Product-objekt
 
         // try-with-resources stänger automatiskt Connection, Statement och ResultSet
         try (Connection conn = DriverManager.getConnection(URL);
@@ -36,10 +36,10 @@ public class ProductRepository {
                         rs.getDouble("price"), // Hämta pris
                         rs.getInt("stock_quantity") // Hämta lagerstatus
                 );
-                products.add(product);
+                products.add(product); // Lägger till product-objektet i ArrayListen
             }
         }
-        return products;
+        return products; // Returnerar ArrayListen
     }
 
     /**
