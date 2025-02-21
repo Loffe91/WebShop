@@ -71,6 +71,10 @@ public class CustomerService {
      * Tar input av användaren och skickar vidare till customerRepository-metoden
      * Som i sin tur returnerar kunden
      */
+    public boolean updateCustomer(int userId, String name, String email, String password) throws SQLException {
+        return customerRepository.updateCustomer(userId, name, email, password);
+    }
+
     public Customer getCustomerByEmail(String email) throws SQLException{
         return customerRepository.getCustomerByEmail(email);
     }

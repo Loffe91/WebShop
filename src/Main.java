@@ -1,4 +1,5 @@
 import Customers.Customer;
+import Customers.CustomerController;
 import Products.Product;
 import Products.ProductRepository;
 import java.sql.*;
@@ -8,7 +9,14 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-        Customer customer = new Customer(8, "Olof", "Olofsven@gmail.com", "Olof");
+
+
+                CustomerController customerController = new CustomerController();
+                customerController.run();
+
+
+
+        /*Customer customer = new Customer(8, "Olof", "Olofsven@gmail.com", "Olof");
         ProductRepository productRepo = new ProductRepository();
         Map<Integer, String> products = new HashMap<>();
 
@@ -31,7 +39,9 @@ public class Main {
 
             System.out.println("Kundens varukorg: " + customer.getCart().getProducts());
         } else {
-            System.out.println("Inga produkter hittades i databasen.");
+            System.out.println("Inga produkter hittades i databasen.");*/
         }
+
     }
-}
+
+

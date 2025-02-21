@@ -155,9 +155,30 @@ public class CustomerRepository {
                 System.out.println("Felaktig mailadress");
                 return null;
             }
-            }
-
         }
+    }
+    public boolean updateCustomer(int customerId, String name, String email, String password) throws SQLException {
+        String sql = "UPDATE customers SET "
+                    + "name = COALESCE(?, name), "
+                    + "email = COALESCE(?, email), "
+                    + "password = COALESCE(?, password) "
+                    + "WHERE customer_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
+            pstmt.setString(3, password);
+            pstmt.setInt(4, customerId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 
 
     /**

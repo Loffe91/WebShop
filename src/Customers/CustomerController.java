@@ -46,6 +46,7 @@ public class CustomerController {
                 System.out.println("2. Visa kunder");
                 System.out.println("3. Lägg till kund");
                 System.out.println("4. Ta bort en kund baserat på ID");
+                System.out.println("5. Uppdatera kund");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -83,6 +84,9 @@ public class CustomerController {
                         } catch (NumberFormatException e) {
                             System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
                         }
+                        break;
+                    case "5":
+                        updateCustomerMenu();
                         break;
 
                     case "0":
@@ -163,6 +167,30 @@ public class CustomerController {
             }
         }else {
             System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
+        }
+    }
+    public void updateCustomerMenu() throws SQLException {
+        System.out.println("Ange kundens ID: ");
+        int userId = Integer.parseInt(scanner.nextLine()); // Läs in ID istället för email
+
+        System.out.println("Ange nytt namn (lämna tomt för att behålla nuvarande): ");
+        String name = scanner.nextLine();
+        name = name.isEmpty() ? null : name; // Om tomt, skicka null
+
+        System.out.println("Ange ny e-post (lämna tomt för att behålla nuvarande): ");
+        String email = scanner.nextLine();
+        email = email.isEmpty() ? null : email; // Om tomt, skicka null
+
+        System.out.println("Ange nytt lösenord (lämna tomt för att behålla nuvarande): ");
+        String password = scanner.nextLine();
+        password = password.isEmpty() ? null : password; // Om tomt, skicka null
+
+        boolean success = customerService.updateCustomer(userId, name, email, password);
+
+        if (success) {
+            System.out.println("Kunden uppdaterades framgångsrikt!");
+        } else {
+            System.out.println("Misslyckades med att uppdatera kunden.");
         }
     }
 
