@@ -3,9 +3,10 @@ package Orders;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class Order {
-    private static int orderCounter = 1; // Unik order-ID räknare
+    private static int orderCounter = 0; // Unik order-ID räknare
     private int orderId;
     private int customerId;
     private List<String> products;
@@ -14,13 +15,20 @@ public class Order {
     private String status;
 
     // Konstruktor
-    public Order(int customerId, List<String> products, double totalPrice) {
-        this.orderId = orderCounter++;
+    public Order(int customerId, Map<String, Integer> cartProducts) {
         this.customerId = customerId;
-        this.products = new ArrayList<>(products);
-        this.totalPrice = totalPrice;
+        this.products = new ArrayList<>();
+        this.totalPrice = 0;
         this.orderDate = LocalDateTime.now();
         this.status = "Pending"; // Standardstatus vid skapande
+        orderCounter++;
+
+        // Konvertera Map till List och räkna ut totalpriset
+        for (Map.Entry<String, Integer> entry : cartProducts.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                products.add(entry.getKey());
+            }
+        }
     }
 
     // Metod för att visa orderdetaljer

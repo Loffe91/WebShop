@@ -1,42 +1,50 @@
 package Orders;
 
 import Customers.Cart;
+import Customers.Customer;
+import Customers.CustomerRepository;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class OrderService {
-    private List<Order> orderList = new ArrayList<>();
-    private Map<String, Double> priceList; // Prislista för produkter
+    private final OrderRepository orderRepository;
+    private final CustomerRepository customerRepository;
 
-    public OrderService(Map<String, Double> priceList) {
-        this.priceList = priceList;
+    public OrderService() {
+        this.orderRepository = new OrderRepository();
+        this.customerRepository = new CustomerRepository();
     }
 
-    public Order createOrderFromCart(int customerId, Cart cart) {
-        if (cart.isEmpty()) {
-            System.out.println("Kundkorgen är tom! Ingen order skapades.");
+    /**
+     * Skapar en ny order från en kunds varukorg
+     *
+     * @param customerId ID för kunden som gör ordern
+     * @return Order-objekt om lyckat, annars null
+     */
+    public Order createOrder(int customerId) {
+        try {
+            Customer customer = customerRepository.getCustomerById(customerId);
+            if (customer == null) {
+                System.out.println("Kund hittades inte.");
+                return null;
+            }
+
+            Cart cart = customer.getCart();
+            if (cart.isEmpty()) {
+                System.out.println("Varukorgen är tom. Ingen order skapades.");
+                return null;
+            }
+
+            Map<String, Integer> cartProducts = cart.getProducts();
+            Order newOrder = new Order(customerId, cartProducts);
+            orderRepository.saveOrder(newOrder);
+            customer.clearCart(); // Rensa varukorgen efter beställning
+            System.out.println("Order har skapats för kund: " + customer.getName());
+            return newOrder;
+        } catch (SQLException e) {
+            System.out.println("Fel vid skapande av order: " + e.getMessage());
             return null;
-        }
-
-        double totalPrice = cart.calculateTotalPrice(priceList);
-        List<String> productList = new ArrayList<>(cart.getProducts().keySet());
-
-        Order newOrder = new Order(customerId, productList, totalPrice);
-        orderList.add(newOrder);
-
-        // Töm varukorgen efter order
-        cart.clearCart();
-
-        System.out.println("Order skapad! Order ID: " + newOrder.getOrderId());
-        return newOrder;
-    }
-
-    public void printOrders() {
-        for (Order order : orderList) {
-            order.printOrderDetails();
-            System.out.println("------");
         }
     }
 }
