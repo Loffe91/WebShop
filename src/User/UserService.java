@@ -12,19 +12,17 @@ import java.sql.*;
 
 public class UserService {
     // Repo för databashantering
-    private CustomerRepository customerRepository;
-    private Admin adminUser;
+    CustomerRepository customerRepository;
 
     public UserService(){
         this.customerRepository = new CustomerRepository();
-        this.adminUser = new Admin(); // Hårdkodad admin vid programstart. Finns ingen admin i databasen
     }
 
     // Metod för att logga in
     public User login(String email, String password) throws SQLException {
         // Kontrollera om det är en admin eller customer som försöker logga in
-        if(email.equals(adminUser.getEmail()) && password.equals(adminUser.getPassword())){
-            return adminUser; // Om en admin matchar, returneras adminUser
+        if(email.equals("admin@webshop.com") && password.equals("123")){
+            return new Admin(); // Om mail & lösen matchar, returneras ett nytt Adminobjekt
         }
         // Om inloggningen ej matchar admin, testa om den matchar en kund
         Customer customer = customerRepository.loginChecker(email, password);

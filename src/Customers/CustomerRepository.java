@@ -45,17 +45,18 @@ public class CustomerRepository {
         }
         return customers;
     }
+
     // Metod för att lägga till kunder. Kund-ID skapas automatiskt av databasen, resterande info tas in av användaren
     public void addCustomer(String name, String email, String phone ,String address, String password) throws SQLException {
         String sql = "INSERT INTO customers(name, email, phone, address, password) VALUES(?, ?, ?, ?, ?)"; // Frågetecknen är placeholders för värdena som tas in av användaren
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, name); // Sätter värdet av name till det första frågetecknet
-            pstmt.setString(2, email); // Sätter värdet av email till det andra frågetecknet, osv, osv.
-            pstmt.setString(3, phone);
-            pstmt.setString(4, address);
-            pstmt.setString(5, password);
-            pstmt.executeUpdate();
+                pstmt.setString(1, name); // Sätter värdet av name till det första frågetecknet
+                pstmt.setString(2, email); // Sätter värdet av email till det andra frågetecknet, osv, osv.
+                pstmt.setString(3, phone);
+                pstmt.setString(4, address);
+                pstmt.setString(5, password);
+                pstmt.executeUpdate();
         } catch (SQLException e){
             if(e.getMessage().contains("UNIQUE constraint failed")){ // Kollar så mailadressen ej används
                 throw new SQLException("Denna email är redan registrerad. Välj en annan");
@@ -64,11 +65,12 @@ public class CustomerRepository {
             }
         }
     }
+
     public Customer getCustomerByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM customers WHERE email = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
@@ -91,7 +93,7 @@ public class CustomerRepository {
         String sql = "SELECT * FROM customers WHERE customer_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -116,7 +118,7 @@ public class CustomerRepository {
         String sql = "DELETE FROM customers WHERE customer_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, customerId);
             int affectedRows = pstmt.executeUpdate();
 
@@ -132,15 +134,15 @@ public class CustomerRepository {
         String sql = "SELECT * FROM customers WHERE email = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()){ // Om en kund med matchande mail hittas
+            if (rs.next()) { // Om en kund med matchande mail hittas
                 String savedPassword = rs.getString("password");
 
-                if(!savedPassword.equals(password)){ // Om lösenord ej matchar
+                if (!savedPassword.equals(password)) { // Om lösenord ej matchar
                     System.out.println("Felaktigt lösenord. ");
                     return null;
                 }
@@ -155,9 +157,30 @@ public class CustomerRepository {
                 System.out.println("Felaktig mailadress");
                 return null;
             }
-            }
-
         }
+    }
+        /**
+    * Uppdaterar en kund i databasen.
+    * @param customer Det uppdaterade Customer-objektet.
+    * @return true om uppdateringen lyckas, annars false.
+    */
+        public boolean updateCustomer(Customer customer) {
+            String sql = "UPDATE customers SET name = ?, email = ?, password = ? WHERE customer_id = ?";
+            try (Connection conn = DriverManager.getConnection(URL);
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, customer.getName());
+                pstmt.setString(2, customer.getEmail());
+                pstmt.setString(3, customer.getPassword());
+                pstmt.setInt(4, customer.getUserId());
+                return pstmt.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+}
 
 
     /**
@@ -175,4 +198,3 @@ public class CustomerRepository {
      * 4. Hantera resultatet
      * 5. Låt try-with-resources stänga alla resurser
      */
-}

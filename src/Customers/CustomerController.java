@@ -1,13 +1,10 @@
 package Customers;
 
-import Admin.Admin;
-import Admin.AdminController;
-import User.UserService;
+
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import User.User;
-import User.UserService;
+
 
 /**
  * Controller-klass för kundhantering
@@ -17,20 +14,18 @@ public class CustomerController {
 
     // Service-lager för kundhantering, hanterar affärslogik
     CustomerService customerService;
-    UserService userService;
-
-    // Scanner för användarinput
+    Customer loggedIn;
     Scanner scanner;
 
     /**
      * Konstruktor för Customers.CustomerController
      * Initierar service och scanner
      */
-    public CustomerController() {
+    public CustomerController(Customer customer) {
         // Skapa instanser av nödvändiga objekt
         this.customerService = new CustomerService();
         this.scanner = new Scanner(System.in);
-        this.userService = new UserService();
+        this.loggedIn = customer;
     }
 
     /**
@@ -40,13 +35,11 @@ public class CustomerController {
     public void run() {
         while (true) {
             try {
-                // Skriv ut menyalternativ direkt i run-metoden för tydlighet
-                System.out.println("\n=== Kundhantering ===");
-                System.out.println("1. Logga in");
-                System.out.println("2. Visa kunder");
-                System.out.println("3. Lägg till kund");
-                System.out.println("4. Ta bort en kund baserat på ID");
-                System.out.println("0. Avsluta");
+                // Skriv ut kundmeny
+                System.out.println("\n=== Kundmeny ===");
+                System.out.println("1. Visa mina uppgifter");
+                System.out.println("2. Uppdatera uppgifter");
+                System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
@@ -55,12 +48,15 @@ public class CustomerController {
                 // Hantera användarens val
                 switch (select) {
                     case "1":
-                        login();
+                        showCustomerDetails();
                         break;
                     case "2":
-                        showCustomers();
+                        updateCustomerInfo();
                         break;
-                    case "3":
+                    case "0":
+                        System.out.println("Loggar ut... ");
+                        return;
+                    /*case "3":
                         System.out.println("Ange namn: "); String name = scanner.nextLine();
                         System.out.println("Ange mailadress: "); String email = scanner.nextLine();
                         System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine();
@@ -75,6 +71,8 @@ public class CustomerController {
                         }
                         break;
 
+
+
                     case "4":
                         System.out.println("Ange ID på kunden du vill ta bort: ");
                         try {
@@ -85,9 +83,11 @@ public class CustomerController {
                         }
                         break;
 
-                    case "0":
-                        System.out.println("Avslutar kundhantering...");
-                        return;
+                    case "5":
+                        updateCustomerMenu(); // Anropar den nya metoden
+                        break;
+                    */
+
                     default:
                         System.out.println("Ogiltigt val, försök igen");
                 }
@@ -101,6 +101,42 @@ public class CustomerController {
             }
         }
     }
+
+    public void showCustomerDetails(){
+        System.out.println("\n=== Mina uppgifter ===");
+        System.out.println("ID: "+loggedIn.getUserId());
+        System.out.println("Namn: "+loggedIn.getName());
+        System.out.println("Email: "+loggedIn.getEmail());
+    }
+
+    public void updateCustomerInfo() throws SQLException {
+        System.out.println("De fält du ej vill ändra kan du lämna tomma ");
+
+        System.out.println("Nytt namn: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Ny mailadress: ");
+        String email = scanner.nextLine();
+
+        System.out.println("Nytt lösenord: ");
+        String password = scanner.nextLine();
+
+        boolean success = customerService.updateCustomerInfo(
+                loggedIn.getUserId(), // Hämtar den inloggade kundens ID
+                name.isEmpty() ? null : name, // Om name lämnas tomt skickas null, annars det nya namnet
+                email.isEmpty() ? null : email, // ----------- !! ---------------
+                password.isEmpty() ? null : password // ----------- !! -----------
+        );
+
+        if(success){
+            System.out.println("Dina uppgifter har uppdaterats. ");
+        } else {
+            System.out.println("Uppdatering misslyckades. ");
+        }
+
+
+    }
+
     // Metod för att visa kunder
     public void showCustomers() throws SQLException{
         System.out.println("\n=== Visa kunder ===");
@@ -114,8 +150,6 @@ public class CustomerController {
 
         switch (select){
             case "1":
-                // Anropa service-lagret för att visa alla kunder
-                customerService.showAllUsers();
                 break;
             case "2": // Hämta kund baserat på mail
                 System.out.println("Ange mail: ");
@@ -144,25 +178,28 @@ public class CustomerController {
                 System.out.println("Felaktigt val. Försök igen ");
         }
     }
-    // Metod för att logga in
-    public void login() throws SQLException {
-        System.out.println("Ange email: ");
+
+    // Meny för att uppdatera kund
+    public void updateCustomerMenu() {
+        System.out.println("Ange e-postadressen på kunden du vill uppdatera: ");
         String email = scanner.nextLine();
-        System.out.println("Ange lösenord: ");
+
+        System.out.println("Ange nytt namn: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Ange ny e-post: ");
+        String newEmail = scanner.nextLine();
+
+        System.out.println("Ange nytt lösenord: ");
         String password = scanner.nextLine();
 
-        User loggedIn = userService.login(email, password); // Sparar en user till LoggedIn
+        Customer updatedCustomer = new Customer(email, name, newEmail, password);
+        boolean success = customerService.updateCustomer(updatedCustomer);
 
-        if (loggedIn != null) { // Om en matchande user hittas
-            if (loggedIn instanceof Admin) { // Om usern är admin
-                System.out.println("Inloggad med adminrättigheter");
-                new AdminController(); // Har för tillfället ingen adminmeny, men lägg till t.ex .run efter denna rad
-                                       // när en sådan meny är skapad
-            } else { // om usern är customer
-                System.out.println("Välkommen, "+ ((Customers.Customer) loggedIn).getName());
-            }
-        }else {
-            System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
+        if (success) {
+            System.out.println("Kunden uppdaterades framgångsrikt!");
+        } else {
+            System.out.println("Misslyckades med att uppdatera kunden.");
         }
     }
 
