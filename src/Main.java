@@ -10,9 +10,9 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         //CustomerController customerController = new CustomerController();
         //customerController.run();
-        UserController userController = new UserController();
-        userController.run();
-        //ProductController productController = new ProductController();
-        //productController.run();
+        //UserController userController = new UserController();
+        //userController.run();
+        ProductController productController = new ProductController();
+        productController.run();
     }
 }

@@ -22,12 +22,6 @@ public class Customer extends User {
         this.name = name;
     }
 
-    // Alternativ konstruktor som använder e-post istället för ID för uppdatering
-    public Customer(String email, String name, String newEmail, String password) {
-        super(email, password);
-        this.name = name;
-        this.newEmail = newEmail;  // Tilldela den nya e-posten
-    }
 
     // Getters och setters för alla fält
     public String getName() {
@@ -38,13 +32,6 @@ public class Customer extends User {
         this.name = name;
     }
 
-    public String getNewEmail() {
-        return newEmail;
-    }
-
-    public void setNewEmail(String newEmail) {
-        this.newEmail = newEmail;
-    }
 
     /**
      * toString-metod för att få en läsbar representation av kunden.
