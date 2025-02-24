@@ -29,6 +29,7 @@ public class UserController {
         // Skapa instanser av nödvändiga objekt
         this.scanner = new Scanner(System.in);
         this.userService = new UserService();
+        this.customerService = new CustomerService();
     }
 
     /**

@@ -71,14 +71,6 @@ public class CustomerService {
         customerRepository.deleteCustomer(customerId);
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
-    /**
-     * Uppdaterar en kunds information
-     * @param customer Det uppdaterade Customer-objektet.
-     * @return true om uppdateringen lyckas, annars false.
-     */
-    public boolean updateCustomer(Customer customer) {
-        return customerRepository.updateCustomer(customer);
-    }
 
     public boolean updateCustomerInfo(int customerId, String name, String email, String password) throws SQLException {
         Customer currentCustomer = customerRepository.getCustomerById(customerId); // Hämtar den befintliga kunden
