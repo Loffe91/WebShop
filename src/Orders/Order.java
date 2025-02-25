@@ -3,35 +3,53 @@ package Orders;
 public class Order {
 //hämtar det som finns i cart
 // skapar en order.
-    private int orderID;
-    private int customerID;
-    private int productID;
+
+    private int orderId;
+    private int customerId;
+    private int productId;
     private int quantity;
+    private double pricePerUnit; //För att räkna ut totalpriset?
 
-    public Order(int orderID, int customerID, int productID, int quantity) {
-        this.orderID = orderID;
-        this.customerID = customerID;
-        this.productID = productID;
+    public Order(int orderId, int customerId, int productId, int quantity) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.productId = productId;
         this.quantity = quantity;
+        this.pricePerUnit = pricePerUnit;
     }
 
-    public void getCustomerID() {
-
+    //Getters för att hämta värden
+    public int getCustomerID() {
+        return customerId;
     }
 
-    public void getOrderID() {
-
+    public int getOrderID() {
+        return orderId;
     }
 
-    public void getProductID() {
-
+    public int getProductID() {
+        return productId;
     }
 
-    public void getQuantity() {
-
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void getTotalPrice() {
-
+    public double getPricePerUnit() {
+        return pricePerUnit;
     }
+
+    public double getTotalPrice(){
+        return quantity * pricePerUnit;
+    }
+
+    @Override
+    public String toString() {
+        return "Order ID: " + orderId +
+                ", Customer ID: "+ customerId +
+                ", Product ID: " + productId +
+                ", Quantity: " + quantity +
+                ", Total Price: " + getTotalPrice();
+    }
+
 }
