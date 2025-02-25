@@ -46,6 +46,9 @@ public class OrderService {
 
             // Hämtar produkterna från varukorgen
             Map<String, Integer> cartProducts = cart.getProducts();
+            if (cartProducts.isEmpty()) {
+                System.out.println("Varukorgen är tom. Ingen order skapades.");
+            }
 
             // Skapar en ny order med kundens ID och produkter från varukorgen
             Order newOrder = new Order(customerId, cartProducts);
@@ -66,8 +69,18 @@ public class OrderService {
         }
     }
 
-    public void showOrder() {
+    /**
+     *  Visar orderinformation
+     *
+     * @param order Ordern att visa
+     */
 
+    public void showOrder(Order order) {
+        if (order == null) {
+            System.out.println("Ingen order att visa");
+            return;
+        }
+        order.printOrder();
     }
 
     public void editOrder() {

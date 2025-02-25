@@ -1,55 +1,37 @@
 package Orders;
 
+import java.util.Map;
+
+/**
+ * Representerar en beställning med kund-ID och en lista på produkter.
+ */
 public class Order {
-//hämtar det som finns i cart
-// skapar en order.
-
-    private int orderId;
     private int customerId;
-    private int productId;
-    private int quantity;
-    private double pricePerUnit; //För att räkna ut totalpriset?
+    private Map<String, Integer> products; // Ändrat från productId till productName
 
-    public Order(int orderId, int customerId, int productId, int quantity) {
-        this.orderId = orderId;
+    /**
+     * Konstruktor för att skapa en order.
+     *
+     * @param customerId Kundens unika ID.
+     * @param products En Map där nyckeln är produktens namn och värdet är antalet.
+     */
+    public Order(int customerId, Map<String, Integer> products) {
         this.customerId = customerId;
-        this.productId = productId;
-        this.quantity = quantity;
-        this.pricePerUnit = pricePerUnit;
+        this.products = products;
     }
 
-    //Getters för att hämta värden
-    public int getCustomerID() {
+    public int getCustomerId() {
         return customerId;
     }
 
-    public int getOrderID() {
-        return orderId;
+    public Map<String, Integer> getProducts() {
+        return products;
     }
 
-    public int getProductID() {
-        return productId;
+    public void printOrder() {
+        System.out.println("Order för kund: " + customerId);
+        for (Map.Entry<String, Integer> entry : products.entrySet()) {
+            System.out.println(entry.getKey() + " x" + entry.getValue());
+        }
     }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public double getTotalPrice(){
-        return quantity * pricePerUnit;
-    }
-
-    @Override
-    public String toString() {
-        return "Order ID: " + orderId +
-                ", Customer ID: "+ customerId +
-                ", Product ID: " + productId +
-                ", Quantity: " + quantity +
-                ", Total Price: " + getTotalPrice();
-    }
-
 }

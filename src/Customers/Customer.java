@@ -34,7 +34,7 @@ public class Customer extends User {
         this.name = name;
     }
 
-    public Cart getCart(String productName, int productQuantity) {
+    public Cart getCart() {
         return cart;
     }
 
