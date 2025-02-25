@@ -7,7 +7,7 @@ package Products;
 public class Product {
 
     private int productId;
-    private String name;
+    private String productName;
     private String description;
     private double price;
     private int stockQuantity;
@@ -18,7 +18,7 @@ public class Product {
      */
     public Product(int productId, String name, String description, double price, int stockQuantity) {
         this.productId = productId;
-        this.name = name;
+        this.productName = name;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
@@ -42,14 +42,14 @@ public class Product {
      * Metod för att returnera produkt namn.
      */
     public String getName() {
-        return name;
+        return productName;
     }
 
     /**
      * Metod för att sätta produkt namn.
      */
     public void setName(String name) {
-        this.name = name;
+        this.productName = name;
     }
 
     /**
@@ -102,7 +102,7 @@ public class Product {
     public String toString() {
         return "Products.Product{" +
                 "id=" + productId +
-                ", Name='" + name + '\'' +
+                ", Name='" + productName + '\'' +
                 ", Description='" + description + '\'' +
                 ", Price='" + price + '\'' +
                 ", Stock='" + stockQuantity + '\'' +
