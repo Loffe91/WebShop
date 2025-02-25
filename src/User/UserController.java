@@ -29,6 +29,7 @@ public class UserController {
         // Skapa instanser av nödvändiga objekt
         this.scanner = new Scanner(System.in);
         this.userService = new UserService();
+        this.customerService = new CustomerService();
     }
 
     /**
@@ -73,16 +74,6 @@ public class UserController {
                             System.out.println(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
                         }
                         break;
-
-                    case "4":
-                        System.out.println("Ange ID på kunden du vill ta bort: ");
-                        try {
-                            int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
-                            customerService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
-                        } catch (NumberFormatException e) {
-                            System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
-                        }
-                        break;
                     case "0":
                         System.out.println("Avslutar kundhantering...");
                         return;
@@ -113,8 +104,8 @@ public class UserController {
         if (loggedIn != null) { // Om en matchande user hittas
             if (loggedIn instanceof Admin) { // Om usern är admin
                 System.out.println("Inloggad med adminrättigheter");
-                AdminController adminController = new AdminController();
-                //adminController.run(); // Skickar vidare användaren till AdminController
+                AdminController adminController = new AdminController((Admin) loggedIn);
+                adminController.run(); // Skickar vidare användaren till AdminController
             } else if (loggedIn instanceof Customer){ // om usern är customer
                 System.out.println("Välkommen, "+ ((Customer) loggedIn).getName());
                 CustomerController customerController = new CustomerController((Customer) loggedIn);
