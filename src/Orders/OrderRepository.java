@@ -20,7 +20,7 @@ class OrderRepository {
      */
     public void saveOrder(Order order) throws SQLException {
         // SQL-fråga för att infoga en ny order i tabellen 'orders'
-        String sql = "INSERT INTO orders (customer_id, order_date, total_price) VALUES (?, CURRENT_TIMESTAMP, ?)";
+        String sql = "INSERT INTO orders (customer_id, order_date) VALUES (?, CURRENT_TIMESTAMP, ?)";
 
         // Försöker ansluta till databasen och exekvera SQL-frågan
         try (Connection conn = DriverManager.getConnection(URL);

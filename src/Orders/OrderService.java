@@ -65,4 +65,16 @@ public class OrderService {
             return null; // Returnerar null om något går fel
         }
     }
+
+    public void showOrder() {
+
+    }
+
+    public void editOrder() {
+
+    }
+
+    public void deleteOrder() {
+
+    }
 }
