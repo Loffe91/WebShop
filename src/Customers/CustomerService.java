@@ -52,25 +52,8 @@ public class CustomerService {
      * Tar input av användaren och skickar vidare till customerRepository-metoden
      * Som i sin tur returnerar kunden
      */
-    public Customer getCustomerByEmail(String email) throws SQLException{
-        return customerRepository.getCustomerByEmail(email);
-    }
-    public Customer getCustomerById(int id) throws SQLException{
-        return customerRepository.getCustomerById(id);
-    }
     // Metod som anropas i CustomerController
-    public void deleteCustomer(int customerId) throws SQLException {
-        // Kontrollera om kunden finns innan borttagning
-        Customer customer = customerRepository.getCustomerById(customerId);
-        if (customer == null) {
-            System.out.println("Ingen kund hittades med ID: " + customerId);
-            return;
-        }
 
-        // Ta bort kunden
-        customerRepository.deleteCustomer(customerId);
-        System.out.println("Kunden med ID " + customerId + " har raderats.");
-    }
 
     public boolean updateCustomerInfo(int customerId, String name, String email, String password) throws SQLException {
         Customer currentCustomer = customerRepository.getCustomerById(customerId); // Hämtar den befintliga kunden

@@ -39,6 +39,7 @@ public class CustomerController {
                 System.out.println("\n=== Kundmeny ===");
                 System.out.println("1. Visa mina uppgifter");
                 System.out.println("2. Uppdatera uppgifter");
+                System.out.println("9. Ta bort mitt konto");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
 
@@ -53,40 +54,12 @@ public class CustomerController {
                     case "2":
                         updateCustomerInfo();
                         break;
+                    case "9":
+                        System.out.println("Logik för att ta bort ditt konto: ");
+                        break;
                     case "0":
                         System.out.println("Loggar ut... ");
                         return;
-                    /*case "3":
-                        System.out.println("Ange namn: "); String name = scanner.nextLine();
-                        System.out.println("Ange mailadress: "); String email = scanner.nextLine();
-                        System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine();
-                        System.out.println("Ange hemadress: "); String address = scanner.nextLine();
-                        System.out.println("Ange lösenord: "); String password = scanner.nextLine();
-
-                        try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
-                            customerService.addCustomer(name, email, phone, address, password);
-                            break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
-                        } catch (Exception e){
-                            System.out.println(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
-                        }
-                        break;
-
-
-
-                    case "4":
-                        System.out.println("Ange ID på kunden du vill ta bort: ");
-                        try {
-                            int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
-                            customerService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
-                        } catch (NumberFormatException e) {
-                            System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
-                        }
-                        break;
-
-                    case "5":
-                        updateCustomerMenu(); // Anropar den nya metoden
-                        break;
-                    */
 
                     default:
                         System.out.println("Ogiltigt val, försök igen");
@@ -136,47 +109,4 @@ public class CustomerController {
 
 
     }
-
-    // Metod för att visa kunder
-    public void showCustomers() throws SQLException{
-        System.out.println("\n=== Visa kunder ===");
-        System.out.println("1. Visa alla kunder. ");
-        System.out.println("2. Hämta kund baserat på email. ");
-        System.out.println("3. Hämta kund baserat på ID ");
-        System.out.println("0. Tillbaka. ");
-        System.out.println("Välj ett alternativ: ");
-
-        String select = scanner.nextLine();
-
-        switch (select){
-            case "1":
-                break;
-            case "2": // Hämta kund baserat på mail
-                System.out.println("Ange mail: ");
-                String mail = scanner.nextLine();
-                Customer customerByEmail = customerService.getCustomerByEmail(mail); // Spara den returnerade kunden
-                if(customerByEmail != null){ // Om kund hittas, skriv ut ID, namn & mail
-                    System.out.println("ID: "+ customerByEmail.getUserId());
-                    System.out.println("Namn: "+ customerByEmail.getName());
-                    System.out.println("Email: "+ customerByEmail.getEmail());
-                }
-                break;
-            case "3": // Hämta kund baserat på ID
-                System.out.println("Ange ID: ");
-                String idString = scanner.nextLine(); // Hämta id och konvertera till en stril
-                int id = Integer.parseInt(idString);
-                Customer customerById = customerService.getCustomerById(id); // Spara customerById till Customer
-                if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
-                    System.out.println("ID: "+customerById.getUserId()); // Skriv ut info
-                    System.out.println("Namn: "+customerById.getName());
-                    System.out.println("Email: "+customerById.getEmail());
-                }
-                break;
-            case "0":
-                return;
-            default:
-                System.out.println("Felaktigt val. Försök igen ");
-        }
-    }
-
 }
