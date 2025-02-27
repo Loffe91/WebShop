@@ -1,37 +1,54 @@
 package Orders;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import Customers.Cart;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Map;
 
-/**
- * OrderRepository hanterar databaskommunikation för att spara ordrar i systemet.
- */
-class OrderRepository {
-    // Databasens anslutnings-URL (SQLite används här)
+public class OrderRepository {
+
     private static final String URL = "jdbc:sqlite:webshop.db";
 
-    /**
-     * Sparar en order i databasen.
-     *
-     * @param order Order-objektet som ska sparas.
-     * @throws SQLException Om något går fel med databasanropet.
-     */
-    public void saveOrder(Order order) throws SQLException {
-        // SQL-fråga för att infoga en ny order i tabellen 'orders'
-        String sql = "INSERT INTO orders (customer_id, order_date, total_price) VALUES (?, CURRENT_TIMESTAMP, ?)";
+    // Metod för att skapa order med customerId som argument
+    public int createOrder(int customerId) throws SQLException {
 
-        // Försöker ansluta till databasen och exekvera SQL-frågan
-        try (Connection conn = DriverManager.getConnection(URL);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "INSERT INTO orders (customer_id) VALUES (?)";
+        try (Connection conn = DriverManager.getConnection(URL)){
 
-            // Sätter in värdena i SQL-frågan
-            pstmt.setInt(1, order.getCustomerId());  // Lägger till kundens ID
-            pstmt.setDouble(2, order.getTotalPrice()); // Lägger till totalbeloppet för ordern
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            // Exekverar SQL-frågan och sparar ordern i databasen
+            pstmt.setInt(1, customerId);
             pstmt.executeUpdate();
+            // Hämtar värdet av order_id i databasen
+            try(ResultSet rs = pstmt.getGeneratedKeys()){
+                if(rs.next()){
+                    return rs.getInt(1); // columnindex 1 = order_id
+                }
+            }
+        }
+        return 0;
+    }
+
+    public void orderProductInsert(int orderId, ArrayList<OrderProduct> orderProducts) throws SQLException{
+        String sql = "Insert INTO orders_products (order_id, product_id, quantity, unit_price) " +
+                     "VALUES(?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL)){
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            for(OrderProduct orderProduct : orderProducts) {
+                pstmt.setInt(1, orderId);
+                pstmt.setInt(2, orderProduct.getProductId());
+                pstmt.setInt(3, orderProduct.getQuantity());
+                pstmt.setDouble(4, orderProduct.getUnit_price());
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
         }
     }
+
+    public double getPrice(int productId) throws SQLException {
+
+        return 5;
+    }
+
 }

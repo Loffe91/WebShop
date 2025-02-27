@@ -2,7 +2,11 @@ package Customers;
 
 
 
+import Orders.OrderProduct;
+import Orders.OrderRepository;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -16,6 +20,7 @@ public class CustomerController {
     CustomerService customerService;
     Customer loggedIn;
     Scanner scanner;
+    OrderRepository orderRepository;
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -26,6 +31,7 @@ public class CustomerController {
         this.customerService = new CustomerService();
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
+        this.orderRepository = new OrderRepository();
     }
 
     /**
@@ -37,9 +43,10 @@ public class CustomerController {
             try {
                 // Skriv ut kundmeny
                 System.out.println("\n=== Kundmeny ===");
-                System.out.println("1. Visa mina uppgifter");
-                System.out.println("2. Uppdatera uppgifter");
-                System.out.println("9. Ta bort mitt konto");
+                System.out.println("1. Visa mina uppgifter ");
+                System.out.println("2. Uppdatera uppgifter ");
+                System.out.println("3. Lägg en beställning ");
+                System.out.println("9. Ta bort mitt konto ");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
 
@@ -53,6 +60,9 @@ public class CustomerController {
                         break;
                     case "2":
                         updateCustomerInfo();
+                        break;
+                    case "3":
+                        placeOrder();
                         break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
@@ -107,6 +117,19 @@ public class CustomerController {
             System.out.println("Uppdatering misslyckades. ");
         }
 
+    }
 
+    public void placeOrder() throws SQLException {
+        ArrayList<OrderProduct> products = new ArrayList<>();
+
+        while (true){
+            System.out.println("Ange produkt-ID: ");
+            int produktId = scanner.nextInt(); // Parseint <--- !
+
+            System.out.println("Ange antal: ");
+            int quantity = scanner.nextInt(); // Parseint <--- !
+
+            double unitPrice = orderRepository.getPrice(produktId);
+        }
     }
 }
