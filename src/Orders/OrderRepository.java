@@ -46,4 +46,9 @@ public class OrderRepository {
         }
     }
 
+    public double getPrice(int productId) throws SQLException {
+
+        return 5;
+    }
+
 }
