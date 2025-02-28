@@ -1,12 +1,11 @@
-import Admin.Admin;
+
+import Customers.Customer;
 import Customers.CustomerController;
-import Orders.OrderProduct;
 import Orders.OrderRepository;
-import Products.ProductController;
 import User.UserController;
 
 import java.sql.*;
-import java.util.ArrayList;
+
 
 public class Main {
     public static void main(String[] args) throws SQLException {
@@ -17,16 +16,15 @@ public class Main {
         //ProductController productController = new ProductController();
         //productController.run();
 
+        //OrderRepository orderRepository = new OrderRepository();
+        //OrderProduct orderProduct = new OrderProduct(1, 1, 999.99);
 
-        /*OrderRepository orderRepository = new OrderRepository();
-        OrderProduct orderProduct = new OrderProduct(1, 1, 999.99);
+        //ArrayList<OrderProduct> orderProducts = new ArrayList<>();
+        //orderProducts.add(orderProduct);
 
-        ArrayList<OrderProduct> orderProducts = new ArrayList<>();
-        orderProducts.add(orderProduct);
+        //orderRepository.orderProductInsert(14, orderProducts);
 
-        orderRepository.orderProductInsert(14, orderProducts);
-
-
-         */
+        //double test = orderRepository.getPrice(1);
+        //System.out.println(test);
     }
 }
