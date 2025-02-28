@@ -110,8 +110,7 @@ public class OrderRepository {
             pstmt.setInt(1, customerId);
             ResultSet rs = pstmt.executeQuery();
 
-            if(rs.next()){
-                System.out.println("Läser order: " +rs.getInt("order_id") + ", Produkt "+rs.getInt("product_id"));
+            while (rs.next()){
                 orderHistoryList.add(new OrderHistory(
                         rs.getInt("order_id"),
                         rs.getString("order_date"),
@@ -122,7 +121,7 @@ public class OrderRepository {
                 ));
 
             }
-            System.out.println("Antal rader hämtade: "+orderHistoryList.size());
+            System.out.println("Antal ordrar hittade: "+orderHistoryList.size());
         }
         return orderHistoryList;
     }
