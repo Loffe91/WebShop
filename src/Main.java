@@ -8,40 +8,35 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+        /*Skapa en instans av CustomerController och kör den
+        CustomerController kundKontroller = new CustomerController();
+        kundKontroller.run();*/
 
+        // Skapa en instans av ProductRepository för att hämta produkter
+        ProductRepository produktRepo = new ProductRepository();
+        Map<Integer, String> produkter = new HashMap<>();
 
-
-                CustomerController customerController = new CustomerController();
-                customerController.run();
-
-
-
-        /*Customer customer = new Customer(8, "Olof", "Olofsven@gmail.com", "Olof");
-        ProductRepository productRepo = new ProductRepository();
-        Map<Integer, String> products = new HashMap<>();
-
-
-        for (Product product : productRepo.getAllProducts()) {
-            products.put(product.getProductId(), product.getName());
+        // Hämta alla produkter och lägg till dem i HashMap
+        for (Product produkt : produktRepo.getAllProducts()) {
+            produkter.put(produkt.getProductId(), produkt.getName());
         }
 
+        // Kontrollera om det finns produkter innan vi lägger till dem i kundens varukorg
+        if (!produkter.isEmpty()) {
+            // Skapa en kund för att lägga till produkter i varukorgen
+            Customer kund = new Customer(8, "Olof", "Olofsven@gmail.com", "Olof");
 
-        //System.out.println("Produkter i systemet: " + products);
-
-        // Kontrollera om det finns produkter innan vi lägger till dem i varukorgen
-        if (!products.isEmpty()) {
-            if (products.containsKey(1)) {
-                customer.addToCart(products.get(1), 1);
+            if (produkter.containsKey(1)) {
+                kund.addToCart(produkter.get(1), 1);
             }
-            if (products.containsKey(3)) {
-                customer.addToCart(products.get(3), 2);
+            if (produkter.containsKey(3)) {
+                kund.addToCart(produkter.get(3), 2);
             }
 
-            System.out.println("Kundens varukorg: " + customer.getCart().getProducts());
+            // Skriv ut kundens varukorg
+            System.out.println("Kundens varukorg: " + kund.getCart().getProducts());
         } else {
-            System.out.println("Inga produkter hittades i databasen.");*/
+            System.out.println("Inga produkter hittades i databasen.");
         }
-
     }
-
-
+}

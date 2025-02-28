@@ -1,9 +1,7 @@
 package Orders;
-
 import Customers.Cart;
 import Customers.Customer;
 import Customers.CustomerRepository;
-
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -37,9 +35,14 @@ public class OrderService {
             }
 
             Map<String, Integer> cartProducts = cart.getProducts();
+
             Order newOrder = new Order(customerId, cartProducts);
+
             orderRepository.saveOrder(newOrder);
+
             customer.clearCart(); // Rensa varukorgen efter beställning
+
+
             System.out.println("Order har skapats för kund: " + customer.getName());
             return newOrder;
         } catch (SQLException e) {
