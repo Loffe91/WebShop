@@ -35,25 +35,6 @@ public class CustomerService {
      *
      * @throws SQLException vid problem med databasanrop
      */
-    public void showAllUsers() throws SQLException {
-        // Hämta alla kunder från repository-lagret
-        ArrayList<Customer> customers = customerRepository.getAllCustomers();
-
-        // Kontrollera om vi har några kunder att visa
-        if (customers.isEmpty()) {
-            System.out.println("Inga kunder hittades.");
-            return;
-        }
-
-        // Skriv ut alla kunder med tydlig formatering
-        System.out.println("\n=== Kundlista ===");
-        for (Customer customer : customers) {
-            System.out.println("ID: " + customer.getUserId());
-            System.out.println("Namn: " + customer.getName());
-            System.out.println("Email: " + customer.getEmail());
-            System.out.println("-----------------");
-        }
-    }
 
     /** Metod som anropas i CustomerController-loopen
      * Tar input av användaren och skickar vidare till customerRepository-metoden
@@ -71,28 +52,26 @@ public class CustomerService {
      * Tar input av användaren och skickar vidare till customerRepository-metoden
      * Som i sin tur returnerar kunden
      */
-    public boolean updateCustomer(int userId, String name, String email, String password) throws SQLException {
-        return customerRepository.updateCustomer(userId, name, email, password);
-    }
-
-    public Customer getCustomerByEmail(String email) throws SQLException{
-        return customerRepository.getCustomerByEmail(email);
-    }
-    public Customer getCustomerById(int id) throws SQLException{
-        return customerRepository.getCustomerById(id);
-    }
     // Metod som anropas i CustomerController
-    public void deleteCustomer(int customerId) throws SQLException {
-        // Kontrollera om kunden finns innan borttagning
-        Customer customer = customerRepository.getCustomerById(customerId);
-        if (customer == null) {
-            System.out.println("Ingen kund hittades med ID: " + customerId);
-            return;
-        }
 
-        // Ta bort kunden
-        customerRepository.deleteCustomer(customerId);
-        System.out.println("Kunden med ID " + customerId + " har raderats.");
+
+    public boolean updateCustomerInfo(int customerId, String name, String email, String password) throws SQLException {
+        Customer currentCustomer = customerRepository.getCustomerById(customerId); // Hämtar den befintliga kunden
+        if(currentCustomer == null){ // Om ingen kund matchar
+            System.out.println("Kunden kunde inte hittas");
+            return false;
+        }
+        if (name == null || name.isBlank()) { // Om namn är null, behåller vi det gamla värdet
+            name = currentCustomer.getName();
+        }
+        if (email == null || email.isBlank()){
+            email = currentCustomer.getEmail(); // ---------- !! ----------------
+        }
+        if (password == null || password.isBlank()){ // ---------- !! ---------
+            password = currentCustomer.getPassword();
+        }
+        Customer updatedCustomer = new Customer(customerId, name, email, password);
+        return customerRepository.updateCustomer(updatedCustomer); // Skickar den uppdaterade kunden till databasen
     }
 }
     /**
