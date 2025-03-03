@@ -73,6 +73,7 @@ public class CustomerController {
                         break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
+                        deleteAccount();
                         break;
                     case "0":
                         System.out.println("Loggar ut... ");
@@ -89,6 +90,41 @@ public class CustomerController {
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
+        }
+    }
+
+    public void deleteAccount() {
+        System.out.println("När du väljer att ta bort ditt konto");
+        System.out.println("försvinner all infomation om dig och dina tidigare köp.");
+        System.out.println();
+        System.out.println("Vill du ta bort ditt konto?");
+        System.out.println();
+        System.out.println("1. Ta bort mitt konto");
+        System.out.println("2. Gå tillbaka till mina sidor");
+
+        String choice = scanner.nextLine(); //variabel för val, för att slippa upprepa
+        // scanner nextLine och få extra rader och knapptryck efter vald siffra.
+
+        if (choice.equalsIgnoreCase("1")) {
+            System.out.println("Ditt konto tas nu bort");
+            System.out.println("Du loggas ut");
+
+            System.exit(0); //Stränger ner hela programmet "0" innebär att
+            // inga felmeddelanden uppstår
+
+            try {
+                int customerId = loggedIn.getUserId();
+                CustomerRepository.deleteCustomer(customerId);
+            } catch (SQLException e) {
+                System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
+                e.printStackTrace();
+            }
+        }
+        else if(choice.equalsIgnoreCase("2")){
+            System.out.println("Tillbaka till mina sidor");
+        }
+        else {
+            System.out.println("Ogiltigt val, försök igen");
         }
     }
 

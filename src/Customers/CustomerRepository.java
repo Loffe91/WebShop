@@ -114,7 +114,7 @@ public class CustomerRepository {
     }
     // Tar bort en kund från databasen baserat på kund-ID.
 
-    public void deleteCustomer(int customerId) throws SQLException {
+    public static void deleteCustomer(int customerId) throws SQLException {
         String sql = "DELETE FROM customers WHERE customer_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
