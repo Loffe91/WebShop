@@ -1,13 +1,9 @@
 package Customers;
 
 
-
-import Orders.OrderProduct;
-import Orders.OrderRepository;
-import Orders.OrderService;
+import Orders.OrderController;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -21,8 +17,7 @@ public class CustomerController {
     CustomerService customerService;
     Customer loggedIn;
     Scanner scanner;
-    OrderRepository orderRepository;
-    OrderService orderService;
+    OrderController orderController;
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -33,8 +28,7 @@ public class CustomerController {
         this.customerService = new CustomerService();
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
-        this.orderRepository = new OrderRepository();
-        this.orderService = new OrderService();
+        this.orderController = new OrderController(customer);
     }
 
     /**
@@ -48,8 +42,7 @@ public class CustomerController {
                 System.out.println("\n=== Kundmeny ===");
                 System.out.println("1. Visa mina uppgifter ");
                 System.out.println("2. Uppdatera uppgifter ");
-                System.out.println("3. Lägg en beställning ");
-                System.out.println("4. Visa orderhistorik");
+                System.out.println("3. Ordermeny ");
                 System.out.println("9. Ta bort mitt konto ");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
@@ -66,10 +59,7 @@ public class CustomerController {
                         updateCustomerInfo();
                         break;
                     case "3":
-                        placeOrder();
-                        break;
-                    case "4":
-                        showOrderHistory();
+                        orderMenu();
                         break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
@@ -109,12 +99,12 @@ public class CustomerController {
             System.out.println("Ditt konto tas nu bort");
             System.out.println("Du loggas ut");
 
-            System.exit(0); //Stränger ner hela programmet "0" innebär att
-            // inga felmeddelanden uppstår
-
             try {
                 int customerId = loggedIn.getUserId();
-                CustomerRepository.deleteCustomer(customerId);
+                customerService.deleteCustomer(customerId);
+
+                System.exit(0); //Stränger ner hela programmet "0" innebär att
+                                      // inga felmeddelanden uppstår
             } catch (SQLException e) {
                 System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
                 e.printStackTrace();
@@ -162,33 +152,7 @@ public class CustomerController {
 
     }
 
-    public void placeOrder() throws SQLException {
-        ArrayList<OrderProduct> products = new ArrayList<>();
-
-        while (true){
-            System.out.println("Ange produkt-ID: (Tryck 0 för att avbryta beställningen)");
-            int produktId = Integer.parseInt(scanner.nextLine());
-            if(produktId == 0){
-                break;
-            }
-
-            System.out.println("Ange antal: ");
-            int quantity = Integer.parseInt(scanner.nextLine());
-            if(quantity == 0){
-                System.out.println("Felaktig input");
-                break;
-            }
-            // Hämtar priset för den valda produkten
-            double unitPrice = orderRepository.getPrice(produktId);
-
-            // Skapar en order med produktId, quantity och unitPrice
-            OrderProduct orderProduct = new OrderProduct(produktId, quantity, unitPrice);
-            products.add(orderProduct);
-            orderService.placeOrder(loggedIn.getUserId(), products);
-
-        }
-    }
-    public void showOrderHistory() throws SQLException{
-        orderService.getOrderHistory(loggedIn.getUserId());
+    public void orderMenu() throws SQLException {
+        orderController.run();
     }
 }

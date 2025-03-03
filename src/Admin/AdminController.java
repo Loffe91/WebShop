@@ -1,11 +1,9 @@
 package Admin;
 
 import Customers.Customer;
-import Customers.CustomerRepository;
 import Customers.CustomerService;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminController {
