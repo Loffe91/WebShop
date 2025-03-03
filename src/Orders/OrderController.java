@@ -40,7 +40,7 @@ public class OrderController {
                     case "4":
 
                         break;
-                    case "5":
+                    case "0":
                         System.out.println("Avslutar...");
                         return;
                         default:
