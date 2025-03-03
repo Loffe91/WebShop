@@ -5,6 +5,7 @@ import Orders.OrderController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import Products.ProductController;
 
 
 /**
@@ -18,6 +19,7 @@ public class CustomerController {
     Customer loggedIn;
     Scanner scanner;
     OrderController orderController;
+    ProductController productController;
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -29,6 +31,7 @@ public class CustomerController {
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
         this.orderController = new OrderController(customer);
+        this.productController = new ProductController();
     }
 
     /**
@@ -43,6 +46,7 @@ public class CustomerController {
                 System.out.println("1. Visa mina uppgifter ");
                 System.out.println("2. Uppdatera uppgifter ");
                 System.out.println("3. Ordermeny ");
+                System.out.println("4. Sök produkt");
                 System.out.println("9. Ta bort mitt konto ");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
@@ -60,6 +64,9 @@ public class CustomerController {
                         break;
                     case "3":
                         orderMenu();
+                        break;
+                    case "4":
+                        productMenu();
                         break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
@@ -154,5 +161,8 @@ public class CustomerController {
 
     public void orderMenu() throws SQLException {
         orderController.run();
+    }
+    public void productMenu() throws SQLException {
+        productController.run();
     }
 }

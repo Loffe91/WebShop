@@ -58,7 +58,7 @@ public class ProductService {
     }
 
     /**
-     * Metod för att välja en produkt?
+     * Metod för att välja en produkt
      */
     public void selectProduct() throws SQLException {
         // Hämta alla produkter från repository-lagret
