@@ -8,6 +8,7 @@ import Customers.CustomerService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 
 /**
@@ -20,6 +21,11 @@ public class UserController {
     CustomerService customerService;
     // Scanner för användarinput
     Scanner scanner;
+
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+    private boolean isValidEmail(String email) {
+        return Pattern.matches(EMAIL_REGEX, email);
+    }
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -52,6 +58,7 @@ public class UserController {
                 // Läs användarens val
                 String select = scanner.nextLine();
 
+
                 // Hantera användarens val
                 switch (select) {
                     case "1":
@@ -68,6 +75,11 @@ public class UserController {
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine();
 
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
+                            if (!this.isValidEmail(email)) {
+                                System.out.println("Email invalid");
+                                continue;
+                            }
+
                             customerService.addCustomer(name, email, phone, address, password);
                             break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
                         } catch (Exception e){

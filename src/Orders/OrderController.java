@@ -83,8 +83,8 @@ public class OrderController {
 
         }
     }
+
     public void showOrderHistory() throws SQLException{
         orderService.getOrderHistory(loggedIn.getUserId());
     }
-
 }
