@@ -3,6 +3,7 @@ package Orders;
 import Customers.Customer;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OrderController {
@@ -20,30 +21,27 @@ public class OrderController {
     public void run() {
         while (true) {
             try {
-                System.out.println("\n=== Order Menu ===");
-                System.out.println("1. Create Order");
-                System.out.println("2. Show Order");
-                System.out.println("3. Edit Order");
-                System.out.println("4. Delete Order");
-                System.out.println("5. Exit");
+                System.out.println("\n=== Ordermeny ===");
+                System.out.println("1. Lägg en beställning ");
+                System.out.println("2. Visa orderhistorik ");
+                System.out.println("0. Avsluta ");
 
                 String select = scanner.nextLine();
 
                 switch (select) {
                     case "1":
-                        orderService.createOrder(); //behöver customerId som argument
+                        placeOrder(); //behöver customerId som argument
                         break;
                     case "2":
-                        orderService.showOrder(); //Vill ha en specifik order att visa
+                        showOrderHistory();
                         break;
                     case "3":
-                        orderService.editOrder(); //inte implementerad
                         break;
                     case "4":
-                        orderService.deleteOrder(); //inte implementerad
+
                         break;
                     case "5":
-                        System.out.println("Du avslutar din order...");
+                        System.out.println("Avslutar...");
                         return;
                         default:
                             System.out.println("Invalid choice, try again");
@@ -55,17 +53,38 @@ public class OrderController {
             }
         }
     }
-    /**
-     * Skapar en order för den inloggade kunden
-     */
-    private void createOrder() {
-        if (loggedIn == null) {
-            System.out.println("Please login to place an order");
-            return;
-        }
-        Order newOrder = orderService.createOrder(loggedIn.getUserId());
-        if (newOrder != null) {
-            System.out.println("Order created!" + newOrder.getOrderId()); //behöver en metod i Order-klassen
+
+    public void placeOrder() throws SQLException {
+        ArrayList<OrderProduct> products = new ArrayList<>();
+
+        while (true){
+            System.out.println("Ange produkt-ID: (Tryck 0 för att avbryta beställningen)");
+            int produktId = Integer.parseInt(scanner.nextLine());
+            if(produktId == 0){
+                break;
+            }
+
+            System.out.println("Ange antal: ");
+            int quantity = Integer.parseInt(scanner.nextLine());
+            if(quantity == 0){
+                System.out.println("Felaktig input");
+                break;
+            }
+            // Hämtar priset för den valda produkten
+            double unitPrice = orderService.getUnitPrice(produktId);
+
+            // Skapar en order med produktId, quantity och unitPrice
+            OrderProduct orderProduct = new OrderProduct(produktId, quantity, unitPrice);
+            products.add(orderProduct);
+            orderService.placeOrder(loggedIn.getUserId(), products);
+
+            double totalPrice = orderService.getTotalPrice(products);
+            System.out.println("Orderns totala pris är: "+totalPrice+" kronor. ");
+
         }
     }
+    public void showOrderHistory() throws SQLException{
+        orderService.getOrderHistory(loggedIn.getUserId());
+    }
+
 }

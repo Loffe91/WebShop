@@ -101,7 +101,7 @@ public class OrderRepository {
                      "JOIN orders_products op ON o.order_id = op.order_id " +
                      "WHERE o.customer_id = ? " +
                      "ORDER BY o.order_date DESC";
-
+        // Arraylist som håller OrderHistory-objekt
         ArrayList<OrderHistory> orderHistoryList = new ArrayList<>();
 
         try(Connection conn = DriverManager.getConnection(URL);
@@ -109,7 +109,7 @@ public class OrderRepository {
 
             pstmt.setInt(1, customerId);
             ResultSet rs = pstmt.executeQuery();
-
+            // Så länge det finns fler ordrar att hämta, skapas ett OrderHistory-objekt som läggs till i arraylisten
             while (rs.next()){
                 orderHistoryList.add(new OrderHistory(
                         rs.getInt("order_id"),

@@ -36,7 +36,6 @@ public class OrderService {
 
         if(orderId == -1) {
             System.out.println("Kunde ej skapa order. ");
-
         }
             // Kallar på metod som gör insert i databasen med orderId och produkterna i arraylisten som argument
             orderRepository.orderProductInsert(orderId, products);
@@ -52,15 +51,27 @@ public class OrderService {
         }
 
     }
-
+    // Metod för att hämta orderhistorik
     public void getOrderHistory(int customerId) throws SQLException{
+        // Kallar på getOrderHistory-metoden och sparar resultatet i en ArrayList
         ArrayList<OrderHistory> orderHistory = orderRepository.getOrderHistory(customerId);
-
-
+        // Loopar igenom listan och skriver ut alla orders
         for (OrderHistory orders : orderHistory){
             System.out.println(orders);
         }
     }
 
+    public double getUnitPrice(int productId) throws SQLException{
+        return orderRepository.getPrice(productId);
+    }
 
+    // Metod för att räkna ut totalpriset av en order
+    public double getTotalPrice(ArrayList<OrderProduct> products){
+        double totalPrice = 0;
+        // Loopar igenom alla produkter i listan
+        for (OrderProduct product : products){ // Multiplicerar antalet med styckpriset
+            totalPrice += product.getQuantity() * product.getUnit_price();
+        }
+        return totalPrice;
+    }
 }
