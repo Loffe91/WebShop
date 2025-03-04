@@ -1,12 +1,9 @@
 package Customers;
 
 
-
-import Orders.OrderProduct;
-import Orders.OrderRepository;
+import Orders.OrderController;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -20,7 +17,7 @@ public class CustomerController {
     CustomerService customerService;
     Customer loggedIn;
     Scanner scanner;
-    OrderRepository orderRepository;
+    OrderController orderController;
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -31,7 +28,7 @@ public class CustomerController {
         this.customerService = new CustomerService();
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
-        this.orderRepository = new OrderRepository();
+        this.orderController = new OrderController(customer);
     }
 
     /**
@@ -45,7 +42,7 @@ public class CustomerController {
                 System.out.println("\n=== Kundmeny ===");
                 System.out.println("1. Visa mina uppgifter ");
                 System.out.println("2. Uppdatera uppgifter ");
-                System.out.println("3. Lägg en beställning ");
+                System.out.println("3. Ordermeny ");
                 System.out.println("9. Ta bort mitt konto ");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
@@ -62,10 +59,11 @@ public class CustomerController {
                         updateCustomerInfo();
                         break;
                     case "3":
-                        placeOrder();
+                        orderMenu();
                         break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
+                        deleteAccount();
                         break;
                     case "0":
                         System.out.println("Loggar ut... ");
@@ -82,6 +80,41 @@ public class CustomerController {
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
+        }
+    }
+
+    public void deleteAccount() {
+        System.out.println("När du väljer att ta bort ditt konto");
+        System.out.println("försvinner all infomation om dig och dina tidigare köp.");
+        System.out.println();
+        System.out.println("Vill du ta bort ditt konto?");
+        System.out.println();
+        System.out.println("1. Ta bort mitt konto");
+        System.out.println("2. Gå tillbaka till mina sidor");
+
+        String choice = scanner.nextLine(); //variabel för val, för att slippa upprepa
+        // scanner nextLine och få extra rader och knapptryck efter vald siffra.
+
+        if (choice.equalsIgnoreCase("1")) {
+            System.out.println("Ditt konto tas nu bort");
+            System.out.println("Du loggas ut");
+
+            try {
+                int customerId = loggedIn.getUserId();
+                customerService.deleteCustomer(customerId);
+
+                System.exit(0); //Stränger ner hela programmet "0" innebär att
+                                      // inga felmeddelanden uppstår
+            } catch (SQLException e) {
+                System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
+                e.printStackTrace();
+            }
+        }
+        else if(choice.equalsIgnoreCase("2")){
+            System.out.println("Tillbaka till mina sidor");
+        }
+        else {
+            System.out.println("Ogiltigt val, försök igen");
         }
     }
 
@@ -119,17 +152,7 @@ public class CustomerController {
 
     }
 
-    public void placeOrder() throws SQLException {
-        ArrayList<OrderProduct> products = new ArrayList<>();
-
-        while (true){
-            System.out.println("Ange produkt-ID: ");
-            int produktId = scanner.nextInt(); // Parseint <--- !
-
-            System.out.println("Ange antal: ");
-            int quantity = scanner.nextInt(); // Parseint <--- !
-
-            double unitPrice = orderRepository.getPrice(produktId);
-        }
+    public void orderMenu() throws SQLException {
+        orderController.run();
     }
 }
