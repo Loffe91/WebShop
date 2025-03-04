@@ -78,6 +78,28 @@ public class ProductRepository {
         return products;
     }
 
+    public void updateProductPrice(int productId, double newPrice) throws SQLException {
+        String sql = "UPDATE products SET price = ? WHERE product_id = ?";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+           pstmt.setDouble(1, newPrice);
+           pstmt.setInt(2, productId);
+
+            int priceUpdate = pstmt.executeUpdate();
+            if (priceUpdate >0) {
+                System.out.println("Produktens pris har uppdaterats till " + newPrice + " SEK");
+            } else {
+                System.out.println("Ingen produkt hittades med ID " + productId);
+            }
+        }
+
+    }
+
+    public void updateProductStock(int productId, int newStock) throws SQLException {
+
+    }
+
 
 
     /*// Onödig metod?

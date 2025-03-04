@@ -1,6 +1,5 @@
 package Customers;
 
-//sluta rebasea till fel ställe linnéa
 import Orders.OrderController;
 
 import java.sql.SQLException;
@@ -14,8 +13,8 @@ import Products.ProductController;
  */
 public class CustomerController {
 
-    // Service-lager för kundhantering, hanterar affärslogik
-    CustomerService customerService;
+
+    CustomerService customerService; // Service-lager för kundhantering, hanterar affärslogik
     Customer loggedIn;
     Scanner scanner;
     OrderController orderController;
