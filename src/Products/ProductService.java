@@ -59,9 +59,7 @@ public class ProductService {
         }
     }
 
-    /**
-     * Metod för att söka efter en produkt.
-     */
+    
     public void selectProductByName(String productName) throws SQLException {
         // Kontrollera om input är null eller tom
         if (productName == null || productName.trim().isEmpty()) {
