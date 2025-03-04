@@ -59,9 +59,13 @@ public class ProductService {
         }
     }
 
-    
+    /**
+     * Metod för att söka produkt.
+     * @param productName
+     * @throws SQLException
+     */
     public void selectProductByName(String productName) throws SQLException {
-        // Kontrollera om input är null eller tom
+        // Kontrollera om input är null eller tom, kan göras redan i controllern
         if (productName == null || productName.trim().isEmpty()) {
             System.out.println("-------------------");
             System.out.println("Ingen produkt hittad, sök på produkt.");
