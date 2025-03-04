@@ -41,7 +41,9 @@ public class ProductService {
 
         // Kontrollera om vi har några produkter att visa
         if (products.isEmpty()) {
+            System.out.println("-----------------");
             System.out.println("Inga produkter hittades.");
+            System.out.println("-----------------");
             return;
         }
 
@@ -57,28 +59,46 @@ public class ProductService {
         }
     }
 
-    /**
-     * Metod för att välja en produkt
-     */
-    public void selectProduct() throws SQLException {
-        // Hämta alla produkter från repository-lagret
+    
+    public void selectProductByName(String productName) throws SQLException {
+        // Kontrollera om input är null eller tom
+        if (productName == null || productName.trim().isEmpty()) {
+            System.out.println("-------------------");
+            System.out.println("Ingen produkt hittad, sök på produkt.");
+            return;
+        }
+
+        // Hämta alla produkter från databasen
         ArrayList<Product> products = productRepository.getAllProducts();
 
-        // Kontrollera om vi har några produkter att visa
-        if (products.isEmpty()) {
+        // Kontrollera om listan är tom
+        if (products == null || products.isEmpty()) {
+            System.out.println("-------------------");
             System.out.println("Inga produkter hittades.");
             return;
         }
 
-        // Skriv ut alla produkter med tydlig formatering
-        System.out.println("\n=== Produktlista ===");
+        // Trimma och konvertera söktermen till lowercase för att göra sökningen mer flexibel
+        productName = productName.trim().toLowerCase();
+
+        boolean found = false;
+
         for (Product product : products) {
-            System.out.println("ID: " + product.getProductId());
-            System.out.println("Namn: " + product.getName());
-            System.out.println("Beskrivning: " + product.getDescription());
-            System.out.println("Pris: " + product.getPrice());
-            System.out.println("Antal i lager: " + product.getStockQuantity());
-            System.out.println("-----------------");
+            if (product.getName().toLowerCase().contains(productName)) {
+                System.out.println("-------------------");
+                System.out.println("ID: " + product.getProductId());
+                System.out.println("Namn: " + product.getName());
+                System.out.println("Beskrivning: " + product.getDescription());
+                System.out.println("Pris: " + product.getPrice());
+                System.out.println("Antal i Lager: " + product.getStockQuantity());
+                found = true;
+            }
+        }
+
+        // Om ingen matchande produkt hittades
+        if (!found) {
+            System.out.println("-------------------");
+            System.out.println("Inga produkter hittades.");
         }
     }
 
@@ -87,8 +107,11 @@ public class ProductService {
      */
     public void selectCategories(String category) throws SQLException {
         ArrayList<Product> products = productRepository.selectCategories(category);
+
         if (products.isEmpty()) {
+            System.out.println("-----------------");
             System.out.println("Inga produkter hittades.");
+            System.out.println("-----------------");
             return;
         }
 
