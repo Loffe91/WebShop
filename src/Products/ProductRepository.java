@@ -104,7 +104,7 @@ public class ProductRepository {
             pstmt.setInt(1, newStock);
             pstmt.setInt(2, productId);
 
-            if (newStock > 0){
+            if (newStock >= 0){
                 pstmt.executeUpdate();
                 System.out.println("Lagerstatus för produkt "+productId+" har uppdaterats. Ny lagerstatus: "+newStock);
             }
