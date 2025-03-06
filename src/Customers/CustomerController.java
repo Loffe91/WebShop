@@ -1,9 +1,10 @@
 package Customers;
 
-
+import Orders.OrderController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import Products.ProductController;
 
 
 /**
@@ -12,10 +13,12 @@ import java.util.Scanner;
  */
 public class CustomerController {
 
-    // Service-lager för kundhantering, hanterar affärslogik
-    CustomerService customerService;
+
+    CustomerService customerService; // Service-lager för kundhantering, hanterar affärslogik
     Customer loggedIn;
     Scanner scanner;
+    OrderController orderController;
+    ProductController productController;
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -26,6 +29,8 @@ public class CustomerController {
         this.customerService = new CustomerService();
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
+        this.orderController = new OrderController(customer);
+        this.productController = new ProductController();
     }
 
     /**
@@ -37,9 +42,11 @@ public class CustomerController {
             try {
                 // Skriv ut kundmeny
                 System.out.println("\n=== Kundmeny ===");
-                System.out.println("1. Visa mina uppgifter");
-                System.out.println("2. Uppdatera uppgifter");
-                System.out.println("9. Ta bort mitt konto");
+                System.out.println("1. Visa mina uppgifter ");
+                System.out.println("2. Uppdatera uppgifter ");
+                System.out.println("3. Ordermeny ");
+                System.out.println("4. Sök produkt");
+                System.out.println("9. Ta bort mitt konto ");
                 System.out.println("0. Logga ut");
                 System.out.print("Välj ett alternativ: ");
 
@@ -54,8 +61,15 @@ public class CustomerController {
                     case "2":
                         updateCustomerInfo();
                         break;
+                    case "3":
+                        orderMenu();
+                        break;
+                    case "4":
+                        productMenu(); //ny
+                        break;
                     case "9":
                         System.out.println("Logik för att ta bort ditt konto: ");
+                        deleteAccount();
                         break;
                     case "0":
                         System.out.println("Loggar ut... ");
@@ -72,6 +86,41 @@ public class CustomerController {
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
+        }
+    }
+
+    public void deleteAccount() {
+        System.out.println("När du väljer att ta bort ditt konto");
+        System.out.println("försvinner all infomation om dig och dina tidigare köp.");
+        System.out.println();
+        System.out.println("Vill du ta bort ditt konto?");
+        System.out.println();
+        System.out.println("1. Ta bort mitt konto");
+        System.out.println("2. Gå tillbaka till mina sidor");
+
+        String choice = scanner.nextLine(); //variabel för val, för att slippa upprepa
+        // scanner nextLine och få extra rader och knapptryck efter vald siffra.
+
+        if (choice.equalsIgnoreCase("1")) {
+            System.out.println("Ditt konto tas nu bort");
+            System.out.println("Du loggas ut");
+
+            try {
+                int customerId = loggedIn.getUserId();
+                customerService.deleteCustomer(customerId);
+
+                System.exit(0); //Stränger ner hela programmet "0" innebär att
+                                      // inga felmeddelanden uppstår
+            } catch (SQLException e) {
+                System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
+                e.printStackTrace();
+            }
+        }
+        else if(choice.equalsIgnoreCase("2")){
+            System.out.println("Tillbaka till mina sidor");
+        }
+        else {
+            System.out.println("Ogiltigt val, försök igen");
         }
     }
 
@@ -107,6 +156,12 @@ public class CustomerController {
             System.out.println("Uppdatering misslyckades. ");
         }
 
+    }
 
+    public void orderMenu() throws SQLException {
+        orderController.run();
+    }
+    public void productMenu() throws SQLException {
+        productController.run();
     }
 }

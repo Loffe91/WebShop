@@ -73,6 +73,10 @@ public class CustomerService {
         Customer updatedCustomer = new Customer(customerId, name, email, password);
         return customerRepository.updateCustomer(updatedCustomer); // Skickar den uppdaterade kunden till databasen
     }
+
+    public void deleteCustomer(int customerId) throws SQLException{
+        CustomerRepository.deleteCustomer(customerId);
+    }
 }
     /**
      * Här kan man lägga till fler metoder som t.ex:

@@ -5,7 +5,7 @@ import Customers.Customer;
 import Customers.CustomerRepository;
 
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * OrderService hanterar skapandet och lagringen av ordrar i systemet.
@@ -22,47 +22,56 @@ public class OrderService {
         this.customerRepository = new CustomerRepository();
     }
 
-    /**
-     * Skapar en ny order från en kunds varukorg.
-     *
-     * @param customerId ID för kunden som gör ordern.
-     * @return Order-objekt om lyckat, annars null.
-     */
-    public Order createOrder(int customerId) {
-        try {
-            // Hämtar kunden baserat på ID
-            Customer customer = customerRepository.getCustomerById(customerId);
-            if (customer == null) {
-                System.out.println("Kund hittades inte.");
-                return null; // Returnerar null om kunden inte finns
+    public boolean placeOrder(int customerId, ArrayList<OrderProduct> products) throws SQLException {
+        try { // Loopar igenom alla produkter i ordern och kollar lagerstatus
+            for(OrderProduct product : products){
+                // Om ej tillräcklig lagerstatus finns
+                if(!orderRepository.stockStatus(product.getProductId(), product.getQuantity())){
+                    System.out.println("Produkt "+product.getProductId() +" har ej tillräckligt många i lager");
+                    return false;
+                }
             }
+         // Om lagerstatus är tillräckligt stort, skapas ordern
+        int orderId = orderRepository.createOrder(customerId);
 
-            // Hämtar kundens varukorg
-            Cart cart = customer.getCart();
-            if (cart.isEmpty()) {
-                System.out.println("Varukorgen är tom. Ingen order skapades.");
-                return null; // Returnerar null om varukorgen är tom
-            }
-
-            // Hämtar produkterna från varukorgen
-            Map<String, Integer> cartProducts = cart.getProducts();
-
-            // Skapar en ny order med kundens ID och produkter från varukorgen
-            Order newOrder = new Order(customerId, cartProducts);
-
-            // Sparar ordern i databasen
-            orderRepository.saveOrder(newOrder);
-
-            // Rensar kundens varukorg efter att ordern har skapats
-            customer.clearCart();
-
-            // Bekräftelse på att ordern skapades
-            System.out.println("Order har skapats för kund: " + customer.getName());
-            return newOrder; // Returnerar det skapade orderobjektet
-        } catch (SQLException e) {
-            // Fångar SQL-exception om något går fel med databasen
-            System.out.println("Fel vid skapande av order: " + e.getMessage());
-            return null; // Returnerar null om något går fel
+        if(orderId == -1) {
+            System.out.println("Kunde ej skapa order. ");
         }
+            // Kallar på metod som gör insert i databasen med orderId och produkterna i arraylisten som argument
+            orderRepository.orderProductInsert(orderId, products);
+            // Kallar på metod som uppdaterar lagerstatusen med produkterna i arraylisten som argument
+            orderRepository.updateStock(products);
+
+            System.out.println("Du har lagt en order. ID: "+orderId);
+            return true;
+
+        } catch (SQLException e){
+            System.out.println("Ett fel uppstod: "+e.getMessage());
+            return false;
+        }
+
+    }
+    // Metod för att hämta orderhistorik
+    public void getOrderHistory(int customerId) throws SQLException{
+        // Kallar på getOrderHistory-metoden och sparar resultatet i en ArrayList
+        ArrayList<OrderHistory> orderHistory = orderRepository.getOrderHistory(customerId);
+        // Loopar igenom listan och skriver ut alla orders
+        for (OrderHistory orders : orderHistory){
+            System.out.println(orders);
+        }
+    }
+
+    public double getUnitPrice(int productId) throws SQLException{
+        return orderRepository.getPrice(productId);
+    }
+
+    // Metod för att räkna ut totalpriset av en order
+    public double getTotalPrice(ArrayList<OrderProduct> products){
+        double totalPrice = 0;
+        // Loopar igenom alla produkter i listan
+        for (OrderProduct product : products){ // Multiplicerar antalet med styckpriset
+            totalPrice += product.getQuantity() * product.getUnit_price();
+        }
+        return totalPrice;
     }
 }

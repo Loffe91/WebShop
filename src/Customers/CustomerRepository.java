@@ -2,6 +2,7 @@ package Customers;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Repository-klass för kundhantering
@@ -46,8 +47,23 @@ public class CustomerRepository {
         return customers;
     }
 
-    // Metod för att lägga till kunder. Kund-ID skapas automatiskt av databasen, resterande info tas in av användaren
+    /**
+     * Metod för att lägga till kunder.
+     * Kund-ID skapas automatsikt av databasen, resterande information tas in av användaren.
+     */
     public void addCustomer(String name, String email, String phone ,String address, String password) throws SQLException {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        if (!Pattern.matches(emailRegex, email)) {
+            System.out.println("--------------------------");
+            throw new IllegalArgumentException("Ogiltig e-postadress. Vänligen ange en korrekt email.");
+        }
+
+        String phoneRegex = "^\\+?\\d{7,15}$";
+        if (!Pattern.matches(phoneRegex, phone)) {
+            System.out.println("--------------------------");
+            throw new IllegalArgumentException("Ogiltigt telefonnummer. Ange endast siffror, med valfritt '+' i början.");
+        }
+
         String sql = "INSERT INTO customers(name, email, phone, address, password) VALUES(?, ?, ?, ?, ?)"; // Frågetecknen är placeholders för värdena som tas in av användaren
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -114,7 +130,7 @@ public class CustomerRepository {
     }
     // Tar bort en kund från databasen baserat på kund-ID.
 
-    public void deleteCustomer(int customerId) throws SQLException {
+    public static void deleteCustomer(int customerId) throws SQLException {
         String sql = "DELETE FROM customers WHERE customer_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);

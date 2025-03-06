@@ -2,8 +2,6 @@ package Customers;
 
 import User.User;
 
-import java.util.Map;
-
 /**
  * Klass som representerar en kund i webbshopen.
  * Används för att hantera kunddata mellan databasen och applikationen.
@@ -13,6 +11,7 @@ public class Customer extends User {
     // Privata fält för att uppnå inkapsling
     private String name;
     private String newEmail; // Lägg till detta fält för ny e-postadress
+    private Cart cart;
 
     /**
      * Konstruktor för att skapa en ny Customer.
@@ -22,6 +21,8 @@ public class Customer extends User {
         super(email, password);
         setUserId(userId);
         this.name = name;
+        Cart newCart = new Cart();
+        //här saknas cart om vi ska kalla på den
     }
 
     // Getters och setters för alla fält
@@ -33,6 +34,13 @@ public class Customer extends User {
         this.name = name;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void clearCart() {
+
+    }
 
     /**
      * toString-metod för att få en läsbar representation av kunden.
