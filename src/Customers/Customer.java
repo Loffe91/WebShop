@@ -2,6 +2,8 @@ package Customers;
 
 import User.User;
 
+import java.util.Map;
+
 /**
  * Klass som representerar en kund i webbshopen.
  * Används för att hantera kunddata mellan databasen och applikationen.
@@ -30,6 +32,7 @@ public class Customer extends User {
     public void setName(String name) {
         this.name = name;
     }
+
 
     /**
      * toString-metod för att få en läsbar representation av kunden.

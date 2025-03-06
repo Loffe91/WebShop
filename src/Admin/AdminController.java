@@ -21,7 +21,6 @@ public class AdminController {
         this.adminService = new AdminService();
     }
 
-
     public void run() throws SQLException {
 
         while (true){
