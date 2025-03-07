@@ -115,8 +115,6 @@ public class ProductRepository {
 
     }
 
-
-
     /*// Onödig metod?
     public ArrayList<Categories> getAllCategories() throws SQLException {
         ArrayList<Categories> categories = new ArrayList<>();
