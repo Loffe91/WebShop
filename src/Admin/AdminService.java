@@ -12,23 +12,24 @@ public class AdminService {
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
-//Konstruktor för initialisering av repository lagren
+///Konstruktor för initialisering av repository lagren
     public AdminService() {
         this.customerRepository = new CustomerRepository();
         this.productRepository = new ProductRepository();
     }
 
+    /// Hämta alla kunder från repository-lagret
     public void showAllUsers() throws SQLException {
-        // Hämta alla kunder från repository-lagret
+
         ArrayList<Customer> customers = customerRepository.getAllCustomers();
 
-        // Kontrollera om vi har några kunder att visa
+        /// Kontrollera om vi har några kunder att visa
         if (customers.isEmpty()) {
             System.out.println("Inga kunder hittades.");
             return;
         }
 
-        // Skriv ut alla kunder med tydlig formatering
+        /// Skriv ut alla kunder med tydlig formatering
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
             System.out.println("ID: " + customer.getUserId());
@@ -37,29 +38,29 @@ public class AdminService {
             System.out.println("-----------------");
         }
     }
-    //Metod för att hämta kund baserat på e-mail
+    ///Metod för att hämta kund baserat på e-mail
     public Customer getCustomerByEmail(String email) throws SQLException {
         return customerRepository.getCustomerByEmail(email);
     }
-    //Metod för att hämta kund baserat på ID
+    ///Metod för att hämta kund baserat på ID
     public Customer getCustomerById(int id) throws SQLException {
         return customerRepository.getCustomerById(id);
     }
-    //Metod för att ta bort kund
+    ///Metod för att ta bort kund
     public void deleteCustomer(int customerId) throws SQLException {
-        // Kontrollera om kunden finns innan borttagning
+        //Kontrollera om kunden finns innan borttagning
         Customer customer = customerRepository.getCustomerById(customerId);
         if (customer == null) {
             System.out.println("Ingen kund hittades med ID: " + customerId);
             return;
         }
 
-        // Ta bort kunden
+        ///Ta bort kunden från customerRepository
         customerRepository.deleteCustomer(customerId);
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
 
-    //Se alla produkter
+    ///Se alla produkter
     public void showAllProducts() throws SQLException {
         ArrayList<Product> products = productRepository.getAllProducts();
         if (products.isEmpty()) {
@@ -76,12 +77,12 @@ public class AdminService {
         }
     }
 
-    //Uppdatera pris på vara
+    ///Uppdatera pris på vara
     public void updateProductPrice(int productId, double newPrice) throws SQLException {
         productRepository.updateProductPrice(productId, newPrice);
     }
 
-    //uppdatera lagersaldo för vara
+    ///uppdatera lagersaldo för vara
     public void updateProductStock(int productId, int quantity) throws SQLException {
         productRepository.updateProductStock(productId, quantity);
     }
