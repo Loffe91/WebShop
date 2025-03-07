@@ -2,15 +2,21 @@ package Admin;
 
 import Customers.Customer;
 import Customers.CustomerRepository;
+import Products.Product;
+import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminService {
     CustomerRepository customerRepository;
+    ProductRepository productRepository;
 
-    public AdminService(){
+
+    public AdminService() {
+
         this.customerRepository = new CustomerRepository();
+        this.productRepository = new ProductRepository();
     }
 
     public void showAllUsers() throws SQLException {
@@ -32,10 +38,12 @@ public class AdminService {
             System.out.println("-----------------");
         }
     }
-    public Customer getCustomerByEmail(String email) throws SQLException{
+
+    public Customer getCustomerByEmail(String email) throws SQLException {
         return customerRepository.getCustomerByEmail(email);
     }
-    public Customer getCustomerById(int id) throws SQLException{
+
+    public Customer getCustomerById(int id) throws SQLException {
         return customerRepository.getCustomerById(id);
     }
 
@@ -50,5 +58,31 @@ public class AdminService {
         // Ta bort kunden
         customerRepository.deleteCustomer(customerId);
         System.out.println("Kunden med ID " + customerId + " har raderats.");
+    }
+
+    //Se produkter
+    public void showAllProducts() throws SQLException {
+        ArrayList<Product> products = productRepository.getAllProducts();
+        if (products.isEmpty()) {
+            System.out.println("Inga produkter hittades.");
+            return;
+        }
+        System.out.println("\n=== Produktlista ===");
+        for (Product product : products) {
+            System.out.println("ID: " + product.getProductId());
+            System.out.println("Varunamn: " + product.getName());
+            System.out.println("Pris: " + product.getPrice());
+            System.out.println("Lagersaldo: " + product.getStockQuantity());
+            System.out.println("-----------------");
+        }
+    }
+
+    //uppdatera pris på vara
+    public void updateProductPrice(int productId, double newPrice) throws SQLException {
+        productRepository.updateProductPrice(productId, newPrice);
+    }
+
+    public void updateProductStock(int productId, int newStock) throws SQLException{
+        productRepository.updateProductStock(productId, newStock);
     }
 }
