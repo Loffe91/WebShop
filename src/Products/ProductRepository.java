@@ -97,6 +97,28 @@ public class ProductRepository {
 
     }
 
+    public void updateProductStock(int productId, int newStock) throws SQLException {
+        String sql = "UPDATE products SET stock_quantity = ? where product_id = ?";
+
+        try(Connection conn = DriverManager.getConnection(URL);
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1, newStock);
+            pstmt.setInt(2, productId);
+
+            if (newStock >= 0){
+                pstmt.executeUpdate();
+                System.out.println("Lagerstatus för produkt "+productId+" har uppdaterats. Ny lagerstatus: "+newStock);
+            }
+            else {
+                System.out.println("Felaktig input. Lagerstatus ej ändrad.");
+            }
+        }
+
+    }
+
+
+
+    /*// Onödig metod?
     public ArrayList<Categories> getAllCategories() throws SQLException {
         ArrayList<Categories> categories = new ArrayList<>();
 
@@ -112,9 +134,28 @@ public class ProductRepository {
             }
         }
         return categories;
-    }
-
-    public void updateProductStock(int productId, int newStock) throws SQLException {
 
     }
+
+    // Onödig metod?
+    public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE category='" + category + "'")) {
+
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt("product_id"),     // Hämta ID från product_id kolumnen
+                        rs.getString("name"),   // Hämta namn
+                        rs.getString("description"),  // Hämta description
+                        rs.getDouble("price"), // Hämta pris
+                        rs.getInt("stock_quantity") // Hämta lagerstatus
+                );
+                products.add(product);
+            }
+        }
+        return products;
+    }*/
 }
