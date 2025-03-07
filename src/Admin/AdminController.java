@@ -13,7 +13,7 @@ public class AdminController {
     CustomerService customerService;
     Scanner scanner;
 
-
+//Konstruktor
     public AdminController(Admin admin){
         this.scanner = new Scanner(System.in);
         this.loggedIn = admin;
@@ -21,18 +21,18 @@ public class AdminController {
         this.adminService = new AdminService();
 
     }
-
+    // Startmetod som kör admin-menyn
     public void run() throws SQLException {
 
         while (true){
             // Skriv ut adminmeny
             System.out.println("\n=== Adminmeny ===");
-            System.out.println("1. Kundhantering"); //ändra till kundhantering och gör en inre loop?
+            System.out.println("1. Kundhantering");
             System.out.println("2. Lagerhantering");
             System.out.println("0. Logga ut");
             System.out.println("Välj ett alternativ: ");
 
-            String select = scanner.nextLine();
+            String select = scanner.nextLine(); //läser användarens val
 
             switch (select){
                 case "1":
@@ -104,7 +104,7 @@ public class AdminController {
             default:
                 System.out.println("Felaktigt val. Försök igen ");
         }
-    }
+    }//Metod för Lagerhantering
     public void showProducts() throws SQLException {
         System.out.println("1. Visa varor och lagersaldo");
         System.out.println("2. Uppdatera Pris");

@@ -12,9 +12,8 @@ public class AdminService {
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
-
+//Konstruktor för initialisering av repository lagren
     public AdminService() {
-
         this.customerRepository = new CustomerRepository();
         this.productRepository = new ProductRepository();
     }
@@ -38,15 +37,15 @@ public class AdminService {
             System.out.println("-----------------");
         }
     }
-
+    //Metod för att hämta kund baserat på e-mail
     public Customer getCustomerByEmail(String email) throws SQLException {
         return customerRepository.getCustomerByEmail(email);
     }
-
+    //Metod för att hämta kund baserat på ID
     public Customer getCustomerById(int id) throws SQLException {
         return customerRepository.getCustomerById(id);
     }
-
+    //Metod för att ta bort kund
     public void deleteCustomer(int customerId) throws SQLException {
         // Kontrollera om kunden finns innan borttagning
         Customer customer = customerRepository.getCustomerById(customerId);
@@ -60,7 +59,7 @@ public class AdminService {
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
 
-    //Se produkter
+    //Se alla produkter
     public void showAllProducts() throws SQLException {
         ArrayList<Product> products = productRepository.getAllProducts();
         if (products.isEmpty()) {
@@ -77,11 +76,11 @@ public class AdminService {
         }
     }
 
-    //uppdatera pris på vara
+    //Uppdatera pris på vara
     public void updateProductPrice(int productId, double newPrice) throws SQLException {
         productRepository.updateProductPrice(productId, newPrice);
     }
-
+    //Uppdatera lagersaldo på vara
     public void updateProductStock(int productId, int newStock) throws SQLException{
         productRepository.updateProductStock(productId, newStock);
     }
