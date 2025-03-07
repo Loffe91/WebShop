@@ -97,6 +97,19 @@ public class ProductRepository {
     }
 
     public void updateProductStock(int productId, int newStock) throws SQLException {
+        String sql = "UPDATE products SET stock_quantity = ? WHERE product_id = ?";
+        try (Connection conn = DriverManager.getConnection(URL);
+        PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setInt(1, newStock);
+            pstmt.setInt(2, productId);
+
+            int stockUpdate = pstmt.executeUpdate();
+            if (stockUpdate >0) {
+                System.out.println("Produktens lagersaldo uppdaterats till " + newStock + " st");
+            } else {
+                System.out.println("Ingen produkt hittades med ID " + productId);
+            }
+        }
 
     }
 

@@ -129,6 +129,19 @@ public class AdminController {
                 adminService.updateProductPrice(productId, newPrice);
             break;
             //case "3": adminService.updateProductStock();
+            case "3": //uppdatera lagersaldo
+                System.out.println("Ange ID: ");
+                String prodId = scanner.nextLine();
+                productId = Integer.parseInt(prodId);
+
+                System.out.println("Ange lagersaldo: ");
+                String quantityString = scanner.nextLine();
+                int quantity = Integer.parseInt(quantityString);
+                adminService.updateProductStock(productId, quantity);
+                break;
+            case "0":
+                return;
+            default:  System.out.println("Felaktigt val. Försök igen");
         }
     }
 }

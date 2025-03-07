@@ -81,4 +81,9 @@ public class AdminService {
     public void updateProductPrice(int productId, double newPrice) throws SQLException {
         productRepository.updateProductPrice(productId, newPrice);
     }
+
+    //uppdatera lagersaldo för vara
+    public void updateProductStock(int productId, int quantity) throws SQLException {
+        productRepository.updateProductStock(productId, quantity);
+    }
 }
