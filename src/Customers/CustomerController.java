@@ -13,8 +13,8 @@ import java.util.Scanner;
  */
 public class CustomerController {
 
-    // Service-lager för kundhantering, hanterar affärslogik
-    CustomerService customerService;
+
+    CustomerService customerService; // Service-lager för kundhantering, hanterar affärslogik
     Customer loggedIn;
     Scanner scanner;
     OrderController orderController;
