@@ -126,19 +126,21 @@ public class AdminController {
                 String prisString = scanner.nextLine();
                 double newPrice = Double.parseDouble(prisString);
                 adminService.updateProductPrice(productId, newPrice);
-                break;
-            case "3": // Uppdatera lagerstatus
+            break;
+            //case "3": adminService.updateProductStock();
+            case "3": //uppdatera lagersaldo
                 System.out.println("Ange ID: ");
-                int quantProductId = Integer.parseInt(scanner.nextLine());
-                System.out.println("Ange ny lagerstatus: ");
-                int newStock = Integer.parseInt(scanner.nextLine());
+                String prodId = scanner.nextLine();
+                productId = Integer.parseInt(prodId);
 
-                adminService.updateProductStock(quantProductId, newStock);
+                System.out.println("Ange lagersaldo: ");
+                String quantityString = scanner.nextLine();
+                int quantity = Integer.parseInt(quantityString);
+                adminService.updateProductStock(productId, quantity);
                 break;
             case "0":
                 return;
-            default:
-                System.out.println("Felaktig input. ");
+            default:  System.out.println("Felaktigt val. Försök igen");
         }
     }
 }
