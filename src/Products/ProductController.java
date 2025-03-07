@@ -32,6 +32,7 @@ public class ProductController {
                 System.out.println("\n=== Produkthantering ===");
                 System.out.println("1. Visa alla produkter");
                 System.out.println("2. Visa kategorier");
+                System.out.println("3. Sök produkt");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -46,6 +47,9 @@ public class ProductController {
                         break;
                     case "2":
                         selectCategory();
+                        break;
+                    case "3":
+                        searchProduct();
                         break;
                     case "0":
                         System.out.println("Avslutar produkthantering...");
@@ -62,6 +66,20 @@ public class ProductController {
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
         }
+    }
+
+    public void searchProduct() {
+        System.out.println("\n=== Sök produkt ===");
+        System.out.print("Sök: ");
+
+        String search = scanner.nextLine();
+
+        try {
+            productService.selectProductByName(search.trim());
+        } catch (SQLException e) {
+            System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+        }
+
     }
 
     public void selectCategory() throws SQLException {
