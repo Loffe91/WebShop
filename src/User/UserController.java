@@ -104,7 +104,7 @@ public class UserController {
     }
 
 
-    // Metod för att logga in
+    /// Metod för att logga in
     public void login() throws SQLException {
         System.out.println("Ange email: ");
         String email = scanner.nextLine();
