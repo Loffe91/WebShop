@@ -22,7 +22,6 @@ public class AdminController {
 
     }
 
-
     public void run() throws SQLException {
 
         while (true){
@@ -117,7 +116,7 @@ public class AdminController {
         switch (select){
             case "1": //visar alla produkter
                 adminService.showAllProducts();
-            break;
+                break;
             case "2"://uppdatera pris
                 System.out.println("Ange ID: ");
                 String idString = scanner.nextLine();
@@ -127,8 +126,19 @@ public class AdminController {
                 String prisString = scanner.nextLine();
                 double newPrice = Double.parseDouble(prisString);
                 adminService.updateProductPrice(productId, newPrice);
-            break;
-            //case "3": adminService.updateProductStock();
+                break;
+            case "3": // Uppdatera lagerstatus
+                System.out.println("Ange ID: ");
+                int quantProductId = Integer.parseInt(scanner.nextLine());
+                System.out.println("Ange ny lagerstatus: ");
+                int newStock = Integer.parseInt(scanner.nextLine());
+
+                adminService.updateProductStock(quantProductId, newStock);
+                break;
+            case "0":
+                return;
+            default:
+                System.out.println("Felaktig input. ");
         }
     }
 }

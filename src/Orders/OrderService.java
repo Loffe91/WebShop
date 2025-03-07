@@ -74,4 +74,11 @@ public class OrderService {
         }
         return totalPrice;
     }
+
+    public boolean orderQuantity(int quantity, int productId) throws SQLException {
+        if(orderRepository.stockStatus(productId, quantity)){
+            return true;
+        }else
+            return false;
+    }
 }

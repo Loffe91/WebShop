@@ -38,13 +38,12 @@ public class OrderController {
                     case "3":
                         break;
                     case "4":
-
                         break;
-                    case "5":
+                    case "0":
                         System.out.println("Avslutar...");
                         return;
-                        default:
-                            System.out.println("Invalid choice, try again");
+                    default:
+                        System.out.println("Invalid choice, try again");
                 }
             } catch (SQLException e) {
                 System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
@@ -66,6 +65,7 @@ public class OrderController {
 
             System.out.println("Ange antal: ");
             int quantity = Integer.parseInt(scanner.nextLine());
+
             if(quantity == 0){
                 System.out.println("Felaktig input");
                 break;
@@ -74,13 +74,17 @@ public class OrderController {
             double unitPrice = orderService.getUnitPrice(produktId);
 
             // Skapar en order med produktId, quantity och unitPrice
-            OrderProduct orderProduct = new OrderProduct(produktId, quantity, unitPrice);
-            products.add(orderProduct);
-            orderService.placeOrder(loggedIn.getUserId(), products);
+            if(orderService.orderQuantity(produktId, quantity)) {
+                OrderProduct orderProduct = new OrderProduct(produktId, quantity, unitPrice);
+                products.add(orderProduct);
+                orderService.placeOrder(loggedIn.getUserId(), products);
 
-            double totalPrice = orderService.getTotalPrice(products);
-            System.out.println("Orderns totala pris är: "+totalPrice+" kronor. ");
-
+                double totalPrice = orderService.getTotalPrice(products);
+                System.out.println("Orderns totala pris är: " + totalPrice + " kronor. ");
+            }
+            else {
+                System.out.println("Order kunde ej skapas. Ej tillräcklig orderstatus");
+            }
         }
     }
 
