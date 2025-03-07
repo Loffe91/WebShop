@@ -2,7 +2,6 @@ package Admin;
 
 import Customers.Customer;
 import Customers.CustomerService;
-import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ public class AdminController {
     CustomerService customerService;
     Scanner scanner;
 
-//Konstruktor
+///Konstruktor
     public AdminController(Admin admin){
         this.scanner = new Scanner(System.in);
         this.loggedIn = admin;
@@ -21,7 +20,7 @@ public class AdminController {
         this.adminService = new AdminService();
 
     }
-    // Startmetod som kör admin-menyn
+    /// Startmetod som kör admin-menyn
     public void run() throws SQLException {
 
         while (true){
@@ -52,7 +51,7 @@ public class AdminController {
         }
     }
 
-    // Metod för att visa kunder
+    /// Metod för att visa kunder
 
     public void showCustomers() throws SQLException {
         System.out.println("1. Visa alla kunder. ");
@@ -66,10 +65,10 @@ public class AdminController {
 
         switch (select){
             case "1":
-                // Anropa service-lagret för att visa alla kunder
+                /// Anropa service-lagret för att visa alla kunder
                 adminService.showAllUsers();
                 break;
-            case "2": // Hämta kund baserat på mail
+            case "2": /// Hämta kund baserat på mail
                 System.out.println("Ange mail: ");
                 String mail = scanner.nextLine();
                 Customer customerByEmail = adminService.getCustomerByEmail(mail); // Spara den returnerade kunden
@@ -79,9 +78,9 @@ public class AdminController {
                     System.out.println("Email: "+ customerByEmail.getEmail());
                 }
                 break;
-            case "3": // Hämta kund baserat på ID
+            case "3": /// Hämta kund baserat på ID
                 System.out.println("Ange ID: ");
-                String idString = scanner.nextLine(); // Hämta id och konvertera till en stril
+                String idString = scanner.nextLine(); // Hämta id och konvertera till en string
                 int id = Integer.parseInt(idString);
                 Customer customerById = adminService.getCustomerById(id); // Spara customerById till Customer
                 if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
@@ -90,7 +89,7 @@ public class AdminController {
                     System.out.println("Email: "+customerById.getEmail());
                 }
                 break;
-            case "4": //Ta bort kund
+            case "4": ///Ta bort kund
                 System.out.println("Ange ID på kunden du vill ta bort: ");
                 try {
                     int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
@@ -104,7 +103,9 @@ public class AdminController {
             default:
                 System.out.println("Felaktigt val. Försök igen ");
         }
-    }//Metod för Lagerhantering
+    }
+
+    /// Metod för Lagerhantering
     public void showProducts() throws SQLException {
         System.out.println("1. Visa varor och lagersaldo");
         System.out.println("2. Uppdatera Pris");
@@ -126,8 +127,7 @@ public class AdminController {
                 String prisString = scanner.nextLine();
                 double newPrice = Double.parseDouble(prisString);
                 adminService.updateProductPrice(productId, newPrice);
-            break;
-            //case "3": adminService.updateProductStock();
+                break;
             case "3": //uppdatera lagersaldo
                 System.out.println("Ange ID: ");
                 String prodId = scanner.nextLine();
