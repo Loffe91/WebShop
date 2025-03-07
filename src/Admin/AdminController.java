@@ -2,7 +2,6 @@ package Admin;
 
 import Customers.Customer;
 import Customers.CustomerService;
-import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.Scanner;
