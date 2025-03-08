@@ -22,25 +22,23 @@ public class OrderService {
         this.customerRepository = new CustomerRepository();
     }
 
-    public boolean placeOrder(int customerId, ArrayList<OrderProduct> products) throws SQLException {
-        try { // Loopar igenom alla produkter i ordern och kollar lagerstatus
-            for(OrderProduct product : products){
-                // Om ej tillräcklig lagerstatus finns
-                if(!orderRepository.stockStatus(product.getProductId(), product.getQuantity())){
-                    System.out.println("Produkt "+product.getProductId() +" har ej tillräckligt många i lager");
-                    return false;
-                }
-            }
-         // Om lagerstatus är tillräckligt stort, skapas ordern
-        int orderId = orderRepository.createOrder(customerId);
-
-        if(orderId == -1) {
-            System.out.println("Kunde ej skapa order. ");
+    public boolean placeOrder(int customerId, ArrayList<OrderProduct> cart) throws SQLException {
+        // Kontrollerar så varukorgen ej är tom
+        if(cart.isEmpty()){
+            System.out.println("Varukorgen är tom. Kan ej lägga en order");
+            return false;
         }
+
+        try {
+            int orderId = orderRepository.createOrder(customerId);
+            if(orderId == -1){
+                System.out.println("Kunde ej skapa order. ");
+                return false;
+            }
             // Kallar på metod som gör insert i databasen med orderId och produkterna i arraylisten som argument
-            orderRepository.orderProductInsert(orderId, products);
+            orderRepository.orderProductInsert(orderId, cart);
             // Kallar på metod som uppdaterar lagerstatusen med produkterna i arraylisten som argument
-            orderRepository.updateStock(products);
+            orderRepository.updateStock(cart);
 
             System.out.println("Du har lagt en order. ID: "+orderId);
             return true;
@@ -75,10 +73,15 @@ public class OrderService {
         return totalPrice;
     }
 
-    public boolean orderQuantity(int quantity, int productId) throws SQLException {
-        if(orderRepository.stockStatus(productId, quantity)){
-            return true;
-        }else
-            return false;
+    // Kontroll av lagerstatus
+    public boolean orderQuantity(int productId, int quantity) throws SQLException {
+        // Kallar på stockStatus-metoden i repot med quantity & productId som argument
+        boolean currentStock = orderRepository.stockStatus(productId, quantity);
+
+        // Om tillräckligt lager ej finns
+        if(!currentStock){
+            System.out.println("Produkt-ID: "+productId+" har för låg lagerstatus för denna order");
+        }
+        return currentStock;
     }
 }

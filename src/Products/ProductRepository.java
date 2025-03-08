@@ -50,12 +50,12 @@ public class ProductRepository {
      * @throws SQLException vid problem med databasanrop
      */
     public ArrayList<Product> selectCategories(String category) throws SQLException {
-        String sql =
-                "SELECT p.product_id, p.name, p.description, p.price, p.stock_quantity " +
+        String sql = "SELECT c.name AS category, p.product_id, p.name, p.description, p.price, p.stock_quantity " +
                 "FROM products p " +
                 "JOIN products_categories pc ON p.product_id = pc.product_id " +
                 "JOIN categories c ON pc.category_id = c.category_id " +
-                "WHERE c.name = ?";
+                "WHERE c.name = ? " +
+                "ORDER BY p.product_id;";
 
         ArrayList<Product> products = new ArrayList<>();
 

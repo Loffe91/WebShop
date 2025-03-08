@@ -1,6 +1,10 @@
 package Customers;
 
+import Orders.OrderProduct;
+import Products.Product;
 import User.User;
+
+import java.util.ArrayList;
 
 /**
  * Klass som representerar en kund i webbshopen.
@@ -10,8 +14,7 @@ public class Customer extends User {
 
     // Privata fält för att uppnå inkapsling
     private String name;
-    private String newEmail; // Lägg till detta fält för ny e-postadress
-    private Cart cart;
+    public ArrayList<OrderProduct> cart = new ArrayList<>();
 
     /**
      * Konstruktor för att skapa en ny Customer.
@@ -21,8 +24,7 @@ public class Customer extends User {
         super(email, password);
         setUserId(userId);
         this.name = name;
-        Cart newCart = new Cart();
-        //här saknas cart om vi ska kalla på den
+        this.cart = new ArrayList<>();
     }
 
     // Getters och setters för alla fält
@@ -34,12 +36,40 @@ public class Customer extends User {
         this.name = name;
     }
 
-    public Cart getCart() {
-        return cart;
+    public void addToCart(OrderProduct product){
+        cart.add(product);
+        System.out.println("Produkt "+product.getProductId() +" har lagts till i varukorgen. ");
+    }
+    public void removeFromCart(int productId){
+        cart.removeIf(product -> product.getProductId() == productId);
+        System.out.println("Produkt "+productId + " har tagits bort från varukorgen. ");
     }
 
     public void clearCart() {
-
+        cart.clear();
+        System.out.println("Varukorgen har tömts. ");
+    }
+    public void viewCart(){
+        if(cart.isEmpty()){
+            System.out.println("Varukorgen är tom. ");
+            return;
+        }
+        System.out.println("\n=== Varukorg ===");
+        double totalPrice = getTotalPrice();
+        for (OrderProduct product : cart){
+            System.out.println("Produkt-ID: " +product.getProductId() +
+                               "\nAntal: "+product.getQuantity() +
+                               "\nPris per enhet: "+product.getUnit_price() +
+                               "\n--------");
+        }
+        System.out.println("Totalt belopp: "+totalPrice);
+    }
+    public double getTotalPrice(){
+        double total = 0;
+        for (OrderProduct product : cart){
+            total += product.getQuantity() * product.getUnit_price();
+        }
+        return total;
     }
 
     /**
