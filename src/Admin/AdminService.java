@@ -51,7 +51,6 @@ public class AdminService {
         //Kontrollera om kunden finns innan borttagning
         Customer customer = customerRepository.getCustomerById(customerId);
         if (customer == null) {
-            System.out.println("Ingen kund hittades med ID: " + customerId);
             return;
         }
 

@@ -134,6 +134,7 @@ public class CustomerController {
         System.out.println("ID: "+loggedIn.getUserId());
         System.out.println("Namn: "+loggedIn.getName());
         System.out.println("Email: "+loggedIn.getEmail());
+
     }
 
     public void updateCustomerInfo() throws SQLException {
@@ -141,6 +142,9 @@ public class CustomerController {
 
         System.out.println("Nytt namn: ");
         String name = scanner.nextLine();
+        if(!name.isBlank()){ // För att uppdatera namnvariabeln i realtid och inte bara för databasen
+            loggedIn.setName(name);
+        }
 
         System.out.println("Ny mailadress: ");
         String email = scanner.nextLine();
