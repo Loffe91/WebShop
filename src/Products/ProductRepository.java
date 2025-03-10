@@ -50,14 +50,13 @@ public class ProductRepository {
      * @throws SQLException vid problem med databasanrop
      */
     public ArrayList<Product> selectCategories(String category) throws SQLException {
-        String sql = "SELECT c.name AS category, p.product_id, p.name, p.description, p.price, p.stock_quantity " +
+        String sql =
+                "SELECT c.name AS category, p.product_id, p.name, p.description, p.price, p.stock_quantity " +
                 "FROM products p " +
                 "JOIN products_categories pc ON p.product_id = pc.product_id " +
                 "JOIN categories c ON pc.category_id = c.category_id " +
                 "WHERE c.name = ? " +
                 "ORDER BY p.product_id;";
-
-
 
         ArrayList<Product> products = new ArrayList<>();
 
@@ -117,47 +116,20 @@ public class ProductRepository {
 
     }
 
-
-
-    /*// Onödig metod?
     public ArrayList<Categories> getAllCategories() throws SQLException {
         ArrayList<Categories> categories = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM categories")) {
-
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM categories")) {
             while (rs.next()) {
-                Categories category = new Categories(
+                Categories c = new Categories(
                         rs.getInt("category_id"),
                         rs.getString("name")
                 );
-                categories.add(category);
+                categories.add(c);
             }
         }
         return categories;
-
     }
-
-    // Onödig metod?
-    public ArrayList<Product> getProductsByCategory(String category) throws SQLException {
-        ArrayList<Product> products = new ArrayList<>();
-
-        try (Connection conn = DriverManager.getConnection(URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE category='" + category + "'")) {
-
-            while (rs.next()) {
-                Product product = new Product(
-                        rs.getInt("product_id"),     // Hämta ID från product_id kolumnen
-                        rs.getString("name"),   // Hämta namn
-                        rs.getString("description"),  // Hämta description
-                        rs.getDouble("price"), // Hämta pris
-                        rs.getInt("stock_quantity") // Hämta lagerstatus
-                );
-                products.add(product);
-            }
-        }
-        return products;
-    }*/
 }

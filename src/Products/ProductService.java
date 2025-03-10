@@ -120,6 +120,7 @@ public class ProductService {
         }
 
         System.out.println("\n=== Produktlista " + category + " ===");
+        System.out.println("-----------------");
         for (Product product : products) {
             System.out.println("ID: " + product.getProductId());
             System.out.println("Namn: " + product.getName());
@@ -130,4 +131,44 @@ public class ProductService {
         }
     }
 
+    public String categoryNames() throws SQLException {
+        ArrayList<Categories> categories = productRepository.getAllCategories();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            try {
+                for (int i = 0; i < categories.size(); i++) {
+                    System.out.println((i + 1) + ". " + categories.get(i).getCategory_name());
+                }
+
+                System.out.print("Välj en produkt genom att ange dess nummer (välj 0 för att avbryta): ");
+                String select = scanner.nextLine();
+
+                int choice = Integer.parseInt(select);
+
+                if (choice >= 1 && choice <= categories.size()) {
+                    System.out.println("-----------------------");
+                    System.out.println("Du valde: " + categories.get(choice - 1).getCategory_name());
+                    System.out.println("-----------------------");
+                    return categories.get(choice - 1).getCategory_name();
+                } else if (choice == 0) {
+                    System.out.println("-----------------------");
+                    System.out.println("Avbryter...");
+                    System.out.println("-----------------------");
+                    break;
+                } else {
+                    System.out.println("-----------------------");
+                    System.out.println("Ogiltigt val, försök igen.");
+                    System.out.println("-----------------------");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("-----------------------");
+                System.out.println("Fel: Ange ett nummer.");
+                System.out.println("-----------------------");
+            }
+        }
+        return null;
+    }
 }
