@@ -4,6 +4,8 @@ import Orders.OrderController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import Orders.OrderProduct;
 import Products.ProductController;
 
 
@@ -30,7 +32,7 @@ public class CustomerController {
         this.scanner = new Scanner(System.in);
         this.loggedIn = customer;
         this.orderController = new OrderController(customer);
-        this.productController = new ProductController();
+        this.productController = new ProductController(customer);
     }
 
     /**
@@ -45,9 +47,10 @@ public class CustomerController {
                 System.out.println("1. Visa mina uppgifter ");
                 System.out.println("2. Uppdatera uppgifter ");
                 System.out.println("3. Ordermeny ");
-                System.out.println("4. Sök produkt");
+                System.out.println("4. Sök produkt ");
+                System.out.println("5. Varukorg ");
                 System.out.println("9. Ta bort mitt konto ");
-                System.out.println("0. Logga ut");
+                System.out.println("0. Logga ut ");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
@@ -66,6 +69,9 @@ public class CustomerController {
                         break;
                     case "4":
                         productMenu(); //ny
+                        break;
+                    case "5":
+                        cartMenu();
                         break;
                     case "9":
                         deleteAccount();
@@ -162,5 +168,53 @@ public class CustomerController {
     }
     public void productMenu() throws SQLException {
         productController.run();
+    }
+    // Metod för att skriva ut varukorgsmenyn
+    public void cartMenu() throws SQLException {
+        System.out.println("\n=== Kundvagn ===");
+        System.out.println("1. Visa varukorg ");
+        System.out.println("2. Ta bort vara från varukorgen ");
+        System.out.println("3. Töm varukorg ");
+        System.out.println("4. Lägg till vara i varukorgen ");
+        System.out.println("5. Ta varukorgen till kassan");
+        System.out.println("0. Tillbaka ");
+
+        String select = scanner.nextLine();
+
+        switch (select){
+            case "1":
+                loggedIn.viewCart();
+                break;
+            case "2":
+                removeItemFromCart();
+                break;
+            case "3":
+                loggedIn.clearCart();
+                break;
+            case "4":
+                orderController.addProductToCart();
+                break;
+            case "5":
+                placeOrder();
+                break;
+            case "0":
+                return;
+            default:
+                System.out.println("Felaktig input. Försök igen");
+        }
+    }
+    public void removeItemFromCart(){
+        System.out.println("Ange produkt-ID på varan du vill ta bort: ");
+        int productId = Integer.parseInt(scanner.nextLine());
+        loggedIn.removeFromCart(productId);
+    }
+    // Metod för att ta varukorgen till kassan
+    public void placeOrder() throws SQLException{
+        if(loggedIn.cart.isEmpty()) {
+            System.out.println("Varukorgen är tom. ");
+            return;
+        }
+        orderController.placeOrder();
+
     }
 }

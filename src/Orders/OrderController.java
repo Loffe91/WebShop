@@ -30,7 +30,7 @@ public class OrderController {
 
                 switch (select) {
                     case "1":
-                        placeOrder(); //behöver customerId som argument
+                        placeOrder();
                         break;
                     case "2":
                         showOrderHistory();
@@ -52,43 +52,57 @@ public class OrderController {
             }
         }
     }
-
+    // Metod som slutför ett köp av varorna i varukorgen
     public void placeOrder() throws SQLException {
-        ArrayList<OrderProduct> products = new ArrayList<>();
-
-        while (true){
-            System.out.println("Ange produkt-ID: (Tryck 0 för att avbryta beställningen)");
-            int produktId = Integer.parseInt(scanner.nextLine());
-            if(produktId == 0){
-                break;
+        // Kontrollerar så att korgen ej är tom
+        if(loggedIn.cart.isEmpty()){
+            System.out.println("Ordern kunde ej slutföras då varukorgen är tom. ");
+            return;
+        }
+        // Kontrollerar att det finns tillräckligt i lagret
+        for(OrderProduct product : loggedIn.cart){
+            if(!orderService.orderQuantity(product.getProductId(), product.getQuantity())){
+                System.out.println("Finns ej tillräckligt i lager av produkt-ID: "+product.getProductId());
+                return;
             }
+        }
 
-            System.out.println("Ange antal: ");
-            int quantity = Integer.parseInt(scanner.nextLine());
+        boolean successfulOrder = orderService.placeOrder(loggedIn.getUserId(), loggedIn.cart);
+        // Om produkterna finns i lager skapas en order av customerId och innehållet i varukorgen
+        if (successfulOrder){
+            double totalPrice = orderService.getTotalPrice(loggedIn.cart);
+            System.out.println("Du har lagt en order. Totalt pris: "+totalPrice);
+            loggedIn.clearCart();
+        } else {
+            System.out.println("Order kunde ej skapas");
 
-            if(quantity == 0){
-                System.out.println("Felaktig input");
-                break;
-            }
-            // Hämtar priset för den valda produkten
-            double unitPrice = orderService.getUnitPrice(produktId);
-
-            // Skapar en order med produktId, quantity och unitPrice
-            if(orderService.orderQuantity(produktId, quantity)) {
-                OrderProduct orderProduct = new OrderProduct(produktId, quantity, unitPrice);
-                products.add(orderProduct);
-                orderService.placeOrder(loggedIn.getUserId(), products);
-
-                double totalPrice = orderService.getTotalPrice(products);
-                System.out.println("Orderns totala pris är: " + totalPrice + " kronor. ");
-            }
-            else {
-                System.out.println("Order kunde ej skapas. Ej tillräcklig orderstatus");
-            }
         }
     }
 
     public void showOrderHistory() throws SQLException{
         orderService.getOrderHistory(loggedIn.getUserId());
+    }
+
+    public void addProductToCart() throws SQLException{
+        System.out.println("Ange produkt-ID på önskad vara: ");
+        int productId = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Ange antal: ");
+        int quantity = Integer.parseInt(scanner.nextLine());
+
+        if (quantity <= 0){
+            System.out.println("Kan lägga till minst 1 vara");
+            return;
+        }
+
+        double unitPrice = orderService.getUnitPrice(productId);
+        // Kallar på servicelagret med id & quantity för att verifiera lagerstatus
+        if(!orderService.orderQuantity(productId, quantity)){
+            return;
+        }
+        OrderProduct orderProduct = new OrderProduct(productId, quantity, unitPrice);
+        loggedIn.addToCart(orderProduct);
+        System.out.println("Du la till "+quantity+" stycken av vara "+productId+" i varukorgen");
+
     }
 }

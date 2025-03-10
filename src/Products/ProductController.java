@@ -1,23 +1,30 @@
 package Products;
 
+import Customers.Customer;
+import Orders.OrderController;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class ProductController {
     // Service-lager för produkthantering, hanterar affärslogik
     ProductService productService;
-
+    OrderController orderController;
     // Scanner för användarinput
     Scanner scanner;
+    Customer loggedIn;
 
     /**
      * Konstruktor för Products.ProductController
      * Initierar service och scanner
      */
-    public ProductController() {
+    public ProductController(Customer customer) {
         // Skapa instanser av nödvändiga objekt
+        this.loggedIn = customer;
         this.productService = new ProductService();
+        this.orderController = new OrderController(loggedIn);
         this.scanner = new Scanner(System.in);
     }
 
@@ -33,6 +40,7 @@ public class ProductController {
                 System.out.println("1. Visa alla produkter");
                 System.out.println("2. Visa kategorier");
                 System.out.println("3. Sök produkt");
+                System.out.println("4. Lägg till vara i varukorg ");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -50,6 +58,9 @@ public class ProductController {
                         break;
                     case "3":
                         searchProduct();
+                        break;
+                    case "4":
+                        orderController.addProductToCart();
                         break;
                     case "0":
                         System.out.println("Avslutar produkthantering...");
