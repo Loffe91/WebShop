@@ -68,7 +68,6 @@ public class CustomerController {
                         productMenu(); //ny
                         break;
                     case "9":
-                        System.out.println("Logik för att ta bort ditt konto: ");
                         deleteAccount();
                         break;
                     case "0":

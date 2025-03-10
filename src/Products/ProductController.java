@@ -75,7 +75,7 @@ public class ProductController {
         String search = scanner.nextLine();
 
         try {
-            productService.selectProductByName(search.trim());
+            productService.selectProductByName(search.trim()); ///trim tar bort blanksteg (mellanslag) innan och efter input
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
         }
