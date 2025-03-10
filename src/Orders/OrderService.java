@@ -22,33 +22,61 @@ public class OrderService {
         this.customerRepository = new CustomerRepository();
     }
 
+    /**
+     * Metod för att lägga en order.
+     * Tillämpas rabatt baserat på kundens lojalitetsnivå och poäng uppdateras.
+     */
     public boolean placeOrder(int customerId, ArrayList<OrderProduct> cart) throws SQLException {
-        // Kontrollerar så varukorgen ej är tom
-        if(cart.isEmpty()){
+        // Kontrollera att varukorgen inte är tom
+        if (cart.isEmpty()) {
             System.out.println("Varukorgen är tom. Kan ej lägga en order");
             return false;
         }
 
         try {
-            int orderId = orderRepository.createOrder(customerId);
-            if(orderId == -1){
-                System.out.println("Kunde ej skapa order. ");
+            // Hämta kund från databasen
+            Customer customer = customerRepository.getCustomerById(customerId);
+            if (customer == null) {
+                System.out.println("Kunde ej hitta kunden.");
                 return false;
             }
-            // Kallar på metod som gör insert i databasen med orderId och produkterna i arraylisten som argument
+
+            // Skapa order i databasen
+            int orderId = orderRepository.createOrder(customerId);
+            if (orderId == -1) {
+                System.out.println("Kunde ej skapa order.");
+                return false;
+            }
+
+            // Lägg till orderprodukter och uppdatera lagerstatus
             orderRepository.orderProductInsert(orderId, cart);
-            // Kallar på metod som uppdaterar lagerstatusen med produkterna i arraylisten som argument
             orderRepository.updateStock(cart);
 
-            System.out.println("Du har lagt en order. ID: "+orderId);
-            return true;
+            // Beräkna totalpris och applicera rabatt
+            double totalPrice = getTotalPrice(cart);
+            double finalPrice = customer.applyDiscount(totalPrice);
 
-        } catch (SQLException e){
-            System.out.println("Ett fel uppstod: "+e.getMessage());
+            // Lägg till poäng för köpet och uppdatera kundens poäng i databasen
+            int earnedPoints = (int) finalPrice;
+            customer.addPoints(earnedPoints);
+            customerRepository.updateCustomerPoints(customerId, customer.getPoints());
+
+            // Utskrift av orderinformation
+            System.out.println("Order bearbetad för " + customer.getName());
+            System.out.println("Du har lagt en order. Totalt pris: " + String.format("%.2f", finalPrice));
+            System.out.println("Rabatt tillämpad: " + customer.getDiscountLevel().getDiscount() + "%");
+            System.out.println("Totalbelopp efter rabatt: " + String.format("%.2f", applyDiscount(customer, totalPrice)));
+            System.out.println("Nya lojalitetspoäng: " + customer.getPoints());
+            System.out.println("Nuvarande lojalitetsnivå: " + customer.getDiscountLevel());
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Ett fel uppstod: " + e.getMessage());
             return false;
         }
-
     }
+
+
     // Metod för att hämta orderhistorik
     public void getOrderHistory(int customerId) throws SQLException{
         // Kallar på getOrderHistory-metoden och sparar resultatet i en ArrayList
@@ -72,6 +100,12 @@ public class OrderService {
         }
         return totalPrice;
     }
+    public double applyDiscount(Customer customer, double totalPrice)
+    {
+        int discount = customer.getDiscountLevel().getDiscount();
+        return Math.round(totalPrice * (1 - (discount / 100.0)) * 100.0) / 100.0;
+    }
+
 
     // Kontroll av lagerstatus
     public boolean orderQuantity(int productId, int quantity) throws SQLException {
