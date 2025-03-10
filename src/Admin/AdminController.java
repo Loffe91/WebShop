@@ -2,7 +2,6 @@ package Admin;
 
 import Customers.Customer;
 import Customers.CustomerService;
-import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -55,6 +54,7 @@ public class AdminController {
     // Metod för att visa kunder
 
     public void showCustomers() throws SQLException {
+        System.out.println("=== Kundhantering ===");
         System.out.println("1. Visa alla kunder. ");
         System.out.println("2. Hämta kund baserat på email. ");
         System.out.println("3. Hämta kund baserat på ID ");
@@ -82,9 +82,12 @@ public class AdminController {
                 return;
             default:
                 System.out.println("Felaktigt val. Försök igen ");
+                showCustomers();
         }
     }
+
     public void showProducts() throws SQLException {
+        System.out.println("=== Produkthantering ===");
         System.out.println("1. Visa varor och lagersaldo");
         System.out.println("2. Uppdatera Pris");
         System.out.println("3. Uppdatera Lagersaldo");
@@ -106,55 +109,76 @@ public class AdminController {
                 return;
             default:
                 System.out.println("Felaktig input. ");
+                showProducts();
         }
     }
 
     public void updateStock() throws SQLException{
-        System.out.println("Ange ID: ");
-        int quantProductId = Integer.parseInt(scanner.nextLine());
-        System.out.println("Ange ny lagerstatus: ");
-        int newStock = Integer.parseInt(scanner.nextLine());
-
-        adminService.updateProductStock(quantProductId, newStock);
+        try{
+            System.out.println("Ange ID: ");
+            int quantProductId = Integer.parseInt(scanner.nextLine());
+            System.out.println("Ange ny lagerstatus: ");
+            int newStock = Integer.parseInt(scanner.nextLine());
+            adminService.updateProductStock(quantProductId, newStock);
+        } catch (NumberFormatException e){
+            System.out.println("ID och lagerstatus kan endast anges med siffror");
+            showProducts();
+        }
     }
     public void updatePrice() throws SQLException{
-        System.out.println("Ange ID: ");
-        String idString = scanner.nextLine();
-        int productId = Integer.parseInt(idString);
 
-        System.out.println("Ange nytt pris: ");
-        String prisString = scanner.nextLine();
-        double newPrice = Double.parseDouble(prisString);
-        adminService.updateProductPrice(productId, newPrice);
+        try {
+            System.out.println("Ange ID: ");
+            int productId = Integer.parseInt(scanner.nextLine());
+            System.out.println("Ange nytt pris: ");
+            double newPrice = Double.parseDouble(scanner.nextLine());
+            adminService.updateProductPrice(productId, newPrice);
+        } catch (NumberFormatException e){
+            System.out.println("ID och pris kan endast anges med siffror. ");
+            showProducts();
+        }
     }
+
     public void getCustomerByEmail() throws SQLException{
         System.out.println("Ange mail: ");
         String mail = scanner.nextLine();
         Customer customerByEmail = adminService.getCustomerByEmail(mail); // Spara den returnerade kunden
         if(customerByEmail != null){ // Om kund hittas, skriv ut ID, namn & mail
-            System.out.println("ID: "+ customerByEmail.getUserId());
-            System.out.println("Namn: "+ customerByEmail.getName());
-            System.out.println("Email: "+ customerByEmail.getEmail());
+            System.out.println("ID: " + customerByEmail.getUserId());
+            System.out.println("Namn: " + customerByEmail.getName());
+            System.out.println("Email: " + customerByEmail.getEmail());
+        }
+        else {
+            showCustomers();
         }
     }
+
     public void getCustomerById() throws SQLException{
-        System.out.println("Ange ID: ");
-        String idString = scanner.nextLine(); // Hämta id och konvertera till en stril
-        int id = Integer.parseInt(idString);
-        Customer customerById = adminService.getCustomerById(id); // Spara customerById till Customer
-        if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
-            System.out.println("ID: "+customerById.getUserId()); // Skriv ut info
-            System.out.println("Namn: "+customerById.getName());
-            System.out.println("Email: "+customerById.getEmail());
+        try {
+            System.out.println("Ange ID: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            Customer customerById = adminService.getCustomerById(id); // Spara customerById till Customer
+            if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
+                System.out.println("ID: " + customerById.getUserId()); // Skriv ut info
+                System.out.println("Namn: " + customerById.getName());
+                System.out.println("Email: " + customerById.getEmail());
+            }
+            else {
+                showCustomers();
+            }
+        } catch (NumberFormatException e){
+            System.out.println("Ange ID med ett heltal");
         }
     }
-    public void deleteCustomer()throws SQLException{
+
+    public void deleteCustomer() throws SQLException{
         System.out.println("Ange ID på kunden du vill ta bort: ");
         try {
             int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
             adminService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
         } catch (NumberFormatException e) {
             System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
+            showCustomers();
         }
     }
 }
