@@ -38,8 +38,11 @@ public class CustomerRepository {
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
                         rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
-                        rs.getString("email"),
-                        rs.getString("password")// Hämta email
+                        rs.getString("email"), // Hämta email
+                        rs.getString("password"),
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
+
                 );
                 customers.add(customer);
             }
@@ -64,7 +67,7 @@ public class CustomerRepository {
             throw new IllegalArgumentException("Ogiltigt telefonnummer. Ange endast siffror, med valfritt '+' i början.");
         }
 
-        String sql = "INSERT INTO customers(name, email, phone, address, password) VALUES(?, ?, ?, ?, ?)"; // Frågetecknen är placeholders för värdena som tas in av användaren
+        String sql = "INSERT INTO customers(name, email, phone, address, password, isNewCustomer) VALUES(?, ?, ?, ?, ?, ?)"; // Frågetecknen är placeholders för värdena som tas in av användaren
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, name); // Sätter värdet av name till det första frågetecknet
@@ -72,7 +75,9 @@ public class CustomerRepository {
                 pstmt.setString(3, phone);
                 pstmt.setString(4, address);
                 pstmt.setString(5, password);
+                pstmt.setBoolean(6, true); // Ny kund sätts som true vid registrering
                 pstmt.executeUpdate();
+
         } catch (SQLException e){
             if(e.getMessage().contains("UNIQUE constraint failed")){ // Kollar så mailadressen ej används
                 throw new SQLException("Denna email är redan registrerad. Välj en annan");
@@ -96,7 +101,9 @@ public class CustomerRepository {
                        rs.getInt("customer_id"),
                        rs.getString("name"),
                        rs.getString("email"),
-                       rs.getString("password")
+                       rs.getString("password"),
+                       rs.getBoolean("isNewCustomer"),
+                       rs.getInt("points")
                );
            }
            else {
@@ -119,7 +126,9 @@ public class CustomerRepository {
                         rs.getInt("customer_id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
                 );
             }
             else {
@@ -165,7 +174,10 @@ public class CustomerRepository {
                         rs.getInt("customer_id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("password")
+                        rs.getString("password"),
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
+
                 );
             } else {
                 System.out.println("Felaktig mailadress");
@@ -193,6 +205,21 @@ public class CustomerRepository {
                 return false;
             }
         }
+    /**
+     * Uppdaterar kundens poäng i databasen.
+     */
+    public void updateCustomerPoints(int customerId, int points) {
+        String query = "UPDATE customers SET points = ? WHERE customer_id = ?";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, points);
+            statement.setInt(2, customerId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Fel vid uppdatering av poäng: " + e.getMessage());
+        }
+    }
+
 
 }
 

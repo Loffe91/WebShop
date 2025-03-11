@@ -5,6 +5,7 @@ import Orders.OrderController;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -97,6 +98,9 @@ public class ProductController {
         System.out.println("\n=== Kategorier ===");
         System.out.println("-----------------");
         String chosenCategory = productService.categoryNames();
-        productService.selectCategories(chosenCategory);
+
+        if(!Objects.equals(chosenCategory, "0")){
+            productService.selectCategories(chosenCategory);
+        }
     }
 }

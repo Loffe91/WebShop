@@ -35,6 +35,7 @@ public class AdminService {
             System.out.println("ID: " + customer.getUserId());
             System.out.println("Namn: " + customer.getName());
             System.out.println("Email: " + customer.getEmail());
+            System.out.println("Poäng:" + customer.getPoints());
             System.out.println("-----------------");
         }
     }

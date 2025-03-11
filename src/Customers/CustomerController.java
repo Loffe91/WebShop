@@ -134,6 +134,8 @@ public class CustomerController {
         System.out.println("ID: "+loggedIn.getUserId());
         System.out.println("Namn: "+loggedIn.getName());
         System.out.println("Email: "+loggedIn.getEmail());
+        System.out.println("Poäng: "+loggedIn.getPoints());
+
 
     }
 
