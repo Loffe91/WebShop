@@ -75,7 +75,7 @@ public class CustomerService {
     }
 
     public void deleteCustomer(int customerId) throws SQLException{
-        CustomerRepository.deleteCustomer(customerId);
+        customerRepository.deleteCustomer(customerId);
     }
 }
     /**

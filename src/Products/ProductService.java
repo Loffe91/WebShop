@@ -112,13 +112,6 @@ public class ProductService {
     public void selectCategories(String category) throws SQLException {
         ArrayList<Product> products = productRepository.selectCategories(category);
 
-        if (products.isEmpty()) {
-            System.out.println("-----------------");
-            System.out.println("Inga produkter hittades.");
-            System.out.println("-----------------");
-            return;
-        }
-
         System.out.println("\n=== Produktlista " + category + " ===");
         System.out.println("-----------------");
         for (Product product : products) {
@@ -156,7 +149,8 @@ public class ProductService {
                     System.out.println("-----------------------");
                     System.out.println("Avbryter...");
                     System.out.println("-----------------------");
-                    break;
+                    return "0";
+
                 } else {
                     System.out.println("-----------------------");
                     System.out.println("Ogiltigt val, försök igen.");
@@ -169,6 +163,5 @@ public class ProductService {
                 System.out.println("-----------------------");
             }
         }
-        return null;
     }
 }

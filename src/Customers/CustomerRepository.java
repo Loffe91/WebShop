@@ -139,7 +139,7 @@ public class CustomerRepository {
     }
     // Tar bort en kund från databasen baserat på kund-ID.
 
-    public static void deleteCustomer(int customerId) throws SQLException {
+    public void deleteCustomer(int customerId) throws SQLException {
         String sql = "DELETE FROM customers WHERE customer_id = ?";
 
         try (Connection conn = DriverManager.getConnection(URL);
@@ -149,8 +149,6 @@ public class CustomerRepository {
 
             if (affectedRows == 0) {
                 System.out.println("Ingen kund med det angivna ID:t hittades.");
-            } else {
-                System.out.println("Kunden med ID " + customerId + " har tagits bort.");
             }
         }
     }
