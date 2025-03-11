@@ -7,14 +7,19 @@ import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class AdminService {
+
+    private static final Logger logger = Logger.getLogger(AdminService.class.getName());
+
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
     public AdminService() {
         this.customerRepository = new CustomerRepository();
         this.productRepository = new ProductRepository();
+
     }
 
     /// Hämta alla kunder från repository-lagret
@@ -24,7 +29,7 @@ public class AdminService {
 
         /// Kontrollera om vi har några kunder att visa
         if (customers.isEmpty()) {
-            System.out.println("Inga kunder hittades.");
+            logger.warning("Försökte visa alla kunder, men inga hittades.");
             return;
         }
 
@@ -51,6 +56,7 @@ public class AdminService {
         //Kontrollera om kunden finns innan borttagning
         Customer customer = customerRepository.getCustomerById(customerId);
         if (customer == null) {
+            logger.warning("Kunden med ID " + customerId + " hittades inte. Ingen borttagning skedde");
             return;
         }
 
@@ -63,7 +69,7 @@ public class AdminService {
     public void showAllProducts() throws SQLException {
         ArrayList<Product> products = productRepository.getAllProducts();
         if (products.isEmpty()) {
-            System.out.println("Inga produkter hittades.");
+            logger.warning("Inga produkter hittades.");
             return;
         }
         System.out.println("\n=== Produktlista ===");
@@ -81,7 +87,7 @@ public class AdminService {
         productRepository.updateProductPrice(productId, newPrice);
     }
 
-    ///uppdatera lagersaldo för vara
+    ///Uppdatera lagersaldo för vara
     public void updateProductStock(int productId, int quantity) throws SQLException {
         productRepository.updateProductStock(productId, quantity);
     }
