@@ -193,7 +193,19 @@ public class CustomerRepository {
     * @return true om uppdateringen lyckas, annars false.
     */
         public boolean updateCustomer(Customer customer) {
+            /*String email = customer.getEmail();
+
+            // Om e-postfältet INTE är tomt, validera det
+            if (!email.isEmpty()) {
+                String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+                if (!Pattern.matches(emailRegex, email)) {
+                    System.out.println("--------------------------");
+                    throw new IllegalArgumentException("Ogiltig e-postadress. Vänligen ange en korrekt email.");
+                }
+            }*/
+
             String sql = "UPDATE customers SET name = ?, email = ?, password = ?, points = ?, isNewCustomer = ? WHERE customer_id = ?";
+
             try (Connection conn = DriverManager.getConnection(URL);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

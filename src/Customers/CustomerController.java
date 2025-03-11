@@ -2,11 +2,11 @@ package Customers;
 
 import Orders.OrderController;
 import Products.ProductController;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.logging.*;
-import Products.ProductController;
+import java.util.logging.Logger;
 
 
 /**
@@ -78,7 +78,7 @@ public class CustomerController {
                         deleteAccount();
                         break;
                     case "0":
-                        System.out.println("\nLoggar ut... ");
+                        SystemUtils.logoutAnimation();
                         return;
 
                     default:
@@ -106,6 +106,7 @@ public class CustomerController {
         System.out.println();
         System.out.println("1. Ta bort mitt konto");
         System.out.println("2. Gå tillbaka till mina sidor");
+        System.out.print("Välj ett alternativ: ");
 
         String choice = scanner.nextLine().trim(); //variabel för val, för att slippa upprepa
         // scanner nextLine och få extra rader och knapptryck efter vald siffra.
@@ -126,7 +127,7 @@ public class CustomerController {
             }
         }
         else if(choice.equalsIgnoreCase("2")){
-            System.out.println("Tillbaka till mina sidor");
+            SystemUtils.tillbakaAnimation("mina sidor (kundmeny)");
         }
         else {
             System.out.println("Ogiltigt val, försök igen");
@@ -165,7 +166,9 @@ public class CustomerController {
                 password.isEmpty() ? null : password // ----------- !! -----------
         );
 
-        if(success){
+        if (name.isBlank() && email.isBlank() && password.isBlank()) {
+            System.out.println("Dina uppgifter är oförändrade.");
+        } else if (success) {
             System.out.println("Dina uppgifter har uppdaterats. ");
         } else {
             System.out.println("Uppdatering misslyckades. ");
@@ -188,6 +191,7 @@ public class CustomerController {
         System.out.println("4. Lägg till vara i varukorgen ");
         System.out.println("5. Ta varukorgen till kassan");
         System.out.println("0. Tillbaka ");
+        System.out.print("Välj ett alternativ: ");
 
         String select = scanner.nextLine().trim();
 
@@ -208,9 +212,10 @@ public class CustomerController {
                 placeOrder();
                 break;
             case "0":
+                SystemUtils.tillbakaAnimation("kundmeny");
                 return;
             default:
-                System.out.println("Felaktig input. Försök igen");
+                logger.warning("Felaktig input. Försök igen");
         }
     }
     public void removeItemFromCart(){

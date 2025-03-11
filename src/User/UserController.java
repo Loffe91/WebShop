@@ -5,6 +5,7 @@ import Customers.Customer;
 import Customers.CustomerController;
 import Admin.AdminController;
 import Customers.CustomerService;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -82,17 +83,8 @@ public class UserController {
                         }
                         break;
                     case "0":
-                        try {
-                            for (int i = 0; i < 3; i++) { // Lägger till tre punkter med fördröjning
-                                Thread.sleep(500);
-                                System.out.print(".");
-                            }
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-
-                        System.out.println("\nProgrammet avslutat.");
                         scanner.close();
+                        SystemUtils.avslutarAnimation();
                         return; // Avslutar programmet
                     default:
                         logger.warning("Ogiltigt val, försök igen");
