@@ -83,7 +83,7 @@ public class OrderController {
         orderService.getOrderHistory(loggedIn.getUserId());
     }
 
-    public void addProductToCart() throws SQLException{
+    public void addProductToCart() throws SQLException{//      <------- Fortsätt med loggers
         System.out.println("Ange produkt-ID på önskad vara: ");
         int productId = Integer.parseInt(scanner.nextLine().trim());
 
