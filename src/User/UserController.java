@@ -8,6 +8,7 @@ import Customers.CustomerService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 
@@ -22,7 +23,9 @@ public class UserController {
     // Scanner för användarinput
     Scanner scanner;
 
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+
     private boolean isValidEmail(String email) {
         return Pattern.matches(EMAIL_REGEX, email);
     }
@@ -70,7 +73,7 @@ public class UserController {
 
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
                             if (!this.isValidEmail(email)) {
-                                System.out.println("Email invalid");
+                                logger.info("Ogiltlig mailadress: " + email);
                                 continue;
                             }
 
