@@ -3,10 +3,12 @@ package Orders;
 import Customers.Customer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class OrderController {
+
+    private static final Logger logger = Logger.getLogger(OrderController.class.getName());
 //meny för att hantera input användare
     OrderService orderService;
     Customer loggedIn;
@@ -26,7 +28,7 @@ public class OrderController {
                 System.out.println("2. Visa orderhistorik ");
                 System.out.println("0. Gå tillbaka");
 
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
                 switch (select) {
                     case "1":
@@ -43,12 +45,12 @@ public class OrderController {
                         System.out.println("Återgår till kundmenyn");
                         return;
                     default:
-                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
+                        logger.warning("Felaktigt val, försök igen ");
                 }
             } catch (SQLException e) {
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                logger.warning( "Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                logger.warning("Ett oväntat fel uppstod: " + e.getMessage());
             }
         }
     }
@@ -56,13 +58,13 @@ public class OrderController {
     public void placeOrder() throws SQLException {
         // Kontrollerar så att korgen ej är tom
         if(loggedIn.cart.isEmpty()){
-            System.out.println("Ordern kunde ej slutföras då varukorgen är tom. ");
+            logger.warning("Varukorgen är tom, köpet kunde ej genomföras. ");
             return;
         }
         // Kontrollerar att det finns tillräckligt i lagret
         for(OrderProduct product : loggedIn.cart){
             if(!orderService.orderQuantity(product.getProductId(), product.getQuantity())){
-                System.out.println("Finns ej tillräckligt i lager av produkt-ID: "+product.getProductId());
+                logger.warning("Lagersaldot för vald vara, " + product.getProductId() + " är för lågt, köpet genomfördes inte ");
                 return;
             }
         }
@@ -73,8 +75,7 @@ public class OrderController {
 
             loggedIn.clearCart();
         } else {
-            System.out.println("Order kunde ej skapas");
-
+            logger.warning("Oväntat fel uppstod, ordern skapades ej. ");
         }
     }
 

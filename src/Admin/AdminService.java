@@ -7,28 +7,33 @@ import Products.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class AdminService {
+
+    private static final Logger logger = Logger.getLogger(AdminService.class.getName());
+
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
     public AdminService() {
-
         this.customerRepository = new CustomerRepository();
         this.productRepository = new ProductRepository();
+
     }
 
+    /// Hämta alla kunder från repository-lagret
     public void showAllUsers() throws SQLException {
-        // Hämta alla kunder från repository-lagret
+
         ArrayList<Customer> customers = customerRepository.getAllCustomers();
 
-        // Kontrollera om vi har några kunder att visa
+        /// Kontrollera om vi har några kunder att visa
         if (customers.isEmpty()) {
-            System.out.println("Inga kunder hittades.");
+            logger.warning("Försökte visa alla kunder, men inga hittades.");
             return;
         }
 
-        // Skriv ut alla kunder med tydlig formatering
+        /// Skriv ut alla kunder med tydlig formatering
         System.out.println("\n=== Kundlista ===");
         for (Customer customer : customers) {
             System.out.println("ID: " + customer.getUserId());
@@ -38,32 +43,33 @@ public class AdminService {
             System.out.println("-----------------");
         }
     }
-
+    ///Metod för att hämta kund baserat på e-mail
     public Customer getCustomerByEmail(String email) throws SQLException {
         return customerRepository.getCustomerByEmail(email);
     }
-
+    ///Metod för att hämta kund baserat på ID
     public Customer getCustomerById(int id) throws SQLException {
         return customerRepository.getCustomerById(id);
     }
-
+    ///Metod för att ta bort kund
     public void deleteCustomer(int customerId) throws SQLException {
-        // Kontrollera om kunden finns innan borttagning
+        //Kontrollera om kunden finns innan borttagning
         Customer customer = customerRepository.getCustomerById(customerId);
         if (customer == null) {
+            logger.warning("Kunden med ID " + customerId + " hittades inte. Ingen borttagning skedde");
             return;
         }
 
-        // Ta bort kunden
+        ///Ta bort kunden från customerRepository
         customerRepository.deleteCustomer(customerId);
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
 
-    //Se produkter
+    ///Se alla produkter
     public void showAllProducts() throws SQLException {
         ArrayList<Product> products = productRepository.getAllProducts();
         if (products.isEmpty()) {
-            System.out.println("Inga produkter hittades.");
+            logger.warning("Inga produkter hittades.");
             return;
         }
         System.out.println("\n=== Produktlista ===");
@@ -76,12 +82,13 @@ public class AdminService {
         }
     }
 
-    //uppdatera pris på vara
+    ///Uppdatera pris på vara
     public void updateProductPrice(int productId, double newPrice) throws SQLException {
         productRepository.updateProductPrice(productId, newPrice);
     }
 
-    public void updateProductStock(int productId, int newStock) throws SQLException{
-        productRepository.updateProductStock(productId, newStock);
+    ///Uppdatera lagersaldo för vara
+    public void updateProductStock(int productId, int quantity) throws SQLException {
+        productRepository.updateProductStock(productId, quantity);
     }
 }

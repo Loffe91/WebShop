@@ -105,7 +105,7 @@ public class CustomerController {
         System.out.println("1. Ta bort mitt konto");
         System.out.println("2. Gå tillbaka till mina sidor");
 
-        String choice = scanner.nextLine(); //variabel för val, för att slippa upprepa
+        String choice = scanner.nextLine().trim(); //variabel för val, för att slippa upprepa
         // scanner nextLine och få extra rader och knapptryck efter vald siffra.
 
         if (choice.equalsIgnoreCase("1")) {
@@ -145,16 +145,16 @@ public class CustomerController {
         System.out.println("De fält du ej vill ändra kan du lämna tomma ");
 
         System.out.println("Nytt namn: ");
-        String name = scanner.nextLine();
+        String name = scanner.nextLine().trim();
         if(!name.isBlank()){ // För att uppdatera namnvariabeln i realtid och inte bara för databasen
             loggedIn.setName(name);
         }
 
         System.out.println("Ny mailadress: ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
 
         System.out.println("Nytt lösenord: ");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
 
         boolean success = customerService.updateCustomerInfo(
                 loggedIn.getUserId(), // Hämtar den inloggade kundens ID
@@ -187,7 +187,7 @@ public class CustomerController {
         System.out.println("5. Ta varukorgen till kassan");
         System.out.println("0. Tillbaka ");
 
-        String select = scanner.nextLine();
+        String select = scanner.nextLine().trim();
 
         switch (select){
             case "1":
@@ -213,7 +213,7 @@ public class CustomerController {
     }
     public void removeItemFromCart(){
         System.out.println("Ange produkt-ID på varan du vill ta bort: ");
-        int productId = Integer.parseInt(scanner.nextLine());
+        int productId = Integer.parseInt(scanner.nextLine().trim());
         loggedIn.removeFromCart(productId);
     }
     // Metod för att ta varukorgen till kassan
