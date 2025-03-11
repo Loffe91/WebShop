@@ -48,10 +48,7 @@ public class UserController {
                 // Skriv ut menyalternativ direkt i run-metoden för tydlighet
                 System.out.println("\n=== Meny ===");
                 System.out.println("1. Logga in");
-                //System.out.println("2. Visa kunder");
                 System.out.println("2. Skapa konto");
-                //System.out.println("4. Ta bort en kund baserat på ID");
-                //System.out.println("5. Uppdatera kund");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
@@ -64,9 +61,6 @@ public class UserController {
                     case "1":
                         login();
                         break;
-                    //case "2":
-                    //    showCustomers();
-                    //    break;
                     case "2":
                         System.out.println("Ange namn: "); String name = scanner.nextLine().trim();
                         System.out.println("Ange mailadress: "); String email = scanner.nextLine().trim();

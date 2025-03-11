@@ -12,7 +12,6 @@ public class AdminService {
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
-///Konstruktor för initialisering av repository lagren
     public AdminService() {
         this.customerRepository = new CustomerRepository();
         this.productRepository = new ProductRepository();

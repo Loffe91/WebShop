@@ -88,7 +88,7 @@ public class ProductService {
         boolean found = false;
 
         for (Product product : products) {
-            if (product.getName().toLowerCase().contains(productName)) {
+            if (product.getDescription().toLowerCase().contains(productName)) {
                 System.out.println("-------------------");
                 System.out.println("ID: " + product.getProductId());
                 System.out.println("Namn: " + product.getName());
