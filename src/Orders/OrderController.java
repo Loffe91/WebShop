@@ -70,8 +70,7 @@ public class OrderController {
         boolean successfulOrder = orderService.placeOrder(loggedIn.getUserId(), loggedIn.cart);
         // Om produkterna finns i lager skapas en order av customerId och innehållet i varukorgen
         if (successfulOrder){
-            double totalPrice = orderService.getTotalPrice(loggedIn.cart);
-            System.out.println("Du har lagt en order. Totalt pris: "+totalPrice);
+
             loggedIn.clearCart();
         } else {
             System.out.println("Order kunde ej skapas");

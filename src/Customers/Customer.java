@@ -1,7 +1,6 @@
 package Customers;
 
 import Orders.OrderProduct;
-import Products.Product;
 import User.User;
 
 import java.util.ArrayList;
@@ -22,10 +21,10 @@ public class Customer extends User {
      * Konstruktor för att skapa en ny Customer.
      * Tar emot all nödvändig information för en kund.
      */
-    public Customer(int userId, String name, String email, String password, boolean isNewCustomer) {
+    public Customer(int userId, String name, String email, String password, boolean isNewCustomer, int points) {
         super(email, password);
         setUserId(userId);
-        this.points = 0;
+        this.points = points;
         this.name = name;
         this.isNewCustomer = isNewCustomer;
         this.cart = new ArrayList<>();
@@ -62,8 +61,8 @@ public class Customer extends User {
      * Metod för att få kundens nuvarande rabattnivå.
      * Returnerar en DiscountLevel baserat på kundens poäng och om de är en ny kund.
      */
-    public LoyaltyLevel getDiscountLevel() {
-        return LoyaltyLevel.getLevel(this.points, this.isNewCustomer);
+    public DiscountLevel getDiscountLevel() {
+        return DiscountLevel.getLevel(this.points, this.isNewCustomer);
     }
 
     /**

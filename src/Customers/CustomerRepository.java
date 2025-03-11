@@ -38,9 +38,11 @@ public class CustomerRepository {
                 Customer customer = new Customer(
                         rs.getInt("customer_id"),     // Hämta ID från customer_id kolumnen
                         rs.getString("name"),   // Hämta förnamn,    // Hämta efternamn
-                        rs.getString("email"),
+                        rs.getString("email"), // Hämta email
                         rs.getString("password"),
-                        rs.getBoolean("isNewCustomer")// Hämta email
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
+
                 );
                 customers.add(customer);
             }
@@ -100,7 +102,8 @@ public class CustomerRepository {
                        rs.getString("name"),
                        rs.getString("email"),
                        rs.getString("password"),
-                       rs.getBoolean("isNewCustomer")
+                       rs.getBoolean("isNewCustomer"),
+                       rs.getInt("points")
                );
            }
            else {
@@ -124,7 +127,8 @@ public class CustomerRepository {
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getBoolean("isNewCustomer")
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
                 );
             }
             else {
@@ -173,7 +177,8 @@ public class CustomerRepository {
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getBoolean("isNewCustomer")
+                        rs.getBoolean("isNewCustomer"),
+                        rs.getInt("points")
 
                 );
             } else {

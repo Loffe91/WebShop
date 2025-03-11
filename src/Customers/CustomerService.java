@@ -70,8 +70,7 @@ public class CustomerService {
         if (password == null || password.isBlank()){ // ---------- !! ---------
             password = currentCustomer.getPassword();
         }
-        Customer updatedCustomer = new Customer(customerId, name, email, password, currentCustomer.isNewCustomer());
-
+        Customer updatedCustomer = new Customer(customerId, name, email, password, currentCustomer.isNewCustomer(), currentCustomer.getPoints());
         return customerRepository.updateCustomer(updatedCustomer); // Skickar den uppdaterade kunden till databasen
     }
 

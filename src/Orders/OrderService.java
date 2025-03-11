@@ -63,9 +63,9 @@ public class OrderService {
 
             // Utskrift av orderinformation
             System.out.println("Order bearbetad för " + customer.getName());
-            System.out.println("Du har lagt en order. Totalt pris: " + String.format("%.2f", finalPrice));
+            System.out.println("Du har lagt en order. Totalt pris: " + String.format("%.2f", totalPrice));
             System.out.println("Rabatt tillämpad: " + customer.getDiscountLevel().getDiscount() + "%");
-            System.out.println("Totalbelopp efter rabatt: " + String.format("%.2f", applyDiscount(customer, totalPrice)));
+            System.out.println("Totalbelopp efter rabatt: " + String.format("%.2f", applyDiscount(customer, finalPrice)));
             System.out.println("Nya lojalitetspoäng: " + customer.getPoints());
             System.out.println("Nuvarande lojalitetsnivå: " + customer.getDiscountLevel());
 
