@@ -56,7 +56,7 @@ public class UserController {
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
 
                 // Hantera användarens val
@@ -68,11 +68,11 @@ public class UserController {
                     //    showCustomers();
                     //    break;
                     case "2":
-                        System.out.println("Ange namn: "); String name = scanner.nextLine();
-                        System.out.println("Ange mailadress: "); String email = scanner.nextLine();
-                        System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine();
-                        System.out.println("Ange hemadress: "); String address = scanner.nextLine();
-                        System.out.println("Ange lösenord: "); String password = scanner.nextLine();
+                        System.out.println("Ange namn: "); String name = scanner.nextLine().trim();
+                        System.out.println("Ange mailadress: "); String email = scanner.nextLine().trim();
+                        System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine().trim();
+                        System.out.println("Ange hemadress: "); String address = scanner.nextLine().trim();
+                        System.out.println("Ange lösenord: "); String password = scanner.nextLine().trim();
 
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
                             if (!this.isValidEmail(email)) {
@@ -107,9 +107,9 @@ public class UserController {
     /// Metod för att logga in
     public void login() throws SQLException {
         System.out.println("Ange email: ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
         System.out.println("Ange lösenord: ");
-        String password = scanner.nextLine();
+        String password = scanner.nextLine().trim();
 
         User loggedIn = userService.login(email, password); // Sparar en user till LoggedIn
 

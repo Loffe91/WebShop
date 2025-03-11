@@ -136,7 +136,7 @@ public class ProductService {
                 }
 
                 System.out.print("Välj en produkt genom att ange dess nummer (välj 0 för att avbryta): ");
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
                 int choice = Integer.parseInt(select);
 

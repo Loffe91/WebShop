@@ -46,7 +46,7 @@ public class ProductController {
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
                 // Hantera användarens val
                 switch (select) {
@@ -84,7 +84,7 @@ public class ProductController {
         System.out.println("\n=== Sök produkt ===");
         System.out.print("Sök: ");
 
-        String search = scanner.nextLine();
+        String search = scanner.nextLine().trim();
 
         try {
             productService.selectProductByName(search.trim()); ///trim tar bort blanksteg (mellanslag) innan och efter input
