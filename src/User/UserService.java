@@ -11,14 +11,14 @@ import java.sql.*;
  */
 
 public class UserService {
-    // Repo för databashantering
+    /// Repo för databashantering
     CustomerRepository customerRepository;
 
     public UserService(){
         this.customerRepository = new CustomerRepository();
     }
 
-    // Metod för att logga in
+    /// Metod för att logga in
     public User login(String email, String password) throws SQLException {
         // Kontrollera om det är en admin eller customer som försöker logga in
         if(email.equals("admin@webshop.com") && password.equals("123")){
