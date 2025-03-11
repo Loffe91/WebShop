@@ -84,10 +84,10 @@ public class OrderController {
 
     public void addProductToCart() throws SQLException{
         System.out.println("Ange produkt-ID på önskad vara: ");
-        int productId = Integer.parseInt(scanner.nextLine());
+        int productId = Integer.parseInt(scanner.nextLine().trim());
 
         System.out.println("Ange antal: ");
-        int quantity = Integer.parseInt(scanner.nextLine());
+        int quantity = Integer.parseInt(scanner.nextLine().trim());
 
         if (quantity <= 0){
             System.out.println("Kan lägga till minst 1 vara");
