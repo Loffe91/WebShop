@@ -58,7 +58,6 @@ public class UserController {
                 // Läs användarens val
                 String select = scanner.nextLine().trim();
 
-
                 // Hantera användarens val
                 switch (select) {
                     case "1":
@@ -70,31 +69,40 @@ public class UserController {
                         System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine().trim();
                         System.out.println("Ange hemadress: "); String address = scanner.nextLine().trim();
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine().trim();
-
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
                             if (!this.isValidEmail(email)) {
-                                logger.info("Ogiltlig mailadress: " + email);
+                                logger.warning("Ogiltlig mailadress: " + email);
                                 continue;
                             }
 
                             customerService.addCustomer(name, email, phone, address, password);
                             break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
                         } catch (Exception e){
-                            System.out.println(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
+                            logger.severe(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
                         }
                         break;
                     case "0":
-                        System.out.println("Avslutar kundhantering...");
-                        return;
+                        try {
+                            for (int i = 0; i < 3; i++) { // Lägger till tre punkter med fördröjning
+                                Thread.sleep(500);
+                                System.out.print(".");
+                            }
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+
+                        System.out.println("\nProgrammet avslutat.");
+                        scanner.close();
+                        return; // Avslutar programmet
                     default:
-                        System.out.println("Ogiltigt val, försök igen");
+                        logger.warning("Ogiltigt val, försök igen");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                logger.severe("Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                logger.severe("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
         }
@@ -121,7 +129,7 @@ public class UserController {
                 customerController.run(); // Skickar vidare användaren till CustomerController
             }
         }else {
-            System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
+            logger.warning("Felaktiga inloggningsuppgifter. Försök igen");
         }
 
     }
