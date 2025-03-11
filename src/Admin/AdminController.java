@@ -5,8 +5,12 @@ import Customers.CustomerService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class AdminController {
+
+    private static final Logger logger = Logger.getLogger(AdminController.class.getName());
+
     Admin loggedIn;
     AdminService adminService;
     CustomerService customerService;
@@ -45,7 +49,8 @@ public class AdminController {
                 case "0":
                     return;
                 default:
-                    System.out.println("Felaktigt val. Försök igen");
+                    logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
+
 
             }
         }
@@ -81,7 +86,7 @@ public class AdminController {
             case "0":
                 return;
             default:
-                System.out.println("Felaktigt val. Försök igen ");
+                logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
                 showCustomers();
         }
     }
@@ -108,7 +113,7 @@ public class AdminController {
             case "0":
                 return;
             default:
-                System.out.println("Felaktig input. ");
+                logger.warning("Felaktigt input" + select);
                 showProducts();
         }
     }
@@ -121,7 +126,7 @@ public class AdminController {
             int newStock = Integer.parseInt(scanner.nextLine());
             adminService.updateProductStock(quantProductId, newStock);
         } catch (NumberFormatException e){
-            System.out.println("ID och lagerstatus kan endast anges med siffror");
+            logger.warning("Felaktig inmatning vid uppdatering av lager. Ange antal med siffror.");
             showProducts();
         }
     }
@@ -134,7 +139,7 @@ public class AdminController {
             double newPrice = Double.parseDouble(scanner.nextLine().trim());
             adminService.updateProductPrice(productId, newPrice);
         } catch (NumberFormatException e){
-            System.out.println("ID och pris kan endast anges med siffror. ");
+            logger.warning("Felaktig inmatning vid uppdatering av pris, ID och pris kan endast anges med siffror. ");
             showProducts();
         }
     }
@@ -167,7 +172,7 @@ public class AdminController {
                 showCustomers();
             }
         } catch (NumberFormatException e){
-            System.out.println("Ange ID med ett heltal");
+            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
         }
     }
 
@@ -177,7 +182,7 @@ public class AdminController {
             int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
             adminService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
         } catch (NumberFormatException e) {
-            System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
+            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
             showCustomers();
         }
     }
