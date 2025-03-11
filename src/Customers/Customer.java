@@ -56,9 +56,10 @@ public class Customer extends User {
      */
     public void addPoints(int amount) {
         this.points += amount;
-        this.isNewCustomer = false; // Efter första köpet är kunden inte längre ny
+        if (isNewCustomer) {
+            this.isNewCustomer = false;  // Uppdateras kundens status efter första köpet
+        }
     }
-
     /**
      * Metod för att få kundens nuvarande rabattnivå.
      * Returnerar en DiscountLevel baserat på kundens poäng och om de är en ny kund.

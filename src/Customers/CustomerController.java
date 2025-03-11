@@ -1,6 +1,7 @@
 package Customers;
 
 import Orders.OrderController;
+import Products.ProductController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -32,6 +33,7 @@ public class CustomerController {
         this.loggedIn = customer;
         this.orderController = new OrderController(customer);
         this.productController = new ProductController(customer);
+
     }
 
     /**
