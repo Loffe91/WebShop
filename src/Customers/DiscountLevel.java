@@ -1,7 +1,7 @@
 package Customers;
 
 /**
- * Enum LoyaltyLevel representerar olika lojalitetsnivåer för kunder.
+ * Enum DiscountLevel representerar olika rabattnivåer för kunder.
  * Varje nivå har en specifik rabattprocent.
  */
 public enum DiscountLevel {

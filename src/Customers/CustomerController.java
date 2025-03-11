@@ -1,11 +1,11 @@
 package Customers;
 
 import Orders.OrderController;
+import Products.ProductController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-
-import Orders.OrderProduct;
+import java.util.logging.*;
 import Products.ProductController;
 
 
@@ -21,7 +21,7 @@ public class CustomerController {
     Scanner scanner;
     OrderController orderController;
     ProductController productController;
-
+    private static final Logger logger = Logger.getLogger(CustomerController.class.getName());
     /**
      * Konstruktor för Customers.CustomerController
      * Initierar service och scanner
@@ -33,6 +33,7 @@ public class CustomerController {
         this.loggedIn = customer;
         this.orderController = new OrderController(customer);
         this.productController = new ProductController(customer);
+
     }
 
     /**
@@ -77,17 +78,20 @@ public class CustomerController {
                         deleteAccount();
                         break;
                     case "0":
-                        System.out.println("Loggar ut... ");
+                        System.out.println("\nLoggar ut... ");
                         return;
 
                     default:
-                        System.out.println("Ogiltigt val, försök igen");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
+                        logger.warning("Felaktig input. ");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
+                logger.warning(e.getMessage());
                 System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
+                logger.warning(e.getMessage());
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
@@ -221,6 +225,5 @@ public class CustomerController {
             return;
         }
         orderController.placeOrder();
-
     }
 }

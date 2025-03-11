@@ -47,6 +47,7 @@ public class AdminController {
                     showProducts();
                     break;
                 case "0":
+                    System.out.println("\nLoggar ut...");
                     return;
                 default:
                     logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");

@@ -1,6 +1,5 @@
 import User.UserController;
 
-
 public class Main {
     public static void main(String[] args){
 
