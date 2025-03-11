@@ -52,6 +52,10 @@ public class OrderService {
             orderRepository.orderProductInsert(orderId, cart);
             orderRepository.updateStock(cart);
 
+            //  Spara rabattnivå och kundstatus innan poängen ändras
+            int discount = customer.getDiscountLevel().getDiscount();  // Spara rabattvärdet
+            boolean isNewCustomer = customer.isNewCustomer();  // Spara om kunden var ny
+
             // Beräkna totalpris och applicera rabatt
             double totalPrice = getTotalPrice(cart);
             double finalPrice = customer.applyDiscount(totalPrice);
@@ -59,15 +63,19 @@ public class OrderService {
             // Lägg till poäng för köpet och uppdatera kundens poäng i databasen
             int earnedPoints = (int) finalPrice;
             customer.addPoints(earnedPoints);
-            customerRepository.updateCustomerPoints(customerId, customer.getPoints());
+            customerRepository.updateCustomerPoints(customerId, customer.getPoints(), customer.isNewCustomer());
+
 
             // Utskrift av orderinformation
             System.out.println("Order bearbetad för " + customer.getName());
             System.out.println("Du har lagt en order. Totalt pris: " + String.format("%.2f", totalPrice));
-            System.out.println("Rabatt tillämpad: " + customer.getDiscountLevel().getDiscount() + "%");
+            System.out.println("Rabatt tillämpad: " + discount + "%");
             System.out.println("Totalbelopp efter rabatt: " + String.format("%.2f", applyDiscount(customer, finalPrice)));
-            System.out.println("Nya lojalitetspoäng: " + customer.getPoints());
-            System.out.println("Nuvarande lojalitetsnivå: " + customer.getDiscountLevel());
+            System.out.println("Nya Kundpoäng: " + customer.getPoints());
+
+            // Använd den sparade variabeln för att säkerställa att "Ny kund" skrivs ut korrekt
+            String discountLevel = isNewCustomer ? "Ny kund" : customer.getDiscountLevel().name();
+            System.out.println("Nuvarande Kundnivå: " + discountLevel);
 
             return true;
         } catch (SQLException e) {
