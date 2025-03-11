@@ -12,7 +12,6 @@ public class AdminService {
     CustomerRepository customerRepository;
     ProductRepository productRepository;
 
-
     public AdminService() {
 
         this.customerRepository = new CustomerRepository();
