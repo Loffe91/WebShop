@@ -5,8 +5,12 @@ import Customers.CustomerService;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class AdminController {
+
+    private static final Logger logger = Logger.getLogger(AdminController.class.getName());
+
     Admin loggedIn;
     AdminService adminService;
     CustomerService customerService;
@@ -31,7 +35,7 @@ public class AdminController {
             System.out.println("0. Logga ut");
             System.out.println("Välj ett alternativ: ");
 
-            String select = scanner.nextLine();
+            String select = scanner.nextLine().trim();
 
             switch (select){
                 case "1":
@@ -43,9 +47,11 @@ public class AdminController {
                     showProducts();
                     break;
                 case "0":
+                    System.out.println("\nLoggar ut...");
                     return;
                 default:
-                    System.out.println("Felaktigt val. Försök igen");
+                    logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
+
 
             }
         }
@@ -62,7 +68,7 @@ public class AdminController {
         System.out.println("0. Tillbaka. ");
         System.out.println("Välj ett alternativ: ");
 
-        String select = scanner.nextLine();
+        String select = scanner.nextLine().trim();
 
         switch (select){
             case "1":
@@ -81,7 +87,7 @@ public class AdminController {
             case "0":
                 return;
             default:
-                System.out.println("Felaktigt val. Försök igen ");
+                logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
                 showCustomers();
         }
     }
@@ -93,7 +99,7 @@ public class AdminController {
         System.out.println("3. Uppdatera Lagersaldo");
         System.out.println("0. Tillbaka. ");
 
-        String select = scanner.nextLine();
+        String select = scanner.nextLine().trim();
 
         switch (select){
             case "1": //visar alla produkter
@@ -108,7 +114,7 @@ public class AdminController {
             case "0":
                 return;
             default:
-                System.out.println("Felaktig input. ");
+                logger.warning("Felaktigt input" + select);
                 showProducts();
         }
     }
@@ -121,7 +127,7 @@ public class AdminController {
             int newStock = Integer.parseInt(scanner.nextLine());
             adminService.updateProductStock(quantProductId, newStock);
         } catch (NumberFormatException e){
-            System.out.println("ID och lagerstatus kan endast anges med siffror");
+            logger.warning("Felaktig inmatning vid uppdatering av lager. Ange antal med siffror.");
             showProducts();
         }
     }
@@ -129,19 +135,19 @@ public class AdminController {
 
         try {
             System.out.println("Ange ID: ");
-            int productId = Integer.parseInt(scanner.nextLine());
+            int productId = Integer.parseInt(scanner.nextLine().trim());
             System.out.println("Ange nytt pris: ");
-            double newPrice = Double.parseDouble(scanner.nextLine());
+            double newPrice = Double.parseDouble(scanner.nextLine().trim());
             adminService.updateProductPrice(productId, newPrice);
         } catch (NumberFormatException e){
-            System.out.println("ID och pris kan endast anges med siffror. ");
+            logger.warning("Felaktig inmatning vid uppdatering av pris, ID och pris kan endast anges med siffror. ");
             showProducts();
         }
     }
 
     public void getCustomerByEmail() throws SQLException{
         System.out.println("Ange mail: ");
-        String mail = scanner.nextLine();
+        String mail = scanner.nextLine().trim();
         Customer customerByEmail = adminService.getCustomerByEmail(mail); // Spara den returnerade kunden
         if(customerByEmail != null){ // Om kund hittas, skriv ut ID, namn & mail
             System.out.println("ID: " + customerByEmail.getUserId());
@@ -156,7 +162,7 @@ public class AdminController {
     public void getCustomerById() throws SQLException{
         try {
             System.out.println("Ange ID: ");
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = Integer.parseInt(scanner.nextLine().trim());
             Customer customerById = adminService.getCustomerById(id); // Spara customerById till Customer
             if(customerById != null){ // Om en kund med angivet ID finns, dvs customerById är ej null
                 System.out.println("ID: " + customerById.getUserId()); // Skriv ut info
@@ -167,7 +173,7 @@ public class AdminController {
                 showCustomers();
             }
         } catch (NumberFormatException e){
-            System.out.println("Ange ID med ett heltal");
+            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
         }
     }
 
@@ -177,7 +183,7 @@ public class AdminController {
             int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
             adminService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
         } catch (NumberFormatException e) {
-            System.out.println("Ogiltigt ID. Vänligen ange ett numeriskt värde.");
+            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
             showCustomers();
         }
     }

@@ -3,6 +3,7 @@ package Customers;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.util.logging.*;
 
 /**
  * Repository-klass för kundhantering
@@ -16,6 +17,7 @@ public class CustomerRepository {
      * Denna används i varje metod för att ansluta till databasen
      */
     private static final String URL = "jdbc:sqlite:webshop.db";
+    private static final Logger logger = Logger.getLogger(CustomerRepository.class.getName());
 
     /**
      * Hämtar alla kunder från databasen
@@ -166,7 +168,7 @@ public class CustomerRepository {
                 String savedPassword = rs.getString("password");
 
                 if (!savedPassword.equals(password)) { // Om lösenord ej matchar
-                    System.out.println("Felaktigt lösenord. ");
+                    logger.warning("Felaktigt lösenord. ");
                     return null;
                 }
 
@@ -180,7 +182,7 @@ public class CustomerRepository {
 
                 );
             } else {
-                System.out.println("Felaktig mailadress");
+                logger.warning("Felaktig mailadress");
                 return null;
             }
         }

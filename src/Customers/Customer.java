@@ -2,7 +2,7 @@ package Customers;
 
 import Orders.OrderProduct;
 import User.User;
-
+import java.util.logging.*;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +16,7 @@ public class Customer extends User {
     private int points;
     private boolean isNewCustomer;
     public ArrayList<OrderProduct> cart = new ArrayList<>();
+    private static final Logger logger = Logger.getLogger(Customer.class.getName());
 
     /**
      * Konstruktor för att skapa en ny Customer.
@@ -28,6 +29,7 @@ public class Customer extends User {
         this.name = name;
         this.isNewCustomer = isNewCustomer;
         this.cart = new ArrayList<>();
+        logger.info(toString());
     }
 
     // Getters och setters för alla fält

@@ -42,11 +42,12 @@ public class ProductController {
                 System.out.println("2. Visa kategorier");
                 System.out.println("3. Sök produkt");
                 System.out.println("4. Lägg till vara i varukorg ");
-                System.out.println("0. Avsluta");
+                System.out.println("5. Gå till kassan ");
+                System.out.println("0. Gå tillbaka");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
                 // Hantera användarens val
                 switch (select) {
@@ -63,11 +64,13 @@ public class ProductController {
                     case "4":
                         orderController.addProductToCart();
                         break;
+                    case "5":
+                        orderController.placeOrder();
                     case "0":
                         System.out.println("Avslutar produkthantering...");
                         return;
                     default:
-                        System.out.println("Ogiltigt val, försök igen");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
@@ -84,10 +87,10 @@ public class ProductController {
         System.out.println("\n=== Sök produkt ===");
         System.out.print("Sök: ");
 
-        String search = scanner.nextLine();
+        String search = scanner.nextLine().trim();
 
         try {
-            productService.selectProductByName(search.trim());
+            productService.selectProductByName(search.trim()); ///trim tar bort blanksteg (mellanslag) innan och efter input
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
         }

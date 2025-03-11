@@ -3,10 +3,12 @@ package Orders;
 import Customers.Customer;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class OrderController {
+
+    private static final Logger logger = Logger.getLogger(OrderController.class.getName());
 //meny för att hantera input användare
     OrderService orderService;
     Customer loggedIn;
@@ -24,9 +26,9 @@ public class OrderController {
                 System.out.println("\n=== Ordermeny ===");
                 System.out.println("1. Lägg en beställning ");
                 System.out.println("2. Visa orderhistorik ");
-                System.out.println("0. Avsluta ");
+                System.out.println("0. Gå tillbaka");
 
-                String select = scanner.nextLine();
+                String select = scanner.nextLine().trim();
 
                 switch (select) {
                     case "1":
@@ -40,15 +42,15 @@ public class OrderController {
                     case "4":
                         break;
                     case "0":
-                        System.out.println("Avslutar...");
+                        System.out.println("Återgår till kundmenyn");
                         return;
                     default:
-                        System.out.println("Invalid choice, try again");
+                        logger.warning("Felaktigt val, försök igen ");
                 }
             } catch (SQLException e) {
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                logger.warning( "Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                logger.warning("Ett oväntat fel uppstod: " + e.getMessage());
             }
         }
     }
@@ -56,13 +58,13 @@ public class OrderController {
     public void placeOrder() throws SQLException {
         // Kontrollerar så att korgen ej är tom
         if(loggedIn.cart.isEmpty()){
-            System.out.println("Ordern kunde ej slutföras då varukorgen är tom. ");
+            logger.warning("Varukorgen är tom, köpet kunde ej genomföras. ");
             return;
         }
         // Kontrollerar att det finns tillräckligt i lagret
         for(OrderProduct product : loggedIn.cart){
             if(!orderService.orderQuantity(product.getProductId(), product.getQuantity())){
-                System.out.println("Finns ej tillräckligt i lager av produkt-ID: "+product.getProductId());
+                logger.warning("Lagersaldot för vald vara, " + product.getProductId() + " är för lågt, köpet genomfördes inte ");
                 return;
             }
         }
@@ -73,8 +75,7 @@ public class OrderController {
 
             loggedIn.clearCart();
         } else {
-            System.out.println("Order kunde ej skapas");
-
+            logger.warning("Oväntat fel uppstod, ordern skapades ej. ");
         }
     }
 
@@ -83,25 +84,33 @@ public class OrderController {
     }
 
     public void addProductToCart() throws SQLException{
-        System.out.println("Ange produkt-ID på önskad vara: ");
-        int productId = Integer.parseInt(scanner.nextLine());
+        try {
+            System.out.println("Ange produkt-ID på önskad vara: ");
+            int productId = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Ange antal: ");
-        int quantity = Integer.parseInt(scanner.nextLine());
+            System.out.println("Ange antal: ");
+            int quantity = Integer.parseInt(scanner.nextLine());
 
-        if (quantity <= 0){
-            System.out.println("Kan lägga till minst 1 vara");
-            return;
+            if (quantity <= 0 || productId <= 0) {
+                System.out.println("Produkt-ID och antal kan som minst vara 1");
+                return;
+            }
+            if(productId > 90){
+                System.out.println("Finns ej en produkt med det ID:t ( Giltiga ID:s = 1-90 )");
+                return;
+            }
+
+            double unitPrice = orderService.getUnitPrice(productId);
+            // Kallar på servicelagret med id & quantity för att verifiera lagerstatus
+            if (!orderService.orderQuantity(productId, quantity)) {
+                return;
+            }
+            OrderProduct orderProduct = new OrderProduct(productId, quantity, unitPrice);
+            loggedIn.addToCart(orderProduct);
+            System.out.println("Du la till " + quantity + " stycken av vara " + productId + " i varukorgen");
+        } catch (NumberFormatException e){
+            System.out.println("Vänligen ange produkt-ID och antal som heltal. ");
         }
-
-        double unitPrice = orderService.getUnitPrice(productId);
-        // Kallar på servicelagret med id & quantity för att verifiera lagerstatus
-        if(!orderService.orderQuantity(productId, quantity)){
-            return;
-        }
-        OrderProduct orderProduct = new OrderProduct(productId, quantity, unitPrice);
-        loggedIn.addToCart(orderProduct);
-        System.out.println("Du la till "+quantity+" stycken av vara "+productId+" i varukorgen");
 
     }
 }
