@@ -43,9 +43,10 @@ public class AdminController {
                     showProducts();
                     break;
                 case "0":
+                    System.out.println("\nLoggar ut...");
                     return;
                 default:
-                    System.out.println("Felaktigt val. Försök igen");
+                    System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
 
             }
         }

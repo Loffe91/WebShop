@@ -81,10 +81,10 @@ public class UserController {
                         }
                         break;
                     case "0":
-                        System.out.println("Avslutar kundhantering...");
+                        System.out.println("\nAvslutar program...");
                         return;
                     default:
-                        System.out.println("Ogiltigt val, försök igen");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
