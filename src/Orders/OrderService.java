@@ -26,7 +26,6 @@ public class OrderService {
         this.customerRepository = new CustomerRepository();
     }
 
-
     /**
      * Metod för att lägga en order.
      * Tillämpas rabatt baserat på kundens lojalitetsnivå och poäng uppdateras.

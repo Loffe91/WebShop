@@ -6,7 +6,10 @@ import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.logging.Logger;
+import java.util.logging.*;
+import java.util.regex.Pattern;
+
+import Products.ProductController;
 
 
 /**
@@ -69,7 +72,7 @@ public class CustomerController {
                         orderMenu();
                         break;
                     case "4":
-                        productMenu(); //ny
+                        productMenu();
                         break;
                     case "5":
                         cartMenu();
@@ -145,7 +148,7 @@ public class CustomerController {
     }
 
     public void updateCustomerInfo() throws SQLException {
-        System.out.println("De fält du ej vill ändra kan du lämna tomma ");
+        System.out.println("\nDe fält du ej vill ändra kan du lämna tomma ");
 
         System.out.println("Nytt namn: ");
         String name = scanner.nextLine().trim();
@@ -154,7 +157,22 @@ public class CustomerController {
         }
 
         System.out.println("Ny mailadress: ");
-        String email = scanner.nextLine().trim();
+        String email = scanner.nextLine();
+
+        /// Om mailadressen ej är tom, dvs den ska ändras, kontrollerar vi att mailen är giltig
+        /// Mailadressen kan innehålla bokstäver, siffror och "+-_-."-tecken.
+        /// Avslutas med "@", följt av 2-6 bokstäver efter sista punkten
+
+        if (!email.isEmpty()){
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+            if(Pattern.matches(emailRegex, email)){
+                loggedIn.setEmail(email);
+            }
+            else {
+                System.out.println("Ogiltig mailadress. ");
+                return;
+            }
+        }
 
         System.out.println("Nytt lösenord: ");
         String password = scanner.nextLine().trim();
