@@ -85,8 +85,8 @@ public class CustomerController {
                         return;
 
                     default:
-                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                         logger.warning("Användaren gav felaktig input. ");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
@@ -158,7 +158,8 @@ public class CustomerController {
 
         System.out.println("Ny mailadress: ");
         String email = scanner.nextLine();
-        if (!email.isEmpty()){
+        if (!email.isEmpty()){  // Mailadressen kan innehålla bokstäver, siffror och "+-_-."-tecken.
+                                // Avslutas med 2-6 bokstäver efter sista punkten
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
             if(Pattern.matches(emailRegex, email)){
                 loggedIn.setEmail(email);
@@ -229,7 +230,7 @@ public class CustomerController {
                 return;
             default:
                 System.out.println("Felaktig input. Försök igen");
-                logger.warning("Feelaktig input. ");
+                logger.warning("Felaktig input. ");
         }
     }
     public void removeItemFromCart(){
