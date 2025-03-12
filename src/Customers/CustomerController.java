@@ -158,7 +158,8 @@ public class CustomerController {
 
         System.out.println("Ny mailadress: ");
         String email = scanner.nextLine();
-        if (!email.isEmpty()){
+        if (!email.isEmpty()){  // Mailadressen kan innehålla bokstäver, siffror och "+-_-."-tecken.
+                                // Avslutas med 2-6 bokstäver efter sista punkten
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
             if(Pattern.matches(emailRegex, email)){
                 loggedIn.setEmail(email);
