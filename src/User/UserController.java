@@ -5,11 +5,13 @@ import Customers.Customer;
 import Customers.CustomerController;
 import Admin.AdminController;
 import Customers.CustomerService;
+import Utils.SystemUtils;
+import Products.ProductController;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 
 /**
  * Controller-klass för kundhantering
@@ -22,7 +24,9 @@ public class UserController {
     // Scanner för användarinput
     Scanner scanner;
 
+    private static final Logger logger = Logger.getLogger(UserController.class.getName());
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+
     private boolean isValidEmail(String email) {
         return Pattern.matches(EMAIL_REGEX, email);
     }
@@ -49,12 +53,12 @@ public class UserController {
                 System.out.println("\n=== Meny ===");
                 System.out.println("1. Logga in");
                 System.out.println("2. Skapa konto");
+                System.out.println("3. Butiksinformation");
                 System.out.println("0. Avsluta");
                 System.out.print("Välj ett alternativ: ");
 
                 // Läs användarens val
                 String select = scanner.nextLine().trim();
-
 
                 // Hantera användarens val
                 switch (select) {
@@ -67,36 +71,44 @@ public class UserController {
                         System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine().trim();
                         System.out.println("Ange hemadress: "); String address = scanner.nextLine().trim();
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine().trim();
-
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
                             if (!this.isValidEmail(email)) {
-                                System.out.println("Email invalid");
+                                System.out.println(email+ "är ej en giltig mailadress");
+                                logger.warning("Användarens mail matchar ej regex-strängen");
                                 continue;
                             }
 
                             customerService.addCustomer(name, email, phone, address, password);
                             break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
                         } catch (Exception e){
-                            System.out.println(e.getMessage()); // Om ett fel uppstår, uppmanas du att testa igen.
+                            System.out.println("Ett oväntat fel uppstod. ");
+                            logger.severe(e.getMessage());
                         }
                         break;
+                    case "3":
+                        System.out.println("Välkommen till våran elektronikbutik. \nFör att bläddra runt bland produkterna" +
+                                " eller handla, vänligen skapa ett konto. ");
+                        break;
                     case "0":
-                        System.out.println("Avslutar kundhantering...");
-                        return;
+                        scanner.close();
+                        SystemUtils.avslutarAnimation();
+                        return; // Avslutar programmet
                     default:
-                        System.out.println("Ogiltigt val, försök igen");
+                        System.out.println("Felaktig input, försök igen. ");
+                        logger.warning("Användaren gav fel input. ");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                System.out.println("Oväntat fel uppstod. ");
+                logger.severe("Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                System.out.println("Oväntat fel uppstod. ");
+                logger.severe(e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
         }
     }
-
 
     /// Metod för att logga in
     public void login() throws SQLException {
@@ -119,8 +131,7 @@ public class UserController {
             }
         }else {
             System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
+            logger.warning("Användaren uppgav fel info. ");
         }
-
     }
-
 }

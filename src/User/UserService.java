@@ -4,6 +4,7 @@ import Admin.Admin;
 import Customers.Customer;
 import Customers.CustomerRepository;
 import java.sql.*;
+import java.util.logging.Logger;
 
 /**
  * Service-klass för inloggning

@@ -2,6 +2,7 @@ package Admin;
 
 import Customers.Customer;
 import Customers.CustomerService;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -47,11 +48,10 @@ public class AdminController {
                     showProducts();
                     break;
                 case "0":
+                    SystemUtils.logoutAnimation();
                     return;
                 default:
                     logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
-
-
             }
         }
     }

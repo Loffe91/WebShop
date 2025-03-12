@@ -1,13 +1,8 @@
 package Customers;
 
-import Admin.Admin;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.logging.*;
+
 
 /**
  * Service-klass för kundhantering
@@ -17,6 +12,7 @@ public class CustomerService {
 
     // Repository som hanterar alla databasanrop
     CustomerRepository customerRepository;
+    private static final Logger logger = Logger.getLogger(CustomerService.class.getName());
 
     /**
      * Konstruktor för Customers.CustomerService
@@ -43,9 +39,11 @@ public class CustomerService {
     public void addCustomer(String name, String email, String phone, String address, String password) throws SQLException {
         try { // Kollar så att kunden kan skapas, t.ex ingen dublett av email
             customerRepository.addCustomer(name, email, phone, address, password);
-            System.out.println("Kunden har registrerats. "); // Om inga fel hittas skapas kunden
+            System.out.println("Ditt konto har registrerats. ");
+            logger.info("Kunden har registrerats. "); // Om inga fel hittas skapas kunden
         } catch (SQLException e){
-            System.out.println("Fel: " + e.getMessage()); // Felmeddelande ifall kund ej kan skapas
+            System.out.println("Ett oväntat fel uppstod. ");
+            logger.warning("Fel vid databasanrop: " + e.getMessage()); // Felmeddelande ifall kund ej kan skapas
         }
     }
     /** Metod som anropas i CustomerController-loopen

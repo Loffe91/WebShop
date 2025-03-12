@@ -3,6 +3,7 @@ package Customers;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.util.logging.*;
 
 /**
  * Repository-klass för kundhantering
@@ -16,6 +17,7 @@ public class CustomerRepository {
      * Denna används i varje metod för att ansluta till databasen
      */
     private static final String URL = "jdbc:sqlite:webshop.db";
+    private static final Logger logger = Logger.getLogger(CustomerRepository.class.getName());
 
     /**
      * Hämtar alla kunder från databasen
@@ -166,7 +168,7 @@ public class CustomerRepository {
                 String savedPassword = rs.getString("password");
 
                 if (!savedPassword.equals(password)) { // Om lösenord ej matchar
-                    System.out.println("Felaktigt lösenord. ");
+                    logger.warning("Felaktigt lösenord. ");
                     return null;
                 }
 
@@ -180,7 +182,7 @@ public class CustomerRepository {
 
                 );
             } else {
-                System.out.println("Felaktig mailadress");
+                logger.warning("Felaktig mailadress");
                 return null;
             }
         }
@@ -191,34 +193,42 @@ public class CustomerRepository {
     * @return true om uppdateringen lyckas, annars false.
     */
         public boolean updateCustomer(Customer customer) {
-            String sql = "UPDATE customers SET name = ?, email = ?, password = ? WHERE customer_id = ?";
+            String sql = "UPDATE customers SET name = ?, email = ?, password = ?, points = ?, isNewCustomer = ? WHERE customer_id = ?";
+
             try (Connection conn = DriverManager.getConnection(URL);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setString(1, customer.getName());
                 pstmt.setString(2, customer.getEmail());
                 pstmt.setString(3, customer.getPassword());
-                pstmt.setInt(4, customer.getUserId());
+                pstmt.setInt(4, customer.getPoints());  // Uppdatera poäng!
+                pstmt.setBoolean(5, customer.isNewCustomer()); // Uppdatera om det är en ny kund
+                pstmt.setInt(6, customer.getUserId());
+
                 return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
             }
         }
+
     /**
      * Uppdaterar kundens poäng i databasen.
      */
-    public void updateCustomerPoints(int customerId, int points) {
-        String query = "UPDATE customers SET points = ? WHERE customer_id = ?";
+    public void updateCustomerPoints(int customerId, int points, boolean isNewCustomer) {
+        String query = "UPDATE customers SET points = ?, isNewCustomer = ? WHERE customer_id = ?";
         try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setInt(1, points);
-            statement.setInt(2, customerId);
+            statement.setBoolean(2, isNewCustomer);
+            statement.setInt(3, customerId);
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Fel vid uppdatering av poäng: " + e.getMessage());
         }
     }
+
+
 
 
 }
