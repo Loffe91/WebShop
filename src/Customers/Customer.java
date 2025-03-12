@@ -106,6 +106,7 @@ public class Customer extends User {
     public void viewCart(){
         if(cart.isEmpty()){
             System.out.println("Varukorgen är tom. ");
+            logger.info("Kundens varukorg är tom");
             return;
         }
         System.out.println("\n=== Varukorg ===");
