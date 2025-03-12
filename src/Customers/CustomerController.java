@@ -6,6 +6,8 @@ import Products.ProductController;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.*;
+import java.util.regex.Pattern;
+
 import Products.ProductController;
 
 
@@ -153,7 +155,17 @@ public class CustomerController {
         }
 
         System.out.println("Ny mailadress: ");
-        String email = scanner.nextLine().trim();
+        String email = scanner.nextLine();
+        if (!email.isEmpty()){
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+            if(Pattern.matches(emailRegex, email)){
+                loggedIn.setEmail(email);
+            }
+            else {
+                System.out.println("Ogiltig mailadress. ");
+                return;
+            }
+        }
 
         System.out.println("Nytt lösenord: ");
         String password = scanner.nextLine().trim();
