@@ -2,11 +2,11 @@ package Customers;
 
 import Orders.OrderController;
 import Products.ProductController;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.logging.*;
-import Products.ProductController;
+import java.util.logging.Logger;
 
 
 /**
@@ -78,21 +78,21 @@ public class CustomerController {
                         deleteAccount();
                         break;
                     case "0":
-                        System.out.println("\nLoggar ut... ");
+                        SystemUtils.logoutAnimation();
                         return;
 
                     default:
                         System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
-                        logger.warning("Felaktig input. ");
+                        logger.warning("Användaren gav felaktig input. ");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
-                logger.warning(e.getMessage());
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                logger.warning("Fel uppstod vid databasanrop" +e.getMessage());
+                System.out.println("Ett oväntat fel uppstod. ");
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
-                logger.warning(e.getMessage());
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                logger.warning("Fel uppstod: " +e.getMessage());
+                System.out.println("Ett oväntat fel uppstod");
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
         }
@@ -117,16 +117,16 @@ public class CustomerController {
             try {
                 int customerId = loggedIn.getUserId();
                 customerService.deleteCustomer(customerId);
-
+                logger.info("Kontot tas bort. ");
                 System.exit(0); //Stränger ner hela programmet "0" innebär att
                                       // inga felmeddelanden uppstår
             } catch (SQLException e) {
                 System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
-                e.printStackTrace();
+                logger.warning(e.getMessage());
             }
         }
         else if(choice.equalsIgnoreCase("2")){
-            System.out.println("Tillbaka till mina sidor");
+            SystemUtils.tillbakaAnimation("mina sidor (kundmeny)");
         }
         else {
             System.out.println("Ogiltigt val, försök igen");
@@ -138,6 +138,7 @@ public class CustomerController {
         System.out.println("ID: "+loggedIn.getUserId());
         System.out.println("Namn: "+loggedIn.getName());
         System.out.println("Email: "+loggedIn.getEmail());
+        System.out.println("Medlemsnivå: " + loggedIn.getDiscountLevel());
         System.out.println("Poäng: "+loggedIn.getPoints());
 
 
@@ -165,10 +166,12 @@ public class CustomerController {
                 password.isEmpty() ? null : password // ----------- !! -----------
         );
 
-        if(success){
-            System.out.println("Dina uppgifter har uppdaterats. ");
+        if (name.isBlank() && email.isBlank() && password.isBlank()) {
+            System.out.println("Dina uppgifter är oförändrade.");
+        } else if (success) {
+            System.out.println("Dina uppgifter har uppdaterats.");
         } else {
-            System.out.println("Uppdatering misslyckades. ");
+            System.out.println("Uppdatering misslyckades.");
         }
 
     }
@@ -188,6 +191,7 @@ public class CustomerController {
         System.out.println("4. Lägg till vara i varukorgen ");
         System.out.println("5. Ta varukorgen till kassan");
         System.out.println("0. Tillbaka ");
+        System.out.print("Välj ett alternativ: ");
 
         String select = scanner.nextLine().trim();
 
@@ -208,9 +212,11 @@ public class CustomerController {
                 placeOrder();
                 break;
             case "0":
+                SystemUtils.tillbakaAnimation("kundmeny");
                 return;
             default:
                 System.out.println("Felaktig input. Försök igen");
+                logger.warning("Feelaktig input. ");
         }
     }
     public void removeItemFromCart(){

@@ -24,9 +24,10 @@ public class OrderController {
         while (true) {
             try {
                 System.out.println("\n=== Ordermeny ===");
-                System.out.println("1. Lägg en beställning ");
+                System.out.println("1. Gå till kassan ");
                 System.out.println("2. Visa orderhistorik ");
                 System.out.println("0. Gå tillbaka");
+                System.out.print("Välj ett alternativ: ");
 
                 String select = scanner.nextLine().trim();
 
@@ -42,7 +43,7 @@ public class OrderController {
                     case "4":
                         break;
                     case "0":
-                        System.out.println("Återgår till kundmenyn");
+                        SystemUtils.tillbakaAnimation("kundmeny");
                         return;
                     default:
                         logger.warning("Kund gjorde val utanför det godkända spannet");
@@ -103,6 +104,7 @@ public class OrderController {
                 System.out.println("Produkt-ID och antal kan som minst vara 1");
                 return;
             }
+
             if(productId > 90){
                 logger.warning("Kund avgav ett värde utanför det godkända spannet, Produkt-ID anges mellan 1-90. ");
                 System.out.println("Kan ej hitta produkten med det värdet, Ange ett Produkt-ID mellan 1-90. ");
@@ -115,9 +117,11 @@ public class OrderController {
             if (!orderService.orderQuantity(productId, quantity)) {
                 return;
             }
+
             OrderProduct orderProduct = new OrderProduct(productId, quantity, unitPrice);
             loggedIn.addToCart(orderProduct);
             System.out.println("Du la till " + quantity + " stycken av vara " + productId + " i varukorgen");
+
         } catch (NumberFormatException e){
             logger.warning("Vänligen ange produkt-ID och antal som heltal. ");
         }
