@@ -72,7 +72,7 @@ public class CustomerController {
                         orderMenu();
                         break;
                     case "4":
-                        productMenu(); //ny
+                        productMenu();
                         break;
                     case "5":
                         cartMenu();
@@ -158,8 +158,12 @@ public class CustomerController {
 
         System.out.println("Ny mailadress: ");
         String email = scanner.nextLine();
-        if (!email.isEmpty()){  // Mailadressen kan innehålla bokstäver, siffror och "+-_-."-tecken.
-                                // Avslutas med 2-6 bokstäver efter sista punkten
+
+        /// Om mailadressen ej är tom, dvs den ska ändras, kontrollerar vi att mailen är giltig
+        /// Mailadressen kan innehålla bokstäver, siffror och "+-_-."-tecken.
+        /// Avslutas med "@", följt av 2-6 bokstäver efter sista punkten
+
+        if (!email.isEmpty()){
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
             if(Pattern.matches(emailRegex, email)){
                 loggedIn.setEmail(email);
