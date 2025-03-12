@@ -7,9 +7,12 @@ import Utils.SystemUtils;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 
 public class ProductController {
+
+    private static final Logger logger = Logger.getLogger(ProductController.class.getName());
     // Service-lager för produkthantering, hanterar affärslogik
     ProductService productService;
     OrderController orderController;
@@ -22,6 +25,8 @@ public class ProductController {
      * Initierar service och scanner
      */
     public ProductController(Customer customer) {
+
+
         // Skapa instanser av nödvändiga objekt
         this.loggedIn = customer;
         this.productService = new ProductService();
@@ -70,13 +75,16 @@ public class ProductController {
                         SystemUtils.tillbakaAnimation("kundmeny");
                         return;
                     default:
-                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
+                        logger.warning("Kund gjorde inmatning utanför tillåtna alternativ.");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ i listan");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
+                logger.warning(e.getMessage());
                 System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
+                logger.warning(e.getMessage());
                 System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
@@ -92,6 +100,7 @@ public class ProductController {
         try {
             productService.selectProductByName(search.trim()); ///trim tar bort blanksteg (mellanslag) innan och efter input
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
             System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
         }
 

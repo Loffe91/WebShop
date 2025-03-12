@@ -82,8 +82,8 @@ public class CustomerController {
                         return;
 
                     default:
-                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                         logger.warning("Användaren gav felaktig input. ");
+                        System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
@@ -216,7 +216,7 @@ public class CustomerController {
                 return;
             default:
                 System.out.println("Felaktig input. Försök igen");
-                logger.warning("Feelaktig input. ");
+                logger.warning("Felaktig input. ");
         }
     }
     public void removeItemFromCart(){
