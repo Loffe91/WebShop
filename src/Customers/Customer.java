@@ -29,7 +29,6 @@ public class Customer extends User {
         this.name = name;
         this.isNewCustomer = isNewCustomer;
         this.cart = new ArrayList<>();
-        logger.info(toString());
     }
 
     // Getters och setters för alla fält
