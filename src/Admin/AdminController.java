@@ -50,7 +50,8 @@ public class AdminController {
                     System.out.println("\nLoggar ut...");
                     return;
                 default:
-                    logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
+                    logger.warning("Admin gjorde inmatning utanför tillåtna alternativ. ");
+                    System.out.println("Felaktigt inmatning, Välj ett alternativ i listan");
 
 
             }
@@ -87,7 +88,8 @@ public class AdminController {
             case "0":
                 return;
             default:
-                logger.warning("Felaktigt val " + select + "Välj ett alternativ i listan");
+                logger.warning("Admin gjorde inmatning utanför tillåtna alternativ. " + select);
+                System.out.println("Felaktigt inmatning, Välj ett alternativ i listan");
                 showCustomers();
         }
     }
@@ -115,6 +117,7 @@ public class AdminController {
                 return;
             default:
                 logger.warning("Felaktigt input" + select);
+                System.out.println("Felaktigt inmatning, välj ett alternativ i listan");
                 showProducts();
         }
     }
@@ -127,7 +130,8 @@ public class AdminController {
             int newStock = Integer.parseInt(scanner.nextLine());
             adminService.updateProductStock(quantProductId, newStock);
         } catch (NumberFormatException e){
-            logger.warning("Felaktig inmatning vid uppdatering av lager. Ange antal med siffror.");
+            logger.warning("Admin gjorde inmatning utanför tillåtna tecken vid lageruppdatering. ");
+            System.out.println("Felaktig inmatning, Ange ID med ett heltal ");
             showProducts();
         }
     }
@@ -140,7 +144,8 @@ public class AdminController {
             double newPrice = Double.parseDouble(scanner.nextLine().trim());
             adminService.updateProductPrice(productId, newPrice);
         } catch (NumberFormatException e){
-            logger.warning("Felaktig inmatning vid uppdatering av pris, ID och pris kan endast anges med siffror. ");
+            logger.warning("Admin gjorde inmatning utanför tillåtna tecken vid prisuppdatering. ");
+            System.out.println("Felaktig inmatning, Ange ID med ett heltal ");
             showProducts();
         }
     }
@@ -173,7 +178,8 @@ public class AdminController {
                 showCustomers();
             }
         } catch (NumberFormatException e){
-            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
+            logger.warning("Admin gjorde inmatning utanför tillåtna tecken");
+            System.out.println("Felaktig inmatning, Ange ID med ett heltal ");
         }
     }
 
@@ -183,7 +189,8 @@ public class AdminController {
             int deleteId = Integer.parseInt(scanner.nextLine()); // Läs och konvertera ID från användaren
             adminService.deleteCustomer(deleteId); // Anropa service-lagret för att ta bort kunden
         } catch (NumberFormatException e) {
-            logger.warning("Felaktig inmatning, Ange ID med ett heltal ");
+            logger.warning("Admin gjorde inmatning utanför tillåtna tecken");
+            System.out.println("Felaktig inmatning, Ange ID med ett heltal ");
             showCustomers();
         }
     }

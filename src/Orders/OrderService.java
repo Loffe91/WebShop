@@ -6,11 +6,15 @@ import Customers.CustomerRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * OrderService hanterar skapandet och lagringen av ordrar i systemet.
  */
 public class OrderService {
+
+    Logger logger = Logger.getLogger(OrderService.class.getName());
+
     private final OrderRepository orderRepository; // Repository för att hantera orderdata
     private final CustomerRepository customerRepository; // Repository för att hantera kunddata
 
@@ -31,6 +35,7 @@ public class OrderService {
         // Kontrollera att varukorgen inte är tom
         if (cart.isEmpty()) {
             System.out.println("Varukorgen är tom. Kan ej lägga en order");
+            logger.warning("Varukorgen är tom. Kan ej lägga en order");
             return false;
         }
 
@@ -39,6 +44,7 @@ public class OrderService {
             Customer customer = customerRepository.getCustomerById(customerId);
             if (customer == null) {
                 System.out.println("Kunde ej hitta kunden.");
+                logger.warning("Kunde ej hitta kunden.");
                 return false;
             }
 
@@ -46,6 +52,7 @@ public class OrderService {
             int orderId = orderRepository.createOrder(customerId);
             if (orderId == -1) {
                 System.out.println("Kunde ej skapa order.");
+                logger.warning("Kunde ej skapa order.");
                 return false;
             }
 
@@ -82,6 +89,7 @@ public class OrderService {
             return true;
         } catch (SQLException e) {
             System.out.println("Ett fel uppstod: " + e.getMessage());
+            logger.warning("Ett fel uppstod: " + e.getMessage());
             return false;
         }
     }
@@ -125,6 +133,7 @@ public class OrderService {
         // Om tillräckligt lager ej finns
         if(!currentStock){
             System.out.println("Produkt-ID: "+productId+" har för låg lagerstatus för denna order");
+            logger.warning("Produkt-ID: "+productId+" har för låg lagerstatus för denna order");
         }
         return currentStock;
     }

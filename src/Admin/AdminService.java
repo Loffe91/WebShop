@@ -29,7 +29,8 @@ public class AdminService {
 
         /// Kontrollera om vi har några kunder att visa
         if (customers.isEmpty()) {
-            logger.warning("Försökte visa alla kunder, men inga hittades.");
+            logger.warning("Customers-tabellen är tom");
+            System.out.println("Försökte visa alla kunder, men inga hittades.");
             return;
         }
 
@@ -57,11 +58,13 @@ public class AdminService {
         Customer customer = customerRepository.getCustomerById(customerId);
         if (customer == null) {
             logger.warning("Kunden med ID " + customerId + " hittades inte. Ingen borttagning skedde");
+            System.out.println("Kunden med ID " + customerId + " hittades inte. Ingen borttagning skedde");
             return;
         }
 
         ///Ta bort kunden från customerRepository
         customerRepository.deleteCustomer(customerId);
+        logger.info("Admin har tagit bort kund från databasen");
         System.out.println("Kunden med ID " + customerId + " har raderats.");
     }
 
@@ -69,7 +72,8 @@ public class AdminService {
     public void showAllProducts() throws SQLException {
         ArrayList<Product> products = productRepository.getAllProducts();
         if (products.isEmpty()) {
-            logger.warning("Inga produkter hittades.");
+            logger.warning("Products-tabellen är tom");
+            System.out.println("Inga produkter hittades.");
             return;
         }
         System.out.println("\n=== Produktlista ===");
