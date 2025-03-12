@@ -5,7 +5,7 @@ package Customers;
  * Varje nivå har en specifik rabattprocent.
  */
 public enum DiscountLevel {
-    // Definierar lojalitetsnivåer och deras respektive rabatter
+    // Definierar respektive rabatter
     CUSTOMER(0),       // Vanlig kund, ingen rabatt
     NEW_CUSTOMER(10),  // Nya kunder får 10% rabatt
     BRONZE(5),         // Bronze-nivå ger 5% rabatt
@@ -17,7 +17,7 @@ public enum DiscountLevel {
     private final int discount;
 
     /**
-     * Konstruktor för varje lojalitetsnivå.
+     * Konstruktor för varje DiscountLevel.
      * @param discount Rabattprocent kopplad till nivån.
      */
     DiscountLevel(int discount) {
@@ -25,7 +25,7 @@ public enum DiscountLevel {
     }
 
     /**
-     * Getter-metod för att hämta rabattprocenten för lojalitetsnivån.
+     * Getter-metod för att hämta rabattprocenten för DiscountLevel.
      * @return Rabatt i procent.
      */
     public int getDiscount() {
@@ -33,10 +33,10 @@ public enum DiscountLevel {
     }
 
     /**
-     * Metod som avgör lojalitetsnivån baserat på kundens poäng och om kunden är ny.
-     * @param points Antalet lojalitetspoäng som kunden har.
+     * Metod som avgör DiscountLevel baserat på kundens poäng och om kunden är ny.
+     * @param points Antalet kundpoäng som kunden har.
      * @param isNewCustomer Boolean som anger om kunden är ny.
-     * @return Kundens aktuella lojalitetsnivå.
+     * @return Kundens aktuella DiscountLevel.
      */
     public static DiscountLevel getLevel(int points, boolean isNewCustomer) {
         // Om kunden är ny, sätt nivå till NEW_CUSTOMER oavsett poäng
@@ -44,7 +44,7 @@ public enum DiscountLevel {
             return NEW_CUSTOMER;
         }
 
-        // Bestäm lojalitetsnivå baserat på antal poäng
+        // Bestäm DiscountLevel baserat på antal poäng
         if (points >= 100000) {
             return PLATINUM;   // 100,000+ poäng ger Platinum-nivå (20% rabatt)
         } else if (points >= 50000) {
