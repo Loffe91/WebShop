@@ -139,6 +139,7 @@ public class CustomerController {
         System.out.println("ID: "+loggedIn.getUserId());
         System.out.println("Namn: "+loggedIn.getName());
         System.out.println("Email: "+loggedIn.getEmail());
+        System.out.println("Medlemsnivå: " + loggedIn.getDiscountLevel());
         System.out.println("Poäng: "+loggedIn.getPoints());
 
 
@@ -169,9 +170,9 @@ public class CustomerController {
         if (name.isBlank() && email.isBlank() && password.isBlank()) {
             System.out.println("Dina uppgifter är oförändrade.");
         } else if (success) {
-            System.out.println("Dina uppgifter har uppdaterats. ");
+            System.out.println("Dina uppgifter har uppdaterats.");
         } else {
-            System.out.println("Uppdatering misslyckades. ");
+            System.out.println("Uppdatering misslyckades.");
         }
 
     }

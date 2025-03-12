@@ -11,7 +11,7 @@ public class SystemUtils {
             Thread.currentThread().interrupt();
         }
 
-        System.out.println("\nLoggat ut.");
+        System.out.println("\nDu har blivit utloggad.");
     }
 
     public static void tillbakaAnimation(String menyNamn) {

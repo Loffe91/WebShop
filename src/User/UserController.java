@@ -72,7 +72,7 @@ public class UserController {
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine().trim();
                         try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
                             if (!this.isValidEmail(email)) {
-                                logger.warning("Ogiltlig mailadress: " + email);
+                                System.out.println("Ogiltlig mailadress: " + email);
                                 continue;
                             }
 
@@ -87,7 +87,7 @@ public class UserController {
                         SystemUtils.avslutarAnimation();
                         return; // Avslutar programmet
                     default:
-                        logger.warning("Ogiltigt val, försök igen");
+                        System.out.println("Ogiltigt val, försök igen");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
@@ -123,7 +123,5 @@ public class UserController {
         }else {
             logger.warning("Felaktiga inloggningsuppgifter. Försök igen");
         }
-
     }
-
 }
