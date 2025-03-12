@@ -148,7 +148,7 @@ public class CustomerController {
     }
 
     public void updateCustomerInfo() throws SQLException {
-        System.out.println("De fält du ej vill ändra kan du lämna tomma ");
+        System.out.println("\nDe fält du ej vill ändra kan du lämna tomma ");
 
         System.out.println("Nytt namn: ");
         String name = scanner.nextLine().trim();
