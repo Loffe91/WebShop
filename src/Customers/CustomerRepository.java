@@ -194,6 +194,7 @@ public class CustomerRepository {
     */
         public boolean updateCustomer(Customer customer) {
             String sql = "UPDATE customers SET name = ?, email = ?, password = ?, points = ?, isNewCustomer = ? WHERE customer_id = ?";
+
             try (Connection conn = DriverManager.getConnection(URL);
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

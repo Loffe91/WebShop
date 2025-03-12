@@ -2,9 +2,9 @@ package Products;
 
 import Customers.Customer;
 import Orders.OrderController;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -67,7 +67,7 @@ public class ProductController {
                     case "5":
                         orderController.placeOrder();
                     case "0":
-                        System.out.println("Avslutar produkthantering...");
+                        SystemUtils.tillbakaAnimation("kundmeny");
                         return;
                     default:
                         System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
