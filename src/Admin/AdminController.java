@@ -91,7 +91,7 @@ public class AdminController {
             default:
                 logger.warning("Admin gjorde inmatning utanför tillåtna alternativ. " + select);
                 System.out.println("Felaktigt inmatning, Välj ett alternativ i listan");
-                showCustomers();
+                showCustomers();//
         }
     }
 
