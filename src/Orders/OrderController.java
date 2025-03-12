@@ -65,24 +65,22 @@ public class OrderController {
     public void placeOrder() throws SQLException {
         // Kontrollerar så att korgen ej är tom
         if(loggedIn.cart.isEmpty()){
-            logger.warning("Varukorgen är tom, köpet kunde ej genomföras. ");
+            logger.warning("Användaren har inga varor i sin varukorg");
             System.out.println("Varukorgen är tom, köpet kunde ej genomföras. ");
             return;
         }
         // Kontrollerar att det finns tillräckligt i lagret
         for(OrderProduct product : loggedIn.cart){
             if(!orderService.orderQuantity(product.getProductId(), product.getQuantity())){
-                logger.warning("Lagersaldot för vald vara, " + product.getProductId() + " är för lågt, köpet genomfördes inte ");
-                System.out.println("Lagersaldot för vald vara, " + product.getProductId() + " är för lågt, köpet genomfördes inte ");
+                logger.warning("Användaren har överskridit valda varans tillgängliga lagerstatus ");
+                System.out.println("Lagersaldot för vald vara med ID: " + product.getProductId() + " är för lågt, köpet genomfördes inte ");
                 return;
             }
         }
-
-        boolean successfulOrder = orderService.placeOrder(loggedIn.getUserId(), loggedIn.cart);
         // Om produkterna finns i lager skapas en order av customerId och innehållet i varukorgen
+        boolean successfulOrder = orderService.placeOrder(loggedIn.getUserId(), loggedIn.cart);
         if (successfulOrder){
-
-            loggedIn.clearCart();
+            loggedIn.clearCart(); // Tömmer varukorgen efter att ordern skapats
         } else {
             logger.warning("Oväntat fel uppstod, ordern skapades ej. ");
             System.out.println("Oväntat fel uppstod, ordern skapades ej. ");
@@ -125,7 +123,8 @@ public class OrderController {
             System.out.println("Du la till " + quantity + " stycken av vara " + productId + " i varukorgen");
 
         } catch (NumberFormatException e){
-            logger.warning("Vänligen ange produkt-ID och antal som heltal. ");
+            logger.warning("Felaktig input: "+e.getMessage());
+            System.out.println("Vänligen ange produkt-ID och antal som heltal. ");
         }
 
     }
