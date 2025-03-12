@@ -24,7 +24,7 @@ public class OrderController {
         while (true) {
             try {
                 System.out.println("\n=== Ordermeny ===");
-                System.out.println("1. Lägg en beställning ");
+                System.out.println("1. Gå till kassan ");
                 System.out.println("2. Visa orderhistorik ");
                 System.out.println("0. Gå tillbaka");
 
