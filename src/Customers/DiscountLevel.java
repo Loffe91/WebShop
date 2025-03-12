@@ -44,7 +44,7 @@ public enum DiscountLevel {
             return NEW_CUSTOMER;
         }
 
-        // Bestäm DiscountLevel baserat på antal poäng
+        // Bestäm DiscountLevel baserat på antal poäng.
         if (points >= 100000) {
             return PLATINUM;   // 100,000+ poäng ger Platinum-nivå (20% rabatt)
         } else if (points >= 50000) {
