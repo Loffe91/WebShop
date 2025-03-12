@@ -15,6 +15,7 @@ public class SystemUtils {
     }
 
     public static void tillbakaAnimation(String menyNamn) {
+        System.out.print("Går tillbaka till " + menyNamn);
         try {
             for (int i = 0; i < 3; i++) { // Lägger till tre punkter med fördröjning
                 Thread.sleep(500);
@@ -24,7 +25,7 @@ public class SystemUtils {
             Thread.currentThread().interrupt();
         }
 
-        System.out.println("\nGår tillbaka till " + menyNamn + ".");
+
     }
 
     public static void avslutarAnimation() {

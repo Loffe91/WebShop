@@ -83,7 +83,6 @@ public class CustomerController {
                     case "0":
                         SystemUtils.logoutAnimation();
                         return;
-
                     default:
                         logger.warning("Användaren gav felaktig input. ");
                         System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
@@ -231,6 +230,7 @@ public class CustomerController {
                 break;
             case "0":
                 SystemUtils.tillbakaAnimation("kundmeny");
+                System.out.println();
                 return;
             default:
                 System.out.println("Felaktig input. Försök igen");

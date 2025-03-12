@@ -2,6 +2,7 @@ package Products;
 
 import Customers.Customer;
 import Customers.CustomerRepository;
+import Utils.SystemUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -147,8 +148,8 @@ public class ProductService {
                     return categories.get(choice - 1).getCategory_name();
                 } else if (choice == 0) {
                     System.out.println("-----------------------");
-                    System.out.println("Avbryter...");
-                    System.out.println("-----------------------");
+                    SystemUtils.tillbakaAnimation("produkthantering");
+                    System.out.println();
                     return "0";
 
                 } else {

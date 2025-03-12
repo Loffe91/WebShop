@@ -73,6 +73,7 @@ public class ProductController {
                         orderController.placeOrder();
                     case "0":
                         SystemUtils.tillbakaAnimation("kundmeny");
+                        System.out.println();
                         return;
                     default:
                         logger.warning("Kund gjorde inmatning utanför tillåtna alternativ.");
