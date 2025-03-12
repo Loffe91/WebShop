@@ -83,16 +83,16 @@ public class CustomerController {
 
                     default:
                         System.out.println("\nFelaktig inmatning. Välj ett alternativ från menyn");
-                        logger.warning("Felaktig input. ");
+                        logger.warning("Användaren gav felaktig input. ");
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
-                logger.warning(e.getMessage());
-                System.out.println("Ett fel uppstod vid databasanrop: " + e.getMessage());
+                logger.warning("Fel uppstod vid databasanrop" +e.getMessage());
+                System.out.println("Ett oväntat fel uppstod. ");
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
-                logger.warning(e.getMessage());
-                System.out.println("Ett oväntat fel uppstod: " + e.getMessage());
+                logger.warning("Fel uppstod: " +e.getMessage());
+                System.out.println("Ett oväntat fel uppstod");
                 scanner.nextLine(); // Rensa scanner-bufferten vid felinmatning
             }
         }
@@ -106,7 +106,6 @@ public class CustomerController {
         System.out.println();
         System.out.println("1. Ta bort mitt konto");
         System.out.println("2. Gå tillbaka till mina sidor");
-        System.out.print("Välj ett alternativ: ");
 
         String choice = scanner.nextLine().trim(); //variabel för val, för att slippa upprepa
         // scanner nextLine och få extra rader och knapptryck efter vald siffra.
@@ -118,12 +117,12 @@ public class CustomerController {
             try {
                 int customerId = loggedIn.getUserId();
                 customerService.deleteCustomer(customerId);
-
+                logger.info("Kontot tas bort. ");
                 System.exit(0); //Stränger ner hela programmet "0" innebär att
                                       // inga felmeddelanden uppstår
             } catch (SQLException e) {
                 System.out.println("Det uppstod ett fel när kontot skulle tas bort.");
-                e.printStackTrace();
+                logger.warning(e.getMessage());
             }
         }
         else if(choice.equalsIgnoreCase("2")){
@@ -216,7 +215,8 @@ public class CustomerController {
                 SystemUtils.tillbakaAnimation("kundmeny");
                 return;
             default:
-                logger.warning("Felaktig input. Försök igen");
+                System.out.println("Felaktig input. Försök igen");
+                logger.warning("Feelaktig input. ");
         }
     }
     public void removeItemFromCart(){
