@@ -59,13 +59,11 @@ public class CustomerRepository {
     public void addCustomer(String name, String email, String phone ,String address, String password) throws SQLException {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         if (!Pattern.matches(emailRegex, email)) {
-            System.out.println("--------------------------");
             throw new IllegalArgumentException("Ogiltig e-postadress. Vänligen ange en korrekt email.");
         }
 
         String phoneRegex = "^\\+?\\d{7,15}$";
         if (!Pattern.matches(phoneRegex, phone)) {
-            System.out.println("--------------------------");
             throw new IllegalArgumentException("Ogiltigt telefonnummer. Ange endast siffror, med valfritt '+' i början.");
         }
 

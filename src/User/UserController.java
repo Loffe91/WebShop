@@ -6,12 +6,12 @@ import Customers.CustomerController;
 import Admin.AdminController;
 import Customers.CustomerService;
 import Utils.SystemUtils;
-import Products.ProductController;
+
 
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
+
 
 /**
  * Controller-klass för kundhantering
@@ -25,11 +25,6 @@ public class UserController {
     Scanner scanner;
 
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
-    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
-
-    private boolean isValidEmail(String email) {
-        return Pattern.matches(EMAIL_REGEX, email);
-    }
 
     /**
      * Konstruktor för Customers.CustomerController
@@ -71,12 +66,7 @@ public class UserController {
                         System.out.println("Ange telefonnummer: "); String phone = scanner.nextLine().trim();
                         System.out.println("Ange hemadress: "); String address = scanner.nextLine().trim();
                         System.out.println("Ange lösenord: "); String password = scanner.nextLine().trim();
-                        try { // Testar så att kunden kan läggas till, t.ex ej redan använd email
-                            if (!this.isValidEmail(email)) {
-                                logger.warning("Användarens mail matchar ej regex-strängen");
-                                System.out.println(email+ " är ej en giltig mailadress");
-                                continue;
-                            }
+                        try {  // Kontrollerar så fält ej lämnas tomma
                             if(!name.isEmpty() && !email.isEmpty() && !phone.isEmpty() && !address.isEmpty() && !password.isEmpty()){
                                 customerService.addCustomer(name, email, phone, address, password);
                                 break; // Om inga fel uppstår, läggs kunden till och loopen avbryts
@@ -87,8 +77,8 @@ public class UserController {
                             }
                         break;
                         } catch (Exception e){
-                            System.out.println("Ett oväntat fel uppstod. ");
                             logger.severe(e.getMessage());
+                            System.out.println("Fel vid registrering: "+e.getMessage());
                         }
                         break;
                     case "3":
@@ -107,7 +97,7 @@ public class UserController {
                 }
             } catch (SQLException e) {
                 // Hantera databasfel
-                System.out.println("Oväntat fel uppstod. ");
+                System.out.println("Oväntat fel uppstod ");
                 logger.severe("Ett fel uppstod vid databasanrop: " + e.getMessage());
             } catch (Exception e) {
                 // Hantera övriga fel (t.ex. felaktig input)
