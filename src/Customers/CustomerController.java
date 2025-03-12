@@ -72,7 +72,7 @@ public class CustomerController {
                         orderMenu();
                         break;
                     case "4":
-                        productMenu(); //ny
+                        productMenu();
                         break;
                     case "5":
                         cartMenu();
