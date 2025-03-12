@@ -1,6 +1,7 @@
 package Orders;
 
 import Customers.Customer;
+import Utils.SystemUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -27,6 +28,7 @@ public class OrderController {
                 System.out.println("1. Gå till kassan ");
                 System.out.println("2. Visa orderhistorik ");
                 System.out.println("0. Gå tillbaka");
+                System.out.print("Välj ett alternativ: ");
 
                 String select = scanner.nextLine().trim();
 
@@ -42,7 +44,7 @@ public class OrderController {
                     case "4":
                         break;
                     case "0":
-                        System.out.println("Återgår till kundmenyn");
+                        SystemUtils.tillbakaAnimation("kundmeny");
                         return;
                     default:
                         logger.warning("Felaktigt val, försök igen ");
@@ -95,6 +97,7 @@ public class OrderController {
                 System.out.println("Produkt-ID och antal kan som minst vara 1");
                 return;
             }
+
             if(productId > 90){
                 System.out.println("Finns ej en produkt med det ID:t ( Giltiga ID:s = 1-90 )");
                 return;
@@ -105,11 +108,13 @@ public class OrderController {
             if (!orderService.orderQuantity(productId, quantity)) {
                 return;
             }
+
             OrderProduct orderProduct = new OrderProduct(productId, quantity, unitPrice);
             loggedIn.addToCart(orderProduct);
             System.out.println("Du la till " + quantity + " stycken av vara " + productId + " i varukorgen");
+
         } catch (NumberFormatException e){
-            System.out.println("Vänligen ange produkt-ID och antal som heltal. ");
+            logger.warning("Vänligen ange produkt-ID och antal som heltal.");
         }
 
     }

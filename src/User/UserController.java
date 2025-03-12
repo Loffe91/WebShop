@@ -5,6 +5,7 @@ import Customers.Customer;
 import Customers.CustomerController;
 import Admin.AdminController;
 import Customers.CustomerService;
+import Utils.SystemUtils;
 import Products.ProductController;
 
 import java.sql.SQLException;
@@ -89,17 +90,8 @@ public class UserController {
                                 " eller handla, vänligen skapa ett konto. ");
                         break;
                     case "0":
-                        try {
-                            for (int i = 0; i < 3; i++) { // Lägger till tre punkter med fördröjning
-                                Thread.sleep(500);
-                                System.out.print(".");
-                            }
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
-
-                        System.out.println("\nProgrammet avslutat.");
                         scanner.close();
+                        SystemUtils.avslutarAnimation();
                         return; // Avslutar programmet
                     default:
                         System.out.println("Felaktig input, försök igen. ");
@@ -141,7 +133,5 @@ public class UserController {
             System.out.println("Felaktiga inloggningsuppgifter. Försök igen");
             logger.warning("Användaren uppgav fel info. ");
         }
-
     }
-
 }
