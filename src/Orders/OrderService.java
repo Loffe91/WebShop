@@ -75,13 +75,18 @@ public class OrderService {
 
             // Utskrift av orderinformation
             System.out.println("Order bearbetad för " + customer.getName());
-            System.out.println("Du har lagt en order. Totalt pris: " + String.format("%.2f", totalPrice));
+            System.out.println("Du har lagt en order. Totalt pris: " + totalPrice);
             System.out.println("Rabatt tillämpad: " + discount + "%");
-            System.out.println("Totalbelopp efter rabatt: " + String.format("%.2f", applyDiscount(customer, finalPrice)));
+            System.out.println("Totalbelopp efter rabatt: " + applyDiscount(customer, finalPrice));
             System.out.println("Nya Kundpoäng: " + customer.getPoints());
 
-            // Använd den sparade variabeln för att säkerställa att "Ny kund" skrivs ut korrekt
-            String discountLevel = isNewCustomer ? "Ny kund" : customer.getDiscountLevel().name();
+            // Tittar vilken rabbatnivå kunden har
+            String discountLevel;
+            if (isNewCustomer) {
+                discountLevel = "Ny kund";
+            } else {
+                discountLevel = customer.getDiscountLevel().name();
+            }
             System.out.println("Nuvarande Kundnivå: " + discountLevel);
 
 
@@ -117,6 +122,7 @@ public class OrderService {
         }
         return totalPrice;
     }
+    // Metod för att beräknar ett rabatterat pris och avrundar det till två decimaler.
     public double applyDiscount(Customer customer, double totalPrice)
     {
         int discount = customer.getDiscountLevel().getDiscount();

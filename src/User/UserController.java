@@ -84,6 +84,12 @@ public class UserController {
                     case "3":
                         System.out.println("\nVälkommen till våran elektronikbutik. \nFör att bläddra runt bland produkterna" +
                                 " eller handla, vänligen skapa ett konto. ");
+                        System.out.println("Nya kunder får 10% rabatt på första köpet!");
+                        System.out.println("Därefter finns det fyra olika nivåer av rabatt:\n");
+                        System.out.println("🥉 BRONS:    5% rabatt");
+                        System.out.println("🥈 SILVER:  10% rabatt");
+                        System.out.println("🥇 GULD:    15% rabatt");
+                        System.out.println("🏆 PLATINUM: 20% rabatt");
                         break;
                     case "0":
                         scanner.close();

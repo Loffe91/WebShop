@@ -73,7 +73,7 @@ public class Customer extends User {
      */
     public double applyDiscount(double totalPrice) {
         int discount = getDiscountLevel().getDiscount();
-        return totalPrice * (1 - (discount / 100.0));
+        return Math.round(totalPrice * (1 - (discount / 100.0)) * 100.0) / 100.0;
     }
 
     /**
